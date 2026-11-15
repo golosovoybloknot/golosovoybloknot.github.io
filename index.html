@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Голосовой блокнот — речь в текст без интернета, для Windows</title>
+<meta name="description" content="Программа для Windows: диктовка в любое окно, встречи, созвоны, лекции и аудиофайлы — в текст. Без интернета и облака. 14 дней бесплатно.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Голосовой блокнот — речь в текст без интернета">
+<meta property="og:description" content="Диктовка, встречи, созвоны и лекции — в текст прямо на вашем компьютере. Записи не уходят в облако. 14&nbsp;дней бесплатно.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2324716D'/%3E%3Crect x='12' y='6' width='8' height='13' rx='4' fill='white'/%3E%3Cpath d='M9 15a7 7 0 0 0 14 0M16 22v4' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="stil.css">
+<!--
+  ПЕРЕД ВЫКЛАДКОЙ вписать (подсвечены жёлтым, class="vpisat"; здесь и в oferta.html):
+    • ФИО продавца полностью и ИНН;
+    • адрес почты для связи;
+    • ссылку оплаты на кнопки «Купить» (data-srok), когда магазин Robokassa будет готов.
+  Кнопка «Скачать» сама находит последний установщик на GitHub (скрипт внизу).
+-->
+</head>
+<body>
+
+<header class="shapka">
+  <div class="obertka">
+    <a class="logo" href="#">
+      <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#24716D"/><rect x="12" y="6" width="8" height="13" rx="4" fill="#fff"/><path d="M9 15a7 7 0 0 0 14 0M16 22v4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+      <span>Голосовой блокнот</span>
+    </a>
+    <nav class="menyu" aria-label="Разделы">
+      <a href="#vozmozhnosti">Возможности</a>
+      <a href="#ceny">Цены</a>
+      <a href="#voprosy">Вопросы</a>
+      <a href="#kontakty">Контакты</a>
+    </nav>
+    <a class="knopka" href="#skachat">Скачать</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ── Первый экран ── -->
+<section class="glavnyy" id="skachat">
+  <div class="obertka">
+    <span class="metka">Без облака</span>
+    <h1>Ваши разговоры остаются у вас. <span class="akcent stroka">Текст&nbsp;— готов сам.</span></h1>
+    <p class="podzag">«Голосовой блокнот» превращает речь в текст прямо на вашем компьютере.
+      Распознавание работает без интернета&nbsp;— ни звук, ни текст никуда не уходят.</p>
+
+    <div class="deystviya">
+      <a class="knopka bolshaya" data-skachat
+         href="https://github.com/ogrebete-max/voicenotes-models/releases/download/beta-1.26.3-f3a5508/VoiceNotes_Beta_Setup_1.26.3_f3a5508.exe">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+        Скачать бесплатно
+      </a>
+      <span class="melko">Для Windows 10 и 11 · <span data-versiya>версия 1.26.3 · 264 МБ</span><br>
+        14&nbsp;дней всё работает бесплатно, без регистрации</span>
+    </div>
+    <p class="ne-win">Программа&nbsp;— для компьютера с Windows. Откройте эту страницу на компьютере, чтобы скачать.
+      А с телефона можно отправлять записи на компьютер&nbsp;— об этом ниже.</p>
+    <ul class="plyusy">
+      <li>Работает без интернета</li>
+      <li>Без регистрации и аккаунтов</li>
+      <li>На обычном ноутбуке, без видеокарты</li>
+      <li>От 125&nbsp;₽ в&nbsp;месяц</li>
+    </ul>
+
+    <div class="snimok">
+      <a href="img/glavnaya.webp" target="_blank" rel="noopener">
+        <picture>
+          <source media="(max-width: 640px)" srcset="img/glavnaya-m.webp" width="880" height="300">
+          <img src="img/glavnaya.webp" width="1730" height="450"
+               alt="Главное окно программы: надпись «Для работы интернет не нужен» и кнопки «Записать встречу», «Записать созвон», «Расшифровать файл», «Новая заметка»">
+        </picture>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Без облака ── -->
+<section class="razdel temnyy">
+  <div class="obertka">
+    <h2>Чужие тайны&nbsp;— не&nbsp;для облака</h2>
+    <p class="podzag">Программа с самого начала делалась ради одного: чтобы разговор не уходил на чужой сервер.
+      У врачей, юристов, психологов, в бизнесе есть разговоры, которые нельзя никому отдавать.</p>
+    <div class="tri">
+      <div class="kartochka">
+        <div class="znachok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+        <h3>Распознаёт сам компьютер</h3>
+        <p>Модель распознавания речи работает на вашем компьютере. Интернет для этого не нужен.</p>
+      </div>
+      <div class="kartochka">
+        <div class="znachok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+        <h3>Записи&nbsp;— в вашей папке</h3>
+        <p>Звук и текст лежат обычными файлами в «Документах». Их видите только вы.</p>
+      </div>
+      <div class="kartochka">
+        <div class="znachok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+        <h3>Без регистрации</h3>
+        <p>Ни аккаунта, ни пароля. Поставили&nbsp;— и пользуетесь.</p>
+      </div>
+    </div>
+    <ul class="dlya-kogo" aria-label="Кому особенно подходит">
+      <li>Врачи и психологи</li>
+      <li>Юристы</li>
+      <li>Руководители и менеджеры</li>
+      <li>Преподаватели и студенты</li>
+      <li>Журналисты и авторы</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── Возможности ── -->
+<section class="razdel" id="vozmozhnosti">
+  <div class="obertka">
+    <h2>Что умеет программа</h2>
+    <p class="podzag">Все примеры ниже&nbsp;— настоящие окна программы. Записи в них выдуманные.</p>
+
+    <article class="vozmozhnost">
+      <div class="vozmozhnost-tekst">
+        <span class="metka">Вместо клавиатуры</span>
+        <h3>Говорите&nbsp;— вместо того, чтобы печатать</h3>
+        <ul class="spisok">
+          <li>Курсор в любом окне: письмо, Word, Telegram, WhatsApp, MAX, ChatGPT. <b>Зажали Ctrl+Alt&nbsp;— сказали&nbsp;— отпустили</b>: текст уже там, с точками и запятыми.</li>
+          <li>Длинный текст&nbsp;— <b>без рук</b>: дважды Ctrl+Alt, и говорите. Текст встаёт прямо по ходу речи.</li>
+          <li>Даты и суммы&nbsp;— цифрами, нужный знак можно сказать голосом.</li>
+          <li><b>Ваши термины&nbsp;— с первого раза.</b> Ошиблась программа&nbsp;— исправили слово один раз, дальше она пишет его правильно.</li>
+          <li>Пришла мысль&nbsp;— <b>Ctrl+F9</b>, проговорили, и заметка сохранилась сама.</li>
+        </ul>
+      </div>
+      <div class="snimok" aria-hidden="true">
+        <div class="klavishi"><span class="klavisha">Ctrl</span><span class="plyus">+</span><span class="klavisha">Alt</span></div>
+        <p class="klavishi-podpis">зажали и говорите&nbsp;— так выглядит запись</p>
+        <img src="img/volna.webp" width="1314" height="132" alt="">
+        <div class="kak-govorit"><span>отпустили&nbsp;— текст уже в окне:</span>
+          Добрый день! Высылаю договор, срок&nbsp;— до 25&nbsp;ноября, сумма 48&nbsp;000&nbsp;₽.</div>
+      </div>
+    </article>
+
+    <article class="vozmozhnost naoborot">
+      <div class="vozmozhnost-tekst">
+        <span class="metka">Встречи и консультации</span>
+        <h3>Встреча или созвон&nbsp;— сразу в&nbsp;текст</h3>
+        <ul class="spisok">
+          <li>Нажали «Записать встречу»&nbsp;— <b>текст пишется прямо во время разговора</b>. Потом не нужно переслушивать час записи.</li>
+          <li>Программа сама <b>различает голоса</b>&nbsp;— до 15&nbsp;человек. Вписали «Врач» и «Пациент» или «Юрист» и «Клиент»&nbsp;— и вся запись подписана.</li>
+          <li><b>Созвон в Zoom, Telegram, WhatsApp, MAX</b>&nbsp;— программа замечает звонок и предлагает записать. Записываются и вы, и собеседник; бота в звонок добавлять не нужно.</li>
+          <li>Маленькое окно поверх всех: видно текст, можно отметить важное, собеседник на виду.</li>
+        </ul>
+      </div>
+      <div class="kartinki">
+        <div class="snimok">
+          <a href="img/kartochka-sozvona.webp" target="_blank" rel="noopener">
+            <img src="img/kartochka-sozvona.webp" width="760" height="308"
+                 alt="Карточка программы: «Похоже, идёт созвон… Записать разговор со звуком собеседника?» и кнопка «Записать созвон»">
+          </a>
+        </div>
+        <div class="snimok">
+          <a href="img/okno-poverh.webp" target="_blank" rel="noopener">
+            <img src="img/okno-poverh.webp" width="940" height="520"
+                 alt="Маленькое окно поверх всех во время созвона: текст разговора по репликам «Вы» и «Собеседник», кнопки «Пауза» и «Завершить»">
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article class="vozmozhnost">
+      <div class="vozmozhnost-tekst">
+        <span class="metka">Лекции и файлы</span>
+        <h3>Запись или лекция&nbsp;— в&nbsp;готовый текст</h3>
+        <ul class="spisok">
+          <li>Перетащили запись с диктофона или видео&nbsp;— можно сразу несколько. Нажали «Расшифровать»&nbsp;— и вместо часа записи готовый текст.</li>
+          <li><b>Лекция из интернета&nbsp;— по ссылке</b>: YouTube, VK, Rutube и другие сайты. Программа сама скачает звук и сделает текст.</li>
+          <li>Кроме русского&nbsp;— английский, немецкий, французский, испанский; ещё около 30&nbsp;языков&nbsp;— пробно.</li>
+        </ul>
+      </div>
+      <div class="snimok">
+        <a href="img/rasshifrovka.webp" target="_blank" rel="noopener">
+          <picture>
+            <source media="(max-width: 640px)" srcset="img/rasshifrovka-m.webp" width="1000" height="130">
+            <img src="img/rasshifrovka.webp" width="1740" height="360"
+                 alt="Окно «Расшифровка»: язык, «Разделить по голосам», поле «Ссылка на видео» и кнопка «Расшифровать»">
+          </picture>
+        </a>
+      </div>
+    </article>
+
+    <article class="vozmozhnost naoborot">
+      <div class="vozmozhnost-tekst">
+        <span class="metka">Работа с текстом</span>
+        <h3>Каждое слово можно проверить по&nbsp;звуку</h3>
+        <ul class="spisok">
+          <li>Сомневаетесь в слове&nbsp;— нажали ▶ и послушали это место. <b>Исправили прямо в строке</b>.</li>
+          <li><b>Отмечайте главное цветом</b>: важно, вопрос, цитата, задача, решение. Итог по отметкам&nbsp;— одним нажатием.</li>
+          <li>«Собрать документ»&nbsp;— весь текст, только отмеченное или только задачи&nbsp;— <b>в Word</b>, файл или буфер.</li>
+          <li>«Причесать» убирает «ну», «э-э» и повторы. Смысл и стиль не меняются.</li>
+          <li>Поиск сразу по всем записям: «где мы это обсуждали?»</li>
+        </ul>
+      </div>
+      <div class="snimok">
+        <a href="img/redaktor.webp" target="_blank" rel="noopener">
+          <picture>
+            <source media="(max-width: 640px)" srcset="img/redaktor-m.webp" width="637" height="720">
+            <img src="img/redaktor.webp" width="1880" height="670"
+                 alt="Редактор записи: реплики с временем и подписями «Руководитель», «Дизайнер», «Разработчик»; выделенная фраза и панель «Отметить: Важно, Вопрос, Цитата, Задача, Решение»">
+          </picture>
+        </a>
+      </div>
+    </article>
+
+    <article class="vozmozhnost">
+      <div class="vozmozhnost-tekst">
+        <span class="metka">С телефона</span>
+        <h3>Записали на телефон&nbsp;— текст на&nbsp;компьютере</h3>
+        <ul class="spisok">
+          <li>Разговор записан на диктофон телефона? <b>Пересылать его через облако не нужно.</b></li>
+          <li>Навели камеру на QR-код в программе&nbsp;— телефон подключён через вашу Wi-Fi.</li>
+          <li>Дальше «Поделиться» → «На компьютер»&nbsp;— и запись уже расшифровывается. Работает с iPhone и Android.</li>
+        </ul>
+      </div>
+      <div class="snimok">
+        <a href="img/telefon.webp" target="_blank" rel="noopener">
+          <img src="img/telefon.webp" width="1170" height="1000"
+               alt="Страница на телефоне: «Как отправлять с iPhone»&nbsp;— два шага с кнопками «Добавить „На компьютер“» и «Подключить к этому компьютеру»">
+        </a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ── Цены ── -->
+<section class="razdel seryy" id="ceny">
+  <div class="obertka">
+    <h2>Цены</h2>
+    <p class="podzag">Сначала&nbsp;— <b>14&nbsp;дней бесплатно</b>, со всеми возможностями. Понравится&nbsp;— выберите срок.</p>
+
+    <div class="ceny">
+      <div class="cena">
+        <div class="srok">1 месяц</div>
+        <div class="summa">300&nbsp;₽</div>
+        <div class="v-mesyac pusto">на пробу</div>
+        <div class="razryv"></div>
+        <a class="knopka vtorichnaya" href="#kak-kupit" data-srok="month">Купить</a>
+      </div>
+      <div class="cena">
+        <div class="srok">3 месяца</div>
+        <div class="summa">500&nbsp;₽</div>
+        <div class="v-mesyac">≈&nbsp;167&nbsp;₽ в&nbsp;месяц</div>
+        <div class="razryv"></div>
+        <a class="knopka vtorichnaya" href="#kak-kupit" data-srok="month3">Купить</a>
+      </div>
+      <div class="cena">
+        <div class="srok">6 месяцев</div>
+        <div class="summa">900&nbsp;₽</div>
+        <div class="v-mesyac">150&nbsp;₽ в&nbsp;месяц</div>
+        <div class="razryv"></div>
+        <a class="knopka vtorichnaya" href="#kak-kupit" data-srok="month6">Купить</a>
+      </div>
+      <div class="cena luchshaya">
+        <span class="yarlyk">Выгоднее всего</span>
+        <div class="srok">12 месяцев</div>
+        <div class="summa">1&nbsp;500&nbsp;₽</div>
+        <div class="v-mesyac">125&nbsp;₽ в&nbsp;месяц</div>
+        <div class="razryv"></div>
+        <a class="knopka" href="#kak-kupit" data-srok="year">Купить</a>
+      </div>
+    </div>
+
+    <div class="pod-cenami">
+      <div class="kartochka">
+        <h3>Это не подписка</h3>
+        <p>Платите один раз за выбранный срок. Автоматических продлений и повторных списаний нет.</p>
+        <p>Оплата&nbsp;— банковской картой или через СБП, через сервис Robokassa. Чек приходит на почту.</p>
+      </div>
+      <div class="kartochka">
+        <h3>Срок закончился&nbsp;— записи ваши</h3>
+        <p>Все записи остаются: их можно открыть, скопировать и сохранить. Диктовать можно 10&nbsp;минут в&nbsp;день бесплатно.</p>
+        <p>Новые записи встреч и созвонов и расшифровки файлов&nbsp;— по лицензии.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Как купить ── -->
+<section class="razdel" id="kak-kupit">
+  <div class="obertka">
+    <h2>Как купить</h2>
+    <ol class="shagi">
+      <li>
+        <h3>Скачайте и попробуйте</h3>
+        <p>Поставьте программу&nbsp;— 14&nbsp;дней всё работает бесплатно, без регистрации. Убедитесь, что она вам подходит.</p>
+      </li>
+      <li>
+        <h3>Выберите срок и оплатите</h3>
+        <p>1, 3, 6 или 12 месяцев. Картой или через СБП&nbsp;— оплату принимает сервис Robokassa.</p>
+      </li>
+      <li>
+        <h3>Лицензия&nbsp;— сразу после оплаты</h3>
+        <p>Лицензия выдаётся для вашего компьютера. Срок виден в программе: «Настройки» → «Лицензия».</p>
+      </li>
+    </ol>
+    <p style="margin-top:24px;color:var(--tekst-2)">Полные условия&nbsp;— в <a href="oferta.html">публичной оферте</a>.
+      Вопрос до покупки&nbsp;— <a href="#kontakty">напишите нам</a>.</p>
+  </div>
+</section>
+
+<!-- ── Требования ── -->
+<section class="razdel seryy" id="trebovaniya">
+  <div class="obertka">
+    <h2>Что нужно компьютеру</h2>
+    <ul class="trebovaniya">
+      <li><b>Windows 10 или 11</b>64-разрядная</li>
+      <li><b>Процессор</b>примерно 2013 года или новее; видеокарта не нужна</li>
+      <li><b>Память</b>4&nbsp;ГБ свободной оперативной, 1,5&nbsp;ГБ на диске</li>
+      <li><b>Микрофон</b>встроенный в ноутбук подойдёт</li>
+    </ul>
+    <p style="margin-top:20px;color:var(--tekst-2)">При первом запуске программа один раз скачивает модель распознавания (около 1,1&nbsp;ГБ). Дальше интернет для распознавания не нужен.</p>
+  </div>
+</section>
+
+<!-- ── Вопросы ── -->
+<section class="razdel" id="voprosy">
+  <div class="obertka">
+    <h2>Вопросы</h2>
+    <div class="voprosy">
+      <details>
+        <summary>Нужен ли интернет?</summary>
+        <p>Для распознавания&nbsp;— нет. Интернет нужен один раз, чтобы скачать модель распознавания, а дальше&nbsp;— для обновлений и чтобы брать видео по ссылке.</p>
+      </details>
+      <details>
+        <summary>Уходят ли куда-то мои записи?</summary>
+        <p>Нет. Звук и текст остаются на вашем компьютере обычными файлами. Программа не отправляет их ни разработчику, ни в облако.</p>
+        <p>Бета-версия отправляет разработчику журнал работы: какие функции включали и какие были ошибки&nbsp;— без текста, звука и названий записей. Его можно выключить: «Настройки» → «Основное».</p>
+      </details>
+      <details>
+        <summary>Это подписка? Деньги будут списываться сами?</summary>
+        <p>Нет. Вы платите один раз за выбранный срок. Захотите продолжить&nbsp;— купите новый срок.</p>
+      </details>
+      <details>
+        <summary>Что будет, когда срок закончится?</summary>
+        <p>Записи никуда не денутся: их можно открыть, скопировать и сохранить. Диктовка остаётся&nbsp;— 10&nbsp;минут в&nbsp;день бесплатно. Новые записи встреч, созвонов и расшифровки файлов&nbsp;— по лицензии.</p>
+      </details>
+      <details>
+        <summary>Можно на двух компьютерах?</summary>
+        <p>Лицензия&nbsp;— для одного компьютера. Для второго нужна своя. Поменяли компьютер&nbsp;— напишите нам, перенесём.</p>
+      </details>
+      <details>
+        <summary>Есть ли версия для Mac или телефона?</summary>
+        <p>Программа работает на Windows 10 и 11. С телефона (iPhone и Android) можно отправить запись на компьютер через свою Wi-Fi&nbsp;— текст сделает компьютер.</p>
+      </details>
+      <details>
+        <summary>Хорошо ли распознаёт?</summary>
+        <p>Программа распознаёт речь моделью GigaAM, сделанной специально для русского языка. Ошибки всё же бывают, поэтому каждое слово можно послушать и исправить, а ваши термины программа запоминает. Проверьте на своих записях&nbsp;— 14&nbsp;дней бесплатно.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── Контакты и продавец ── -->
+<section class="razdel seryy" id="kontakty">
+  <div class="obertka">
+    <h2>Контакты</h2>
+    <p class="podzag">Вопрос, ошибка, пожелание или что-то с оплатой&nbsp;— напишите, ответим.</p>
+    <div class="kartochka" style="max-width:860px">
+      <dl class="rekvizity">
+        <dt>Почта</dt>
+        <dd><mark class="vpisat">адрес почты</mark></dd>
+        <dt>Telegram</dt>
+        <dd><a href="https://t.me/golosovoybloknot" target="_blank" rel="noopener">t.me/golosovoybloknot</a>&nbsp;— личные сообщения каналу</dd>
+        <dt>Продавец</dt>
+        <dd><mark class="vpisat">Фамилия Имя Отчество</mark>, самозанятый (плательщик налога на профессиональный доход)</dd>
+        <dt>ИНН</dt>
+        <dd><mark class="vpisat">ИНН продавца</mark></dd>
+        <dt>Условия</dt>
+        <dd><a href="oferta.html">Публичная оферта</a></dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="podval">
+  <div class="obertka">
+    <p>Голосовой блокнот&nbsp;— речь в текст на вашем компьютере, без облака.</p>
+    <p><a href="oferta.html">Публичная оферта</a> · <a href="#kontakty">Контакты</a></p>
+  </div>
+</footer>
+
+<script>
+/* Кнопка «Скачать»&nbsp;— на самый свежий установщик из релизов GitHub.
+   Не получилось (нет связи с GitHub)&nbsp;— остаётся ссылка, вписанная выше. */
+(function () {
+  var ua = navigator.userAgent || "";
+  if (!/Windows NT/.test(ua)) document.documentElement.className += " ne-windows";
+  if (!window.fetch) return;
+  fetch("https://api.github.com/repos/ogrebete-max/voicenotes-models/releases?per_page=20",
+        {headers: {Accept: "application/vnd.github+json"}})
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (spisok) {
+      if (!spisok || !spisok.length) return;
+      var svezhiy = null;
+      spisok.forEach(function (rel) {
+        if (rel.draft || rel.prerelease || !/^beta-\d/.test(rel.tag_name || "")) return;
+        var exe = (rel.assets || []).filter(function (a) { return /\.exe$/i.test(a.name); })[0];
+        if (!exe) return;
+        if (!svezhiy || rel.published_at > svezhiy.rel.published_at) svezhiy = {rel: rel, exe: exe};
+      });
+      if (!svezhiy) return;
+      document.querySelectorAll("[data-skachat]").forEach(function (a) {
+        a.href = svezhiy.exe.browser_download_url;
+      });
+      var nomer = (svezhiy.rel.tag_name.match(/^beta-([\d.]+)/) || [])[1];
+      var mb = Math.round(svezhiy.exe.size / 1048576);
+      document.querySelectorAll("[data-versiya]").forEach(function (s) {
+        s.textContent = (nomer ? "версия " + nomer + " · " : "") + mb + " МБ";
+      });
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
