@@ -12,10 +12,10 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2324716D'/%3E%3Crect x='12' y='6' width='8' height='13' rx='4' fill='white'/%3E%3Cpath d='M9 15a7 7 0 0 0 14 0M16 22v4' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="stil.css">
 <!--
-  ПЕРЕД ВЫКЛАДКОЙ вписать (подсвечены жёлтым, class="vpisat"; здесь и в oferta.html):
-    • ФИО продавца полностью и ИНН;
-    • адрес почты для связи;
-    • ссылку оплаты на кнопки «Купить» (data-srok), когда магазин Robokassa будет готов.
+  Осталось вписать:
+    • ссылку оплаты на кнопки «Купить» (data-srok), когда магазин Robokassa будет готов
+      (пока «Купить» ведёт к «Как купить», страница скрыта от поисковиков — tools/sayt_vylozhit.py);
+    • почту для связи, когда появится ящик (строку «Почта» вернуть в контакты и в оферту).
   Кнопка «Скачать» сама находит последний установщик на GitHub (скрипт внизу).
 -->
 </head>
@@ -363,14 +363,12 @@
     <p class="podzag">Вопрос, ошибка, пожелание или что-то с оплатой&nbsp;— напишите, ответим.</p>
     <div class="kartochka" style="max-width:860px">
       <dl class="rekvizity">
-        <dt>Почта</dt>
-        <dd><mark class="vpisat">адрес почты</mark></dd>
         <dt>Telegram</dt>
         <dd><a href="https://t.me/golosovoybloknot" target="_blank" rel="noopener">t.me/golosovoybloknot</a>&nbsp;— личные сообщения каналу</dd>
         <dt>Продавец</dt>
-        <dd><mark class="vpisat">Фамилия Имя Отчество</mark>, самозанятый (плательщик налога на профессиональный доход)</dd>
+        <dd>Меерович Сергей Валерьевич, самозанятый (плательщик налога на профессиональный доход)</dd>
         <dt>ИНН</dt>
-        <dd><mark class="vpisat">ИНН продавца</mark></dd>
+        <dd>780200260912</dd>
         <dt>Условия</dt>
         <dd><a href="oferta.html">Публичная оферта</a></dd>
       </dl>
