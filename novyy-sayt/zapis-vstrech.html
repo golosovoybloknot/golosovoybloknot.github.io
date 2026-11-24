@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ru">
+<head><meta name="robots" content="noindex, nofollow">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f9ff"><title>Запись созвонов Zoom и встреч с расшифровкой — Голосовой блокнот</title>
+  <script>
+    var sitePreference;
+    try { sitePreference = localStorage.getItem('vn-site-theme'); } catch {}
+    document.documentElement.dataset.vnTheme = ['dark','light'].includes(sitePreference)
+      ? sitePreference : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  </script>
+  <meta name="description" content="Запись созвона в MAX, Telegram, WhatsApp или Zoom без бота: ваш голос и собеседник, текст по ходу разговора, отметки задач и протокол в Word."><meta property="og:title" content="Запись созвонов Zoom и встреч с расшифровкой — Голосовой блокнот"><meta property="og:description" content="Запись созвона в MAX, Telegram, WhatsApp или Zoom без бота: ваш голос и собеседник, текст по ходу разговора, отметки задач и протокол в Word.">
+  <link rel="canonical" href="https://golosovoybloknot.ru/zapis-vstrech.html"><meta property="og:url" content="https://golosovoybloknot.ru/zapis-vstrech.html"><meta property="og:type" content="website"><meta property="og:locale" content="ru_RU"><meta property="og:site_name" content="Голосовой блокнот"><meta property="og:image" content="https://golosovoybloknot.ru/images/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" href="images/favicon-120.png" sizes="120x120"><link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css"><script defer src="site.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">К содержимому</a>
+<header class="site-head"><div class="wrap mast">
+  <a class="brand" href="./"><img src="images/znachok-64.png" width="40" height="40" alt=""><span>Голосовой блокнот<span class="sr"> — </span><small>Речь в текст, правка и разделение по голосам</small></span></a>
+  <nav aria-label="Разделы сайта"><a href="./#record">Созвоны</a><a href="./#editor">Редактор</a><a href="./#workspace">Возможности</a><a href="./#price">Цены</a><a href="./#faq">Вопросы</a></nav>
+  <details class="mobile-nav"><summary>Меню</summary><div><a href="./#record">Созвоны и заметки</a><a href="./#editor">Редактор</a><a href="./#workspace">Возможности</a><a href="./#price">Цены</a><a href="./#faq">Вопросы</a></div></details>
+  <div class="site-theme" role="group" aria-label="Тема оформления" hidden></div>
+  <a class="head-download" href="skachat/">Скачать</a></div></header>
+<main id="main"><section class="article-top"><div class="wrap"><a class="back" href="./#workspace">Все возможности</a><p class="kicker">Встречи и созвоны</p><h1>Запишите обе стороны разговора</h1><p class="lead">Сохраните разговор и вернитесь к любой реплике. На созвоне программа записывает и ваш микрофон, и голос собеседника. Начался звонок в MAX, Telegram, WhatsApp или Zoom — программа сама предложит запись. Бота в звонок звать не нужно.</p><div class="actions"><a class="primary" href="skachat/"><span class="win" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Попробовать бесплатно</a><a class="secondary" href="./#editor">Посмотреть редактор</a></div><p class="note">Все возможности бесплатно на 14 дней · Windows 10 и 11</p><div class="record">
+  <div class="record-modes" role="tablist" aria-label="Что записать">
+    <button type="button" role="tab" id="rec-tab-call" aria-controls="rec-call" aria-selected="true"><span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.6 4.4-2.2 1.4a11.5 11.5 0 0 0 5.8 5.8l1.4-2.2 4.4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2z"/></svg></span><span><b>Созвон</b><small>MAX, Telegram, WhatsApp, Zoom — через компьютер</small></span></button>
+    <button type="button" role="tab" id="rec-tab-meet" aria-controls="rec-meet" aria-selected="false" tabindex="-1"><span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8.5 21h7"/></svg></span><span><b>Встреча</b><small>Разговор рядом: собрание, лекция, телефон на громкой</small></span></button>
+    <button type="button" role="tab" id="rec-tab-note" aria-controls="rec-note" aria-selected="false" tabindex="-1"><span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3.5h9l3.5 3.5v13.5H6z"/><path d="M15 3.5V7h3.5M9 11.5h6M9 15h4"/></svg></span><span><b>Заметка</b><small>Надиктовать мысль — Ctrl + F9</small></span></button>
+  </div>
+  <div class="record-panel" role="tabpanel" id="rec-call" aria-labelledby="rec-tab-call">
+    <div class="panel-art live-demo demo-call">
+  <div class="vc">
+    <div class="vc-bar"><span class="vc-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="vc-title">Видеозвонок · <b class="vc-app">MAX</b></span><span class="vc-clock">07:03</span></div>
+    <div class="vc-stage">
+      <div class="vc-tile vc-main" data-who="Собеседник">
+        <svg class="vc-pic" viewBox="0 0 480 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="vcWall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6e1d8"/><stop offset="1" stop-color="#c7bfb2"/></linearGradient>
+            <radialGradient id="vcLight" cx=".2" cy=".15" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+          </defs>
+          <rect width="480" height="300" fill="url(#vcWall)"/>
+          <rect x="16" y="38" width="48" height="38" rx="2" fill="#f6f3ee" stroke="#a88f74" stroke-width="4"/>
+          <path d="M22 70 L36 54 L46 64 L52 58 L60 70 Z" fill="#9fb7cf"/>
+          <rect x="250" y="96" width="150" height="7" rx="2" fill="#a88f74"/>
+          <rect x="262" y="58" width="13" height="38" rx="2" fill="#5d7fa8"/>
+          <rect x="277" y="64" width="11" height="32" rx="2" fill="#c76f4f"/>
+          <rect x="290" y="54" width="15" height="42" rx="2" fill="#7f9c6b"/>
+          <rect x="307" y="68" width="10" height="28" rx="2" fill="#d9b25b"/>
+          <rect x="350" y="80" width="22" height="16" rx="3" fill="#b9805e"/>
+          <path d="M361 80 C352 66 344 62 338 60 C350 58 358 66 361 76 C362 62 368 54 378 50 C376 62 370 72 362 80 Z" fill="#5f8a5a"/>
+          <rect width="480" height="300" fill="url(#vcLight)"/>
+          <rect x="111" y="168" width="28" height="44" rx="10" fill="#d9a184"/>
+          <path d="M25 300 C29 236 75 212 125 208 C175 212 221 236 225 300 Z" fill="#35577f"/>
+          <path d="M103 210 L125 238 L147 210 Z" fill="#e9eef5"/>
+          <ellipse cx="81" cy="138" rx="8" ry="12" fill="#e2a988"/>
+          <ellipse cx="169" cy="138" rx="8" ry="12" fill="#e2a988"/>
+          <ellipse cx="125" cy="132" rx="43" ry="51" fill="#f0c2a0"/>
+          <path d="M81 130 C75 84 105 68 129 70 C161 70 179 92 171 132 C167 108 153 98 131 100 C111 101 91 108 81 130 Z" fill="#4a3427"/>
+          <path d="M103 120 Q111 115 119 119 M131 119 Q139 115 147 120" stroke="#4a3427" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <g class="vc-eyes"><ellipse cx="111" cy="133" rx="4" ry="4.6" fill="#2b2b2b"/><ellipse cx="139" cy="133" rx="4" ry="4.6" fill="#2b2b2b"/></g>
+          <path d="M125 138 Q121 150 127 152" stroke="#cf9476" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse class="vc-mouth" cx="125" cy="163" rx="10" ry="2.6" fill="#9c4a3c"/>
+        </svg>
+        <span class="vc-name"><span class="vc-eq" aria-hidden="true"><i></i><i></i><i></i></span>Собеседник</span>
+      </div>
+      <div class="vc-tile vc-self" data-who="Вы">
+        <svg class="vc-pic" viewBox="0 0 160 104" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="160" height="104" fill="#46566c"/>
+          <rect x="108" y="12" width="38" height="28" rx="2" fill="#5a6c84"/>
+          <rect x="72" y="62" width="16" height="22" rx="6" fill="#c98e6e"/>
+          <path d="M30 104 C33 82 54 72 80 70 C106 72 127 82 130 104 Z" fill="#2f8f83"/>
+          <ellipse cx="80" cy="48" rx="21" ry="25" fill="#e8b08c"/>
+          <path d="M59 46 C57 26 70 20 82 21 C96 22 104 32 101 46 C98 36 90 32 80 33 C70 33 62 37 59 46 Z" fill="#c9a26b"/>
+          <g fill="none" stroke="#24303f" stroke-width="2"><circle cx="72" cy="49" r="6"/><circle cx="88" cy="49" r="6"/><path d="M78 49 h4"/></g>
+          <g class="vc-eyes"><circle cx="72" cy="49" r="1.8" fill="#24303f"/><circle cx="88" cy="49" r="1.8" fill="#24303f"/></g>
+          <ellipse class="vc-mouth" cx="80" cy="63" rx="5" ry="1.4" fill="#93463a"/>
+        </svg>
+        <span class="vc-name"><span class="vc-eq" aria-hidden="true"><i></i><i></i><i></i></span>Вы</span>
+      </div>
+      <div class="app-mock call-ovl" role="group" aria-label="Окно «Поверх окон» Голосового блокнота">
+        <div class="ovl-title"><img src="images/znachok-64.png" width="14" height="14" alt=""><span>Заметки к записи</span><button type="button" class="ovl-x" title="Закрыть" aria-label="Закрыть крестиком — окно свернётся в маленький значок">✕</button></div>
+        <div class="ovl-head"><span class="rec">● <span class="ovl-time">07:03</span></span><span class="am-btn ovl-full">Большое окно</span><span class="am-btn">⏸ Пауза</span><span class="am-btn am-primary">Завершить</span></div>
+        <div class="ovl-size"><span class="am-muted">Размер окна:</span><span class="ovl-seg" role="group" aria-label="Размер окна"><button type="button" data-size="normal" aria-pressed="true">▢ Обычное</button><button type="button" data-size="mini" aria-pressed="false">▭ Мини</button></span></div>
+        <div class="ovl-level" aria-hidden="true"><i></i></div>
+        <div class="ovl-lines">
+          <p><b>Вы:</b> А можно отправить обе партии одной машиной?</p>
+          <p><b>Собеседник:</b> Можно, но отгрузка сдвинется на вторник.</p>
+          <p><b>Вы:</b> Нас устраивает. <mark class="m-task">Пришлите обновлённый счёт.</mark></p>
+          <p><b>Собеседник:</b> Хорошо, счёт будет сегодня до вечера.</p>
+        </div>
+      </div>
+      <div class="ovl-pill" hidden><span class="pill-dot" aria-hidden="true">●</span><span>Запись <span class="pill-time">07:03</span></span><button type="button" class="pill-name">Назвать</button><button type="button" class="pill-open">Открыть</button></div>
+      <div class="ovl-tip" role="status" hidden></div>
+      <span class="demo-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 2l14 9-6.5 1.5L15 20l-3 1.5-3.5-7.5L4 18z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="vc-tools" aria-hidden="true">
+      <span class="vc-btn"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+      <span class="vc-btn"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="12" height="10" rx="2"/><path d="M15 11l6-3v8l-6-3z"/></svg></span>
+      <span class="vc-btn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
+      <span class="vc-btn vc-end"><svg viewBox="0 0 24 24"><path d="M2.5 13.5c5.2-4.7 13.8-4.7 19 0l-2.6 2.8-3.4-1.6v-2.6c-2.2-.7-4.8-.7-7 0v2.6l-3.4 1.6z"/></svg></span>
+    </div>
+  </div>
+  <div class="demo-controls"><span class="am-muted">Звонок в:</span><div class="demo-seg vc-apps" role="group" aria-label="Где идёт звонок"><button type="button" aria-pressed="true" data-app="MAX">MAX</button><button type="button" aria-pressed="false" data-app="Telegram">Telegram</button><button type="button" aria-pressed="false" data-app="WhatsApp">WhatsApp</button><button type="button" aria-pressed="false" data-app="Zoom">Zoom</button></div></div>
+  <p class="demo-cap">Наше окно «Поверх окон» над любым звонком: текст появляется через 10–30 секунд после слов, зелёным — отметка «Задача». Нажмите ✕ — окно свернётся в маленький значок со временем записи, «Открыть» вернёт его.</p>
+</div>
+
+    <div class="record-copy"><h3>Звонок — с обеих сторон, без бота</h3><ul>
+      <li>Пишет ваш микрофон и голос собеседника. В звонок никто не подключается.</li>
+      <li>Начался звонок — программа сама предложит записать.</li>
+      <li>После звонка: текст по участникам, отметки и протокол в Word.</li>
+    </ul><a class="detail-link" href="zapis-vstrech.html">Как записать созвон</a></div>
+  </div>
+  <div class="record-panel" role="tabpanel" id="rec-meet" aria-labelledby="rec-tab-meet" hidden>
+    <div class="panel-art live-demo demo-call demo-meet" data-start="760" data-lines='[["Дизайнер", "", "Мобильную корзину сдам в среду.", "m-task"], ["Разработчик", "Ключи запрошу ещё раз сегодня. ", "Успеем ли проверить оплату до запуска?", "m-q"], ["Руководитель", "Успеем, если ключи придут до пятницы.", ""], ["Дизайнер", "Тогда в пятницу и сверимся.", ""]]'>
+  <div class="vc vc-meet">
+    <div class="vc-bar"><span class="vc-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="vc-title">Презентация · <b>План запуска</b></span></div>
+    <div class="vc-stage">
+      <div class="slide" aria-hidden="true">
+        <p class="slide-kicker">Планёрка · слайд 4 из 9</p>
+        <p class="slide-title">Запуск сайта</p>
+        <ul><li><i class="ok"></i>Макеты страниц — готовы</li><li><i class="wip"></i>Корзина для телефона — в работе</li><li><i class="wait"></i>Оплата — ждём тестовые ключи</li></ul>
+        <div class="slide-chart"><i style="height:38%"></i><i style="height:58%"></i><i style="height:47%"></i><i style="height:80%"></i><i style="height:66%"></i></div>
+      </div>
+      <span class="room-chip"><span class="vc-eq" aria-hidden="true"><i></i><i></i><i></i></span>Микрофон ноутбука слышит всех в комнате</span>
+      <div class="app-mock call-ovl" role="group" aria-label="Окно «Поверх окон» Голосового блокнота">
+        <div class="ovl-title"><img src="images/znachok-64.png" width="14" height="14" alt=""><span>Заметки к записи</span><button type="button" class="ovl-x" title="Закрыть" aria-label="Закрыть крестиком — окно свернётся в маленький значок">✕</button></div>
+        <div class="ovl-head"><span class="rec">● <span class="ovl-time">12:40</span></span><span class="am-btn ovl-full">Большое окно</span><span class="am-btn">⏸ Пауза</span><span class="am-btn am-primary">Завершить</span></div>
+        <div class="ovl-size"><span class="am-muted">Размер окна:</span><span class="ovl-seg" role="group" aria-label="Размер окна"><button type="button" data-size="normal" aria-pressed="true">▢ Обычное</button><button type="button" data-size="mini" aria-pressed="false">▭ Мини</button></span></div>
+        <div class="ovl-level" aria-hidden="true"><i></i></div>
+        <div class="ovl-lines">
+          <p><b>Руководитель:</b> Коллеги, доброе утро. Решаем, успеваем ли запустить сайт к концу месяца.</p>
+          <p><b>Дизайнер:</b> Макеты всех страниц готовы, осталась корзина для телефона.</p>
+          <p><b>Разработчик:</b> Узкое место — оплата: банк ещё не прислал тестовые ключи.</p>
+          <p><b>Руководитель:</b> <mark class="m-dec">Оплату тестируем в последнюю очередь.</mark></p>
+        </div>
+      </div>
+      <div class="ovl-pill" hidden><span class="pill-dot" aria-hidden="true">●</span><span>Запись <span class="pill-time">12:40</span></span><button type="button" class="pill-name">Назвать</button><button type="button" class="pill-open">Открыть</button></div>
+      <div class="ovl-tip" role="status" hidden></div>
+      <span class="demo-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 2l14 9-6.5 1.5L15 20l-3 1.5-3.5-7.5L4 18z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="vc-tools slide-tools" aria-hidden="true"><span class="vc-btn"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span><span class="slide-num">4 / 9</span><span class="vc-btn"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></div>
+  </div>
+  <p class="demo-cap">Встреча в комнате, на экране — презентация. Окно «Поверх окон» показывает текст по ходу разговора; цветом — «Решение», «Задача», «Вопрос». Нажмите ✕ — окно станет маленьким значком со временем записи.</p>
+</div>
+
+    <div class="record-copy"><h3>Встреча в комнате — текст по ходу</h3><ul>
+      <li>Ноутбук на столе слышит всех, кто рядом: собрание, лекция, переговоры.</li>
+      <li>Выделите фразу в окне «Поверх окон» и отметьте цветом: решение, задача, вопрос.</li>
+      <li>После встречи — разделение по голосам и документ из отметок.</li>
+    </ul><a class="detail-link" href="zapis-vstrech.html">Как записать встречу</a></div>
+  </div>
+  <div class="record-panel" role="tabpanel" id="rec-note" aria-labelledby="rec-tab-note" hidden>
+    <div class="panel-art live-demo demo-note">
+  <div class="vc vc-note">
+    <div class="vc-bar"><span class="vc-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="vc-title">Голосовой блокнот · <b>Голосовая заметка</b></span></div>
+    <div class="vc-stage note-stage">
+      <div class="app-mock note-win">
+        <div class="note-head"><span class="rec note-rec">● Идёт заметка</span><span class="note-time">00:00</span><button type="button" class="am-btn note-stop">Стоп · <kbd>Ctrl</kbd>+<kbd>F9</kbd></button></div>
+        <div class="ovl-level" aria-hidden="true"><i></i></div>
+        <div class="note-body">
+          <p class="note-name">Заметка, 24 ноября</p>
+          <p class="sr note-full">Не забыть: в пятницу отправить отчёт клиенту. Позвонить в сервис насчёт ремонта — спросить сроки и цену. Идея для рассылки: рассказать, как расшифровывать встречи без интернета, и приложить пример протокола.</p>
+          <p class="note-text" aria-hidden="true"></p>
+        </div>
+        <p class="note-foot">Текст идёт только в заметку — не в открытые окна.</p>
+      </div>
+    </div>
+  </div>
+  <div class="demo-controls"><button type="button" class="am-btn note-replay">↻ Повторить</button><span class="am-muted"><kbd>Ctrl</kbd> + <kbd>F9</kbd> — начать и закончить заметку, руки свободны</span></div>
+  <p class="demo-cap">Голосовая заметка: говорите сколько нужно — программа пишет текст в заметку. Ещё раз Ctrl + F9 — стоп, забытую заметку остановит тишина. Заметка сохраняется в «Записях» вместе со звуком.</p>
+</div>
+
+    <div class="record-copy"><h3>Мысль — голосом, руки свободны</h3><ul>
+      <li>Нажмите Ctrl + F9 и говорите. Ещё раз Ctrl + F9 — стоп.</li>
+      <li>Текст идёт в заметку, а не в открытое окно — ничего не вставится случайно.</li>
+      <li>Заметка со звуком — в «Записях»: переслушать, поправить, скопировать.</li>
+    </ul><a class="detail-link" href="golosovye-zametki.html">Как надиктовать заметку</a></div>
+  </div>
+</div>
+</div></section>
+<section class="wrap section article-body"><div><h2>Как записать созвон и получить текст</h2><div class="step"><h3>Выберите источник</h3><p>Для разговора в комнате выберите «Записать встречу». Для видеозвонка — «Записать созвон», чтобы записать и ваш голос, и собеседника.</p></div><div class="step"><h3>Отмечайте главное по ходу</h3><p>Текст появляется во время разговора, через 10–30 секунд. Отмечайте решения, вопросы и задачи. Окно «Поверх окон» можно держать над звонком в размере «Обычное» или «Мини».</p></div><div class="step"><h3>Соберите итоги</h3><p>Откройте запись, проверьте имена и реплики. Соберите документ целиком или включите в него только отмеченные фрагменты.</p></div></div><figure><a class="zoom" href="images/okno-poverh.webp"><img src="images/okno-poverh.webp" alt="Окно записи созвона с репликами собеседников"></a><figcaption>Окно записи созвона с репликами собеседников</figcaption></figure></section>
+<section class="wrap section related"><h2>Что ещё умеет программа</h2><div class="related-links"><a href="golosovye-zametki.html"><strong>Голосовые заметки</strong><span>Наговорите мысль — она станет заметкой</span></a><a href="video-po-ssylke.html"><strong>YouTube, VK Видео и Rutube</strong><span>Возьмите текст из лекции по ссылке</span></a><a href="zapis-s-telefona.html"><strong>С телефона</strong><span>Записали на телефон — расшифруйте на компьютере</span></a></div></section>
+</main>
+<footer><div class="wrap foot foot-cols">
+  <div class="foot-brand"><img src="images/znachok-64.png" width="32" height="32" alt=""><strong>Голосовой блокнот</strong></div>
+  <nav class="foot-links" aria-label="Возможности"><a href="golosovoy-vvod.html">Диктовка</a><a href="audio-v-tekst.html">Аудио и видео</a><a href="zapis-vstrech.html">Встречи и созвоны</a><a href="golosovye-zametki.html">Голосовые заметки</a><a href="video-po-ssylke.html">YouTube, VK Видео и Rutube</a><a href="zapis-s-telefona.html">С телефона</a><a href="redaktor-zapisi.html">Редактор</a></nav>
+  <div class="foot-contact"><a href="https://t.me/golosovoybloknot">Telegram — новости и вопросы</a><a href="mailto:golosovoybloknot@yandex.ru">golosovoybloknot@yandex.ru</a></div>
+</div>
+<p class="wrap legal">Продавец: Меерович Сергей Валерьевич, самозанятый, ИНН 780200260912 · <a href="oferta.html">Публичная оферта</a></p></footer>
+</body></html>
