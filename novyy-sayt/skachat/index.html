@@ -89,15 +89,26 @@
         <p>В Chrome нажмите значок загрузок <svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> вверху справа и выберите <b>GolosovoyBloknot_Setup.exe</b>.</p>
         <!-- Снимки Chrome владельца 24.11: «Скачивание непроверенного файла заблокировано» → окно с кнопкой
              «Скачать непроверенный файл». В других случаях Chrome пишет «обычно не скачивают» → «Все равно скачать». -->
-        <p class="note">Если Chrome пишет, что скачивание заблокировано, как на снимке: нажмите на строку с файлом → <b>«Скачать непроверенный файл»</b> (не «Удалить из истории»). В других случаях кнопка называется <b>«Все равно скачать»</b>.</p>
+        <p class="note">Если Chrome пишет, что скачивание заблокировано, как на снимке: нажмите на строку с файлом → <b>«Скачать непроверенный файл»</b> (не «Удалить из истории»). В других случаях кнопка называется <b>«Все равно скачать»</b>. Так Chrome блокирует любую программу, если в нём выключен «Безопасный просмотр», — даже Opera с официального сайта.</p>
         <span class="shot" style="width:360px"><img src="../images/ustanovka-chrome-1.webp" width="477" height="127" alt="Chrome: скачивание непроверенного файла заблокировано"><span class="ring" style="left:89.9%;top:28.3%;width:36px;height:36px"></span><span class="pin" style="left:79.5%;top:28.3%">1</span></span>
         <span class="shot" style="width:360px"><img src="../images/ustanovka-chrome-2.webp" width="669" height="335" alt="Окно Chrome: кнопка «Скачать непроверенный файл»"><span class="ring" style="left:69.7%;top:81.2%;width:51%;height:19%"></span><span class="pin" style="left:69.7%;top:62%">2</span></span>
+      </div>
+      <!-- Firefox и Opera — по проходу владельца 24.11: Firefox скачал без вопросов; Opera спросила, куда сохранить. -->
+      <div class="br" data-br="firefox">
+        <p>В Firefox нажмите значок загрузок <svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> вверху справа и выберите <b>GolosovoyBloknot_Setup.exe</b>.</p>
+        <span class="shot" style="width:215px"><img src="../images/ustanovka-firefox.webp" width="215" height="54" alt="Правый верхний угол Firefox, значок загрузок"><span class="ring" style="left:12.1%;top:48%;width:40px;height:40px"></span></span>
+      </div>
+      <div class="br" data-br="opera">
+        <p>Opera спросит, куда сохранить файл, — нажмите <b>«Сохранить»</b>.</p>
+        <span class="shot" style="width:420px"><img src="../images/ustanovka-opera-2.webp" width="935" height="274" alt="Окно Opera «Сохранение», кнопка «Сохранить»"><span class="ring" style="left:73.7%;top:87.2%;width:18%;height:17%"></span></span>
+        <p>Потом нажмите значок загрузок <svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> вверху справа и выберите <b>GolosovoyBloknot_Setup.exe</b>.</p>
+        <span class="shot" style="width:358px"><img src="../images/ustanovka-opera.webp" width="358" height="54" alt="Правый верхний угол Opera, значок загрузок"><span class="ring" style="left:68.7%;top:48%;width:40px;height:40px"></span></span>
       </div>
       <div class="br" data-br="other">
         <p>Откройте загрузки браузера — значок <svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> вверху справа или <span class="key">Ctrl</span> + <span class="key">J</span> — и выберите <b>GolosovoyBloknot_Setup.exe</b>.</p>
         <p class="note">Если браузер переспросит про файл — выберите «Сохранить» или «Все равно скачать».</p>
       </div>
-      <p class="other-br">Не ваш браузер? <button type="button" data-br="yandex">Яндекс</button> · <button type="button" data-br="edge">Edge</button> · <button type="button" data-br="chrome">Chrome</button> · <button type="button" data-br="other">другой</button></p>
+      <p class="other-br">Не ваш браузер? <button type="button" data-br="yandex">Яндекс</button> · <button type="button" data-br="edge">Edge</button> · <button type="button" data-br="chrome">Chrome</button> · <button type="button" data-br="firefox">Firefox</button> · <button type="button" data-br="opera">Opera</button> · <button type="button" data-br="other">другой</button></p>
     </div></li>
 
     <li class="st"><span class="num">2</span><div>
@@ -138,9 +149,10 @@
     // Браузер — сам: сначала по «маркам» (userAgentData), потом по строке браузера. Яндекс и Edge — раньше Chrome:
     // слово «Chrome» есть у всех браузеров на его основе.
     var brands = (navigator.userAgentData && navigator.userAgentData.brands || []).map(function (b) { return b.brand; }).join(" ");
-    var mine = /Yandex/i.test(brands) || /YaBrowser/.test(ua) ? "yandex"
+    var mine = /Yandex|YaBrowser/i.test(brands) || /YaBrowser/.test(ua) ? "yandex"
       : /Edge/.test(brands) || /Edg\//.test(ua) ? "edge"
-      : /OPR\/|Firefox\//.test(ua) ? "other"
+      : /Opera/.test(brands) || /OPR\//.test(ua) ? "opera"
+      : /Firefox\//.test(ua) ? "firefox"
       : /Google Chrome/.test(brands) || /Chrome\//.test(ua) ? "chrome" : "other";
     var blocks = document.querySelectorAll(".br"), btns = document.querySelectorAll(".other-br button");
     function pick(br) {
@@ -149,7 +161,13 @@
     }
     for (var k = 0; k < btns.length; k++) btns[k].addEventListener("click", function () { pick(this.getAttribute("data-br")); });
     pick(mine);
-    if (/Windows NT/.test(ua)) { location.replace(file); return; }
+    if (/Windows NT/.test(ua)) {
+      // Скачивание — после того, как страница догрузилась: Firefox обрывает загрузку картинок, если скачивание
+      // начать сразу (снимок владельца 24.11 — вместо снимков окна Windows одни подписи).
+      var go = function () { setTimeout(function () { location.replace(file); }, 300); };
+      if (document.readyState === "complete") go(); else window.addEventListener("load", go);
+      return;
+    }
     root.className += " ne-win";
     document.querySelector(".phone-h").hidden = false;
     document.querySelector(".phone-only").hidden = false;
