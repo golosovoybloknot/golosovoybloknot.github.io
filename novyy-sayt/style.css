@@ -748,3 +748,28 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 @media(prefers-reduced-motion:reduce) {
   .no-cloud.in-view .nc-path, .no-cloud.in-view .nc-cross, .no-cloud.in-view .nc-cloud path, .no-cloud.in-view .nc-text { animation:none }
 }
+
+/* ── Сценки звонка: MAX, Telegram, WhatsApp, Zoom (владелец 24.11: «разных героев, разные сценки»). ── */
+.vc-scenes { position:absolute; inset:8px }
+.vc-scene { position:absolute; inset:0; opacity:0; visibility:hidden; transition:opacity .6s ease, visibility 0s .6s }
+.vc-scene.on { opacity:1; visibility:visible; transition:opacity .6s ease }
+.vc-scene .vc-main { inset:0 }
+.vc-scene .vc-self { top:8px; right:8px }
+.vc-grid { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:6px }
+.vc-grid .vc-tile { position:relative; inset:auto; width:auto; height:auto; min-height:0 }
+.vc-grid .vc-name { left:6px; top:6px; bottom:auto; font-size:11px; padding:2px 7px }
+/* Свой цвет у каждой программы — только цвет и название, без чужих логотипов. */
+.vc { --vc-accent:#7b61ff }
+.vc[data-app=Telegram] { --vc-accent:#2aa3df }
+.vc[data-app=WhatsApp] { --vc-accent:#25a35a }
+.vc[data-app=Zoom] { --vc-accent:#2d8cff }
+.vc-bar { border-bottom:2px solid var(--vc-accent); transition:border-color .5s }
+.vc-app { padding:1px 9px; border-radius:999px; background:var(--vc-accent); color:#fff; transition:background .5s }
+.vc-apps button { transition:background .3s, color .3s }
+@media(max-width:560px) {
+  .vc-scenes { position:relative; inset:auto; height:210px }
+  .vc-scene .vc-main { position:absolute; inset:0; height:auto }
+  .vc-scene .vc-self { width:96px; height:64px }
+  .vc-grid .vc-name { font-size:10px }
+}
+@media(prefers-reduced-motion:reduce) { .vc-scene, .vc-scene.on { transition:none } }

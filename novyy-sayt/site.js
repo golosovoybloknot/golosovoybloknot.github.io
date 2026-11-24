@@ -316,17 +316,21 @@ function setupCallDemo(demo) {
   // Видеозвонок с нашим окном поверх (владелец 24.11: «изображение собеседника как в Zoom… MAX,
   // Telegram»; «закрываешь крестиком — остаётся маленькое окошко»). Крестик сворачивает окно
   // в значок «● Запись 07:12 · Назвать · Открыть», как ZnachokZapisi в программе.
+  // Сценки (владелец 24.11: «нажимаешь — ничего не меняется… разных героев, разные сценки… и разные
+  // варианты окошек»): у MAX, Telegram, WhatsApp и Zoom свои герои, фон и разговор; сами сменяют друг
+  // друга, курсор по ходу показывает «Мини», крестик и «Открыть». Любое нажатие человека — показ стоп.
   const vc = demo.querySelector('.vc'), stage = demo.querySelector('.vc-stage');
   const ovl = demo.querySelector('.call-ovl'), box = demo.querySelector('.ovl-lines');
   const close = demo.querySelector('.ovl-x'), pill = demo.querySelector('.ovl-pill');
   const open = pill.querySelector('.pill-open'), tip = demo.querySelector('.ovl-tip');
   const cursor = demo.querySelector('.demo-cursor');
-  const tiles = Array.from(demo.querySelectorAll('.vc-tile'));
+  const scenes = Array.from(demo.querySelectorAll('.vc-scene'));
   const sizes = Array.from(demo.querySelectorAll('[data-size]'));
-  const apps = Array.from(demo.querySelectorAll('[data-app]'));
+  const apps = Array.from(demo.querySelectorAll('button[data-app]'));
   const appName = demo.querySelector('.vc-app');
   const clocks = Array.from(demo.querySelectorAll('.vc-clock, .ovl-time, .pill-time'));
-  let auto = !reducedMotion.matches, shown = false, tipTimer = 0;
+  let tiles = Array.from(demo.querySelectorAll('.vc-tile'));
+  let auto = !reducedMotion.matches, shown = false, tipTimer = 0, scene = 0, sceneTick = 0;
 
   function showTip(text, ms) {
     tip.textContent = text; tip.hidden = false;
@@ -343,49 +347,31 @@ function setupCallDemo(demo) {
     ovl.classList.remove('closed'); ovl.inert = false;
     pill.hidden = true; tip.hidden = true;
   }
+  function setSize(mini) {
+    sizes.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.size === 'mini') === mini)));
+    ovl.classList.toggle('mini', mini);
+    for (const p of box.children) p.classList.remove('cut');
+    setTimeout(fit, 400);
+  }
   function byUser() { auto = false; cursor.classList.remove('on'); }
   close.addEventListener('click', () => { byUser(); collapse(); open.focus({ preventScroll: true }); });
   open.addEventListener('click', () => { byUser(); restore(); close.focus({ preventScroll: true }); });
   pill.querySelector('.pill-name').addEventListener('click', () => {
     byUser(); showTip('«Назвать» — дать записи название, не открывая окна. Оно будет видно в «Записях».', 4000);
   });
-  for (const button of sizes) {
-    button.addEventListener('click', () => {
-      byUser();
-      sizes.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-      ovl.classList.toggle('mini', button.dataset.size === 'mini');
-      for (const p of box.children) p.classList.remove('cut');
-      setTimeout(fit, 400);
-    });
-  }
-  for (const button of apps) {
-    button.addEventListener('click', () => {
-      apps.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-      appName.textContent = button.dataset.app;
-    });
-  }
+  for (const button of sizes) button.addEventListener('click', () => { byUser(); setSize(button.dataset.size === 'mini'); });
 
   // Часы записи идут, пока пример на экране.
   let seconds = Number(demo.dataset.start) || 7 * 60 + 3, clockTimer = null;
-  function tickClock() {
-    seconds++;
+  function showClock() {
     const text = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
     clocks.forEach(c => { c.textContent = text; });
   }
+  function tickClock() { seconds++; showClock(); }
 
-  // Один круг из четырёх реплик: человек говорит — через миг строка появляется в окне.
-  // Бесконечная бегущая строка мешает читать и экранным дикторам (замечание дизайнера 24.11).
-  // Реплики встречи — в data-lines (тот же показ окна над презентацией).
-  const more = JSON.parse(demo.dataset.lines || 'null') || [
-    ['Вы', 'Тогда давайте зафиксируем: отгрузка во вторник, счёт сегодня.', ''],
-    ['Собеседник', 'Да, и ', 'реквизиты пришлю отдельным письмом.'],
-    ['Вы', 'Отлично. Созвонимся в пятницу, подтвердим доставку.', ''],
-    ['Собеседник', 'Договорились, до пятницы.', '']
-  ];
-  let next = 0, lineTimer = null;
   function speak(who) { tiles.forEach(t => t.classList.toggle('speaking', t.dataset.who === who)); }
-  function addLine([who, text, task, color]) {
-    const p = document.createElement('p'); p.className = 'fresh';
+  function addLine([who, text, task, color], quiet) {
+    const p = document.createElement('p'); if (!quiet) p.className = 'fresh';
     const b = document.createElement('b'); b.textContent = who + ':';
     p.append(b, ' ', text);
     if (task) {
@@ -403,43 +389,88 @@ function setupCallDemo(demo) {
     for (const p of box.children) p.classList.toggle('cut', p.getBoundingClientRect().top < top - 1);
   }
   box.addEventListener('transitionend', fit);
-  // Разговор идёт по кругу, пока пример на экране (владелец 24.11: «то выключаются, то болтают…
-  // лучше бы всегда болтали»): первые четыре реплики из окна + продолжение, и снова сначала.
-  const script = Array.from(box.children, p => {
-    const b = p.querySelector('b'), mark = p.querySelector('mark');
-    let text = '';
-    for (const node of p.childNodes) if (node.nodeType === 3) text += node.textContent;
-    return [b ? b.textContent.replace(/:\s*$/, '') : '', text.replace(/^\s+/, ''),
-            mark ? mark.textContent : '', mark ? mark.className : ''];
-  }).concat(more);
-  next = box.children.length;
+
+  // Разговор идёт по кругу, пока пример на экране (владелец 24.11: «лучше бы всегда болтали»).
+  // Без сценок (встреча) — первые реплики из окна + продолжение из data-lines.
+  let script = [], next = 0, lineTimer = null;
+  function setScene(i) {
+    scene = i; sceneTick = 0;
+    const s = scenes[i];
+    scenes.forEach(x => x.classList.toggle('on', x === s));
+    tiles = Array.from(s.querySelectorAll('.vc-tile'));
+    vc.dataset.app = s.dataset.app; appName.textContent = s.dataset.app;
+    apps.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.app === s.dataset.app)));
+    seconds = Number(s.dataset.start) || seconds; showClock();
+    script = JSON.parse(s.dataset.lines);
+    box.textContent = '';
+    script.slice(0, 3).forEach(line => addLine(line, true));
+    next = 3; speak('');
+  }
+  if (scenes.length) {
+    setScene(0);
+    for (const button of apps) {
+      button.addEventListener('click', () => {
+        byUser(); restore(); setSize(false);
+        setScene(scenes.findIndex(s => s.dataset.app === button.dataset.app));
+      });
+    }
+  } else {
+    const more = JSON.parse(demo.dataset.lines || '[]');
+    script = Array.from(box.children, p => {
+      const b = p.querySelector('b'), mark = p.querySelector('mark');
+      let text = '';
+      for (const node of p.childNodes) if (node.nodeType === 3) text += node.textContent;
+      return [b ? b.textContent.replace(/:\s*$/, '') : '', text.replace(/^\s+/, ''),
+              mark ? mark.textContent : '', mark ? mark.className : ''];
+    }).concat(more);
+    next = box.children.length;
+  }
   function tickLine() {
-    const line = script[next % script.length];
+    const line = script[next % script.length], at = scene;
     next++;
     speak(line[0]);
-    setTimeout(() => addLine(line), 1300);
-    if (next === script.length) setTimeout(showCursor, 1800);
+    setTimeout(() => { if (at === scene) addLine(line); }, 1300);
+    if (scenes.length) story(++sceneTick);
+    else if (next === script.length) setTimeout(showCursor, 1800);
   }
 
-  // Один раз сам показывает: курсор нажимает крестик, окно становится значком, «Открыть» — назад.
+  // Курсор: показывает, что можно сделать с окном.
   const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
   function point(el, dx, dy) {
     const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect();
     return 'translate(' + Math.round(r.left - s.left + (dx ?? r.width / 2)) + 'px,' + Math.round(r.top - s.top + (dy ?? r.height / 2)) + 'px)';
   }
   function click() { cursor.classList.remove('click'); void cursor.offsetWidth; cursor.classList.add('click'); }
+  async function act(el, fn) {
+    if (!cursor.classList.contains('on')) {
+      cursor.style.transition = 'none'; cursor.style.transform = point(ovl, ovl.offsetWidth / 2, 30);
+      void cursor.offsetWidth; cursor.style.transition = '';
+      cursor.classList.add('on');
+      await wait(300); if (!auto) return;
+    }
+    cursor.style.transform = point(el); await wait(1100); if (!auto) return;
+    click(); fn(); await wait(900);
+    if (auto) cursor.classList.remove('on');
+  }
+  // Сценарий одной сценки (по номеру реплики): Telegram — «Мини» и обратно, WhatsApp — крестик
+  // и «Открыть»; после пятой реплики — следующая сценка.
+  function story(t) {
+    if (!auto) return;
+    const app = scenes[scene].dataset.app;
+    const mini = sizes.find(b => b.dataset.size === 'mini'), normal = sizes.find(b => b.dataset.size === 'normal');
+    if (app === 'Telegram' && t === 1) act(mini, () => setSize(true));
+    if (app === 'Telegram' && t === 4) act(normal, () => setSize(false));
+    if (app === 'WhatsApp' && t === 1) act(close, collapse);
+    if (app === 'WhatsApp' && t === 3) act(open, restore);
+    if (t === 5) setTimeout(() => { if (auto) setScene((scene + 1) % scenes.length); }, 2200);
+  }
+  // Встреча (без сценок): один раз крестик → значок → «Открыть».
   async function showCursor() {
     if (!auto || shown) return;
     shown = true;
-    cursor.style.transition = 'none'; cursor.style.transform = point(box, 60, 40);
-    void cursor.offsetWidth; cursor.style.transition = '';
-    cursor.classList.add('on');
-    await wait(500); if (!auto) return;
-    cursor.style.transform = point(close); await wait(1100); if (!auto) return;
-    click(); collapse(); await wait(3400); if (!auto) return;
-    cursor.style.transform = point(open); await wait(1100); if (!auto) return;
-    click(); restore(); await wait(800);
-    cursor.classList.remove('on');
+    await act(close, collapse); if (!auto) return;
+    await wait(2400); if (!auto) return;
+    await act(open, restore);
   }
 
   function start() {
@@ -449,12 +480,12 @@ function setupCallDemo(demo) {
       vc.classList.add('live'); lineTimer = setInterval(tickLine, 2600);
     }
   }
-  demo.addEventListener('vn:show', () => start());
-  demo.addEventListener('vn:hide', () => stop());
   function stop() {
     clearInterval(clockTimer); clockTimer = null;
     clearInterval(lineTimer); lineTimer = null; vc.classList.remove('live'); speak('');
   }
+  demo.addEventListener('vn:show', () => start());
+  demo.addEventListener('vn:hide', () => stop());
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => (entries.some(e => e.isIntersecting) ? start() : stop()),
                              { threshold: 0.3 }).observe(demo);
