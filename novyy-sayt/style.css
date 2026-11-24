@@ -818,3 +818,58 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 @media(prefers-reduced-motion:reduce) { .slide.turn > * { animation:none } .slide-chart i { transition:none } }
 /* Значок в заголовках карточки и окна — слева (общее правило картинок панели ставило его по центру). */
 .cc-head img, .ovl-title img { margin:0; flex:none }
+
+/* ── Заметка с клавишами и курсором, живая волна, расшифровка по ссылке; пауза украшений вне экрана (24.11). ── */
+.vc.idle *, .vc.idle *::before, .vc.idle *::after, .no-cloud.paused * { animation-play-state:paused !important }
+/* Заметка: клавиши Ctrl + F9 на экране, кнопки — как в программе. */
+.note-keys { position:absolute; top:14px; left:50%; z-index:3; display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:#16202ee6; color:#fff; font-size:12.5px; white-space:nowrap; opacity:0; pointer-events:none; transform:translateX(-50%) }
+.note-keys kbd { padding:3px 8px; border-radius:6px; background:#fff; color:#1d2633; box-shadow:0 3px 0 #9aa6b8; font:600 12px "Segoe UI", Inter, Arial, sans-serif }
+.note-keys span { color:#c9d4e6 }
+.note-keys.press { animation:keys-show 2.4s ease forwards }
+.note-keys.press kbd { animation:key-down .5s .35s ease 1 }
+@keyframes keys-show { 0% { opacity:0; transform:translate(-50%,-6px) } 12%, 80% { opacity:1; transform:translate(-50%,0) } 100% { opacity:0; transform:translate(-50%,0) } }
+@keyframes key-down { 50% { transform:translateY(3px); box-shadow:0 0 0 #9aa6b8; background:#dbe7ff } }
+.note-head { flex-wrap:wrap }
+.note-stop { white-space:nowrap }
+.note-hint { margin:8px 0 0; color:var(--am-sub); font-size:13.5px; line-height:1.5 }
+.note-hint[hidden] { display:none }
+.vc-note .note-rec { color:var(--am-fg) }
+.vc-note.live .note-rec { color:#d23b3b }
+[data-vn-theme=dark] .vc-note.live .note-rec { color:#ff8f86 }
+.vc-note.saved .note-rec { color:#2f8f62 }
+
+/* Живая волна на вкладке «Диктовка». */
+.demo-wave { margin:0 }
+.wave-stage { display:grid; place-items:center; gap:16px; padding:36px 20px 26px; border:1px solid #dae0e7; border-radius:12px; background:radial-gradient(ellipse at 50% 45%, #ffffff 0%, #eef1f6 72%) }
+[data-vn-theme=dark] .wave-stage { border-color:var(--line); background:radial-gradient(ellipse at 50% 45%, #22304a 0%, #131d2b 72%) }
+.wave-big { display:block; width:min(100%, 560px); aspect-ratio:438/44; background:url(images/volna-siyanie.webp) center 0 / 100% auto no-repeat }
+.wave-keys { display:flex; align-items:center; gap:6px; color:var(--sub); font-size:.85rem }
+.wave-keys kbd { padding:3px 9px; border:1px solid var(--line); border-radius:6px; background:var(--paper); color:var(--ink); box-shadow:0 3px 0 var(--line); font:600 .8rem "Segoe UI", Inter, Arial, sans-serif; transition:transform .15s, box-shadow .15s, background .15s }
+.wave-keys.down kbd { transform:translateY(3px); box-shadow:0 0 0 var(--line); background:color-mix(in srgb, var(--blue) 16%, var(--paper)) }
+.demo-wave figcaption { margin-top:8px; font-size:.92rem; color:var(--sub) }
+.wave-state { color:var(--ink) }
+
+/* Расшифровка по ссылке — крупное живое окно, как раздел «Расшифровка» в программе. */
+.link-mock { position:relative; padding:14px 16px 12px; font-size:13px }
+.link-top { display:flex; align-items:center; gap:12px; margin-bottom:8px }
+.link-top b { font-size:1.15rem; margin-right:auto }
+.link-tag { padding:5px 10px; border-radius:7px; background:#2f3e5c; color:#fff; font-size:12px; font-weight:600 }
+.link-row { display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; margin:6px 0 }
+.link-select { padding:4px 10px; border:1px solid var(--am-line); border-radius:6px; background:var(--am-bg) }
+.link-check { display:inline-grid; place-items:center; width:16px; height:16px; margin-left:6px; border:1.5px solid #8a96a8; border-radius:4px; color:#fff; font-size:11px; line-height:1 }
+.link-check.on { border-color:#2f3e5c; background:#2f3e5c }
+.link-label { display:block; margin:10px 0 6px }
+.link-input-row { display:flex; gap:8px; align-items:center }
+.link-input { flex:1; min-width:0; display:flex; align-items:center; height:34px; padding:0 10px; border:1px solid var(--am-line); border-radius:7px; background:var(--am-bg); overflow:hidden; white-space:nowrap }
+.link-input.focus { border-color:#2859c7; box-shadow:0 0 0 3px #2859c733 }
+.link-input.focus .link-url::after { content:""; display:inline-block; width:1.5px; height:1.1em; margin-left:1px; vertical-align:-.2em; background:#2859c7; animation:rec-blink 1s steps(1) infinite }
+.link-ph { color:var(--am-sub) }
+.link-ph[hidden] { display:none }
+.link-go { flex:none }
+.link-mock .am-prog { margin-top:12px }
+.link-mock .am-status { margin:6px 0 4px }
+.link-lines .am-line { opacity:.25; transition:opacity .35s }
+.link-lines .am-line.show { opacity:1 }
+@media(max-width:560px) { .link-input-row { flex-wrap:wrap } .link-go { width:100% } }
+@media(prefers-reduced-motion:reduce) { .note-keys.press, .note-keys.press kbd { animation:none } }
+.link-opt { display:inline-flex; align-items:center; gap:6px; white-space:nowrap }
