@@ -23,10 +23,13 @@
   .warn-h { font-size: 1.05rem }
   .warn p { color: var(--ink) }
   .warn .why { color: var(--sub); font-size: .93rem }
+  /* Вкладки браузеров: свой открыт сразу, остальные — в один щелчок (владелец 24.11: «подсказка только для
+     Edge — это неправильно, есть ещё Яндекс, Chrome»). */
+  .br-tabs { display: flex; flex-wrap: wrap; gap: 6px }
+  .br-tabs button { border: 1px solid var(--warn-line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: .9rem; cursor: pointer }
+  .br-tabs button[aria-selected=true] { background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 650 }
   .hint { display: none; gap: 10px }
-  .b-edge .hint.edge, .b-chrome .hint.chrome, .b-all .hint { display: grid }
-  .other { justify-self: start; border: 0; background: transparent; color: var(--blue); font: inherit; font-size: .92rem; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: .2em }
-  .b-all .other { display: none }
+  .hint.on { display: grid }
   /* Рисунок панели загрузок Edge: что нажать. */
   .mock { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 13px; line-height: 1.35 }
   .mk-panel, .mk-dialog { position: relative; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; box-shadow: 0 6px 18px #0002 }
@@ -54,7 +57,10 @@
   <p class="na-win">Скачивание началось — около 250 МБ.</p>
   <section class="warn na-win" aria-label="Если браузер предупредит о файле">
     <b class="warn-h">Браузер может написать, что файл «скачивается редко», — это нормально</b>
-    <div class="hint edge">
+    <div class="br-tabs" role="tablist" aria-label="Ваш браузер">
+      <button type="button" role="tab" data-br="edge">Edge</button><button type="button" role="tab" data-br="chrome">Chrome</button><button type="button" role="tab" data-br="yandex">Яндекс Браузер</button><button type="button" role="tab" data-br="other">Другой</button>
+    </div>
+    <div class="hint edge" role="tabpanel" data-br="edge">
       <p><b>В Microsoft Edge:</b> в списке загрузок наведите на файл → <b>«…»</b> → <b>«Сохранить»</b> → <b>«Показать больше»</b> → <b>«Сохранить в любом случае»</b>.</p>
       <div class="mock" aria-hidden="true">
         <div class="mk-panel"><span class="mk-shield">⚠</span>GolosovoyBloknot_Setup.exe скачивается редко…<span class="mk-dots">…</span>
@@ -63,11 +69,16 @@
         <div class="mk-dialog"><span>Показать больше ▾</span><span class="on"><span class="mk-num">2</span>Сохранить в любом случае</span></div>
       </div>
     </div>
-    <div class="hint chrome">
-      <p><b>В Chrome и Яндекс Браузере:</b> откройте загрузки — значок со стрелкой вверху справа — и выберите <b>«Сохранить»</b>. Кнопка может называться «Всё равно скачать».</p>
+    <div class="hint" role="tabpanel" data-br="chrome">
+      <p><b>В Google Chrome:</b> нажмите значок загрузок вверху справа (стрелка вниз) → строку с файлом → <b>«Сохранить»</b>. В новых версиях кнопка может называться <b>«Скачать»</b> или <b>«Всё равно скачать»</b>.</p>
+    </div>
+    <div class="hint" role="tabpanel" data-br="yandex">
+      <p><b>В Яндекс Браузере:</b> откройте загрузки (стрелка вверху справа) → у файла нажмите <b>«Сохранить»</b> или <b>«Всё равно скачать»</b>. Если Браузер переспросит — подтвердите.</p>
+    </div>
+    <div class="hint" role="tabpanel" data-br="other">
+      <p><b>В любом браузере:</b> откройте список загрузок и у файла выберите <b>«Сохранить»</b>, <b>«Скачать»</b> или <b>«Всё равно скачать»</b> — так браузер разрешает новую программу.</p>
     </div>
     <p class="why">Почему так: программа новая и пока без платной подписи Microsoft — так браузеры и Windows встречают любые новые программы.</p>
-    <button type="button" class="other" id="other">У меня другой браузер</button>
   </section>
   <ol class="steps na-win">
     <li>Откройте скачанный файл <b>GolosovoyBloknot_Setup.exe</b>.</li>
@@ -83,9 +94,15 @@
 <script>
   (function () {
     var file = "https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe", ua = navigator.userAgent || "", root = document.documentElement;
-    // Подсказка — для своего браузера: Edge, Chrome или Яндекс; остальным — все сразу.
-    root.className += /Edg\//.test(ua) ? " b-edge" : (/YaBrowser|Chrome\//.test(ua) ? " b-chrome" : " b-all");
-    document.getElementById("other").addEventListener("click", function () { root.className += " b-all"; });
+    // Вкладка своего браузера открыта сразу; остальные — щелчком.
+    var mine = /Edg\//.test(ua) ? "edge" : /YaBrowser/.test(ua) ? "yandex" : /Chrome\//.test(ua) && !/OPR\//.test(ua) ? "chrome" : "other";
+    var tabs = document.querySelectorAll(".br-tabs button"), hints = document.querySelectorAll(".hint");
+    function pick(br) {
+      for (var i = 0; i < tabs.length; i++) tabs[i].setAttribute("aria-selected", String(tabs[i].getAttribute("data-br") === br));
+      for (var j = 0; j < hints.length; j++) hints[j].classList.toggle("on", hints[j].getAttribute("data-br") === br);
+    }
+    for (var k = 0; k < tabs.length; k++) tabs[k].addEventListener("click", function () { pick(this.getAttribute("data-br")); });
+    pick(mine);
     if (/Windows NT/.test(ua)) { location.replace(file); return; }
     root.className += " ne-win";
     var here = location.href.replace(/index\.html$/, "");
