@@ -317,6 +317,8 @@ function setupCallDemo(demo) {
       byUser();
       sizes.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
       ovl.classList.toggle('mini', button.dataset.size === 'mini');
+      for (const p of box.children) p.classList.remove('cut');
+      setTimeout(fit, 400);
     });
   }
   for (const button of apps) {
@@ -355,16 +357,31 @@ function setupCallDemo(demo) {
     }
     box.append(p);
     while (box.children.length > 4) box.firstElementChild.remove();
+    fit();
   }
+  // Реплика, которая не влезла целиком, прячется: обрезанная сверху строка читалась как
+  // отметка без говорящего (замечание владельца 24.11 по снимку окна встречи).
+  function fit() {
+    const top = box.getBoundingClientRect().top;
+    for (const p of box.children) p.classList.toggle('cut', p.getBoundingClientRect().top < top - 1);
+  }
+  box.addEventListener('transitionend', fit);
+  // Разговор идёт по кругу, пока пример на экране (владелец 24.11: «то выключаются, то болтают…
+  // лучше бы всегда болтали»): первые четыре реплики из окна + продолжение, и снова сначала.
+  const script = Array.from(box.children, p => {
+    const b = p.querySelector('b'), mark = p.querySelector('mark');
+    let text = '';
+    for (const node of p.childNodes) if (node.nodeType === 3) text += node.textContent;
+    return [b ? b.textContent.replace(/:\s*$/, '') : '', text.replace(/^\s+/, ''),
+            mark ? mark.textContent : '', mark ? mark.className : ''];
+  }).concat(more);
+  next = box.children.length;
   function tickLine() {
-    if (next >= more.length) {
-      clearInterval(lineTimer); lineTimer = null; speak(''); vc.classList.remove('live');
-      setTimeout(showCursor, 900);
-      return;
-    }
-    const line = more[next++];
+    const line = script[next % script.length];
+    next++;
     speak(line[0]);
     setTimeout(() => addLine(line), 1300);
+    if (next === script.length) setTimeout(showCursor, 1800);
   }
 
   // Один раз сам показывает: курсор нажимает крестик, окно становится значком, «Открыть» — назад.
@@ -389,8 +406,9 @@ function setupCallDemo(demo) {
   }
 
   function start() {
+    fit();
     if (!clockTimer) clockTimer = setInterval(tickClock, 1000);
-    if (!reducedMotion.matches && !lineTimer && next < more.length) {
+    if (!reducedMotion.matches && !lineTimer) {
       vc.classList.add('live'); lineTimer = setInterval(tickLine, 2600);
     }
   }
@@ -588,12 +606,64 @@ function setupEditorDemo(demo) {
     });
   }
   render();
-  // При первом показе — две реплики «звучат» сами, чтобы было видно бегунок.
-  onFirstView(demo, () => {
-    if (reducedMotion.matches) return;
-    play(0);
-    setTimeout(() => { if (playing && pos < 15) pause(); toast.textContent = 'Нажмите «▶ Слушать», впишите имя участника или выделите слова'; }, 13500);
-  }, 0.6);
+
+  // Показ курсором, один раз при первом появлении (владелец 24.11: «в редакторе тоже стоит сделать…
+  // мышкой указание, что можно сделать»): выделить слова → «Задача», вписать имена участников,
+  // «▶ Слушать» с бегунком. Любое нажатие человека в примере останавливает показ.
+  const cursor = demo.querySelector('.demo-cursor');
+  let tour = !reducedMotion.matches && !!cursor;
+  const stopTour = () => { if (tour) { tour = false; cursor.classList.remove('on'); } };
+  demo.addEventListener('pointerdown', stopTour, true);
+  demo.addEventListener('keydown', stopTour, true);
+  const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+  function point(el, dx, dy) {
+    const s = demo.getBoundingClientRect(), r = el.getBoundingClientRect();
+    return 'translate(' + Math.round(r.left - s.left + (dx ?? r.width / 2)) + 'px,' + Math.round(r.top - s.top + (dy ?? r.height / 2)) + 'px)';
+  }
+  function tap() { cursor.classList.remove('click'); void cursor.offsetWidth; cursor.classList.add('click'); }
+  async function type(input, text) {
+    input.classList.add('typing'); input.value = '';
+    for (const ch of text) { if (!tour) break; input.value += ch; await wait(75); }
+    input.value = text; input.classList.remove('typing');
+    input.dispatchEvent(new Event('input'));
+  }
+  async function showTour() {
+    if (!tour) return;
+    const words = Array.from(rows[1].querySelectorAll('.ed-word'));
+    const from = words.findIndex(w => w.textContent === 'сдам');
+    const target = from >= 0 ? words.slice(from) : words.slice(-3);
+    cursor.style.transition = 'none'; cursor.style.transform = point(rows[0], 60, 12);
+    void cursor.offsetWidth; cursor.style.transition = '';
+    cursor.classList.add('on');
+    toast.textContent = 'Смотрите: выделяем слова и отмечаем цветом.';
+    await wait(500); if (!tour) return;
+    cursor.style.transform = point(target[0], 1, 6); await wait(1100); if (!tour) return;
+    // Выделение «тянется» по словам, как мышью.
+    const selection = getSelection(), range = document.createRange();
+    range.setStartBefore(target[0]);
+    cursor.style.transition = 'transform .22s linear, opacity .3s';
+    for (const w of target) {
+      range.setEndAfter(w); selection.removeAllRanges(); selection.addRange(range);
+      cursor.style.transform = point(w, w.getBoundingClientRect().width, 6);
+      await wait(240); if (!tour) { selection.removeAllRanges(); return; }
+    }
+    cursor.style.transition = '';
+    await wait(500); if (!tour) return;
+    const task = demo.querySelector('.ed-marks [data-m="m-task"]');
+    cursor.style.transform = point(task); await wait(1100); if (!tour) return;
+    tap(); task.click(); await wait(1800); if (!tour) return;
+    const [first, second] = demo.querySelectorAll('.ed-side input');
+    cursor.style.transform = point(first, 40); await wait(1100); if (!tour) return;
+    tap(); await type(first, 'Руководитель'); await wait(1300); if (!tour) return;
+    cursor.style.transform = point(second, 40); await wait(1000); if (!tour) return;
+    tap(); await type(second, 'Дизайнер'); await wait(1500); if (!tour) return;
+    cursor.style.transform = point(listen); await wait(1100); if (!tour) return;
+    tap(); play(0); await wait(9000); if (!tour) return;
+    if (playing) pause();
+    stopTour();
+    toast.textContent = 'Теперь сами: «▶ Слушать», впишите имя участника или выделите слова и нажмите цвет.';
+  }
+  onFirstView(demo, showTour, 0.6);
 }
 document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
 
