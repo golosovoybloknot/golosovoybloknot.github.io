@@ -1062,10 +1062,16 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
       text.replaceWith(sr);
     }
   }
-  const label = document.createElement('span');
-  label.className = 'theme-label';
-  label.textContent = 'Тема программы:';
-  group.prepend(label);
+  // Подпись «Тема программы:» убрана, чтобы в шапке на ноутбуке поместилось меню (владелец 24.11);
+  // что это про программу — в подсказке у каждого значка и во всплывающем пояснении.
+  // На телефоне переключатель — в «Меню»: целой строкой под шапкой он отнимал место.
+  const menu = document.querySelector('.mobile-nav div'), home = group.parentElement, after = group.nextElementSibling;
+  const narrow = matchMedia('(max-width: 630px)');
+  const place = () => {
+    if (narrow.matches && menu && group.parentElement !== menu) { menu.append(group); group.classList.add('in-menu'); }
+    else if (!narrow.matches && group.parentElement !== home) { home.insertBefore(group, after); group.classList.remove('in-menu'); }
+  };
+  place(); narrow.addEventListener('change', place);
   const toast = document.createElement('div');
   toast.className = 'theme-toast';
   toast.setAttribute('role', 'status');

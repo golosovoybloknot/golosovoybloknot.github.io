@@ -227,7 +227,7 @@ dialog::backdrop { background: #0c1428cc }
 [data-vn-theme=dark] .head-download { color:#11223a; background:#d7e5ff }
 [data-vn-theme=dark] .theme-control select { background-color:var(--raised) }
 [data-vn-theme=dark] :is(.tariff:last-child,.tour-tabs a.current,.scenario-links a.current,.tour-tabs a:hover,.scenario-links a:hover,.secondary:hover,.detail-link:hover,.enlarge:hover) { color:var(--ink); background:var(--selected); border-color:#56688d }
-@media(max-width:1240px) {
+@media(max-width:1150px) {
   .mast { flex-wrap:wrap; gap:8px 14px; padding-block:9px }
   .mast nav { display:none }
   .mobile-nav { display:block; margin-left:auto; position:relative; border:0 }
@@ -420,7 +420,9 @@ mark.m-task, .m-task { background:#c9efd2; color:#1d2633; border-radius:3px; pad
 .brand { flex:none }
 .site-theme button { padding:7px 9px; font-size:1rem }
 .site-theme button span[aria-hidden] { font-size:1.05rem }
-@media(max-width:1380px) {
+/* Меню видно и на ноутбуке 1366 (владелец 24.11: на самом частом экране было одно слово «Меню»):
+   подпись «Тема программы:» убрана, значки с подсказками остались; меню прячется только на узких. */
+@media(max-width:1150px) {
   .mast { flex-wrap:wrap; gap:8px 14px; padding-block:9px }
   .mast nav { display:none }
   .mobile-nav { display:block; margin-left:auto; position:relative; border:0 }
@@ -873,3 +875,29 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 @media(max-width:560px) { .link-input-row { flex-wrap:wrap } .link-go { width:100% } }
 @media(prefers-reduced-motion:reduce) { .note-keys.press, .note-keys.press kbd { animation:none } }
 .link-opt { display:inline-flex; align-items:center; gap:6px; white-space:nowrap }
+
+/* ── Порядок после разбора 24.11: крупная диктовка на первом экране, переключатель темы в меню на телефоне,
+   «Почему можно доверять» в ценах. ── */
+.hero-big .dictation-demo { padding:20px 22px 14px; border-radius:16px; box-shadow:0 22px 50px #23397a1f }
+.hero-big .dictation-demo figcaption { font-size:.85rem }
+.hero-big .dictation-line { margin:14px 0 12px; min-height:2.8em; font-size:1.4rem; line-height:1.4 }
+.hero-big .dictation-wave { width:100% }
+.hero-big .dictation-status { padding-top:8px; font-size:.85rem }
+.hero-big .where-apps { margin-top:14px; font-size:.85rem }
+.hero-big .hotkey-tip { font-size:.88rem }
+@media(max-width:720px) { .hero-big .dictation-line { font-size:1.15rem } }
+.mobile-nav .site-theme.in-menu { display:flex; justify-content:space-between; margin-top:6px; width:100% }
+.mobile-nav .site-theme.in-menu button { flex:1; justify-content:center }
+.price-one { margin:14px 0 0; color:var(--sub); font-size:.92rem }
+.trust { margin-top:26px }
+.trust h3 { margin-bottom:12px; font-size:clamp(1.2rem,1.7vw,1.45rem) }
+.trust-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
+.trust-item { position:relative; display:grid; gap:4px; padding:14px 16px 14px 44px; border:1px solid var(--line); border-radius:12px; background:var(--paper) }
+.trust-item::before { content:""; position:absolute; left:14px; top:16px; width:20px; height:20px; border-radius:50%; background:color-mix(in srgb, #2f8f62 16%, transparent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%232f8f62' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat }
+.trust-item b { font-size:1rem }
+.trust-item span { color:#33435a; font-size:.9rem; line-height:1.45 }
+[data-vn-theme=dark] .trust-item span { color:#cbd6e6 }
+@media(max-width:900px) { .trust-grid { grid-template-columns:1fr 1fr } }
+@media(max-width:560px) { .trust-grid { grid-template-columns:1fr } }
+.trust-item { align-content:start }
+@media(max-width:560px) { .trust-grid { grid-template-columns:1fr 1fr; gap:8px } .trust-item { padding:12px 10px 12px 36px } .trust-item::before { left:10px; top:13px; width:18px; height:18px } .trust-item b { font-size:.9rem } .trust-item span { font-size:.8rem } }
