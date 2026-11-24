@@ -354,6 +354,28 @@ function setupCallDemo(demo) {
     setTimeout(fit, 400);
   }
   function byUser() { auto = false; cursor.classList.remove('on'); }
+  // Карточка «Похоже, идёт созвон», как в программе (app.py: «Записать созвон», закрыть — пропустить
+  // этот созвон). Владелец 24.11: «сначала та, которая всплывает, — записать, либо крестиком закрыть».
+  const card = demo.querySelector('.call-card');
+  const cardRec = card && card.querySelector('.cc-rec');
+  function showCard() {
+    ovl.classList.add('closed'); ovl.inert = true; pill.hidden = true; tip.hidden = true;
+    card.querySelector('.cc-app').textContent = scenes[scene].dataset.app;
+    card.hidden = false; card.classList.remove('in'); void card.offsetWidth; card.classList.add('in');
+  }
+  function startRecording() {
+    card.hidden = true; recSeconds = 0; showClock();
+    pill.style.top = ovl.offsetTop + 'px'; pill.hidden = false;
+    showTip('Запись идёт. Окно с текстом по ходу разговора — «Открыть».', 3000);
+  }
+  if (card) {
+    cardRec.addEventListener('click', () => { byUser(); startRecording(); open.focus({ preventScroll: true }); });
+    card.querySelector('.cc-x').addEventListener('click', () => {
+      byUser(); card.hidden = true;
+      showTip('Этот созвон пропущен. Начнётся новый — карточка появится снова.', 2600);
+      setTimeout(restore, 2600);
+    });
+  }
   close.addEventListener('click', () => { byUser(); collapse(); open.focus({ preventScroll: true }); });
   open.addEventListener('click', () => { byUser(); restore(); close.focus({ preventScroll: true }); });
   pill.querySelector('.pill-name').addEventListener('click', () => {
@@ -362,12 +384,13 @@ function setupCallDemo(demo) {
   for (const button of sizes) button.addEventListener('click', () => { byUser(); setSize(button.dataset.size === 'mini'); });
 
   // Часы записи идут, пока пример на экране.
-  let seconds = Number(demo.dataset.start) || 7 * 60 + 3, clockTimer = null;
+  // Двое часов: сколько идёт звонок (заголовок звонилки) и сколько идёт наша запись (окно и значок).
+  let seconds = Number(demo.dataset.start) || 7 * 60 + 3, recSeconds = seconds, clockTimer = null;
+  const mmss = n => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
   function showClock() {
-    const text = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
-    clocks.forEach(c => { c.textContent = text; });
+    clocks.forEach(c => { c.textContent = mmss(c.classList.contains('vc-clock') ? seconds : recSeconds); });
   }
-  function tickClock() { seconds++; showClock(); }
+  function tickClock() { seconds++; recSeconds++; showClock(); }
 
   function speak(who) { tiles.forEach(t => t.classList.toggle('speaking', t.dataset.who === who)); }
   function addLine([who, text, task, color], quiet) {
@@ -400,7 +423,8 @@ function setupCallDemo(demo) {
     tiles = Array.from(s.querySelectorAll('.vc-tile'));
     vc.dataset.app = s.dataset.app; appName.textContent = s.dataset.app;
     apps.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.app === s.dataset.app)));
-    seconds = Number(s.dataset.start) || seconds; showClock();
+    seconds = Number(s.dataset.start) || seconds; recSeconds = Math.max(0, seconds - 25); showClock();
+    card && (card.hidden = true);
     script = JSON.parse(s.dataset.lines);
     // Надпись справа — своя у каждой сценки (владелец 24.11: «почему разные надписи не сделать?»).
     const copy = demo.closest('.record-panel')?.querySelector('.record-copy');
@@ -453,7 +477,7 @@ function setupCallDemo(demo) {
   function click() { cursor.classList.remove('click'); void cursor.offsetWidth; cursor.classList.add('click'); }
   async function act(el, fn) {
     if (!cursor.classList.contains('on')) {
-      cursor.style.transition = 'none'; cursor.style.transform = point(ovl, ovl.offsetWidth / 2, 30);
+      cursor.style.transition = 'none'; cursor.style.transform = point(el, -70, 60);
       void cursor.offsetWidth; cursor.style.transition = '';
       cursor.classList.add('on');
       await wait(300); if (!auto) return;
@@ -462,8 +486,22 @@ function setupCallDemo(demo) {
     click(); fn(); await wait(900);
     if (auto) cursor.classList.remove('on');
   }
-  // Сценарий одной сценки (по номеру реплики): Telegram — «Мини» и обратно, WhatsApp — крестик
-  // и «Открыть»; после пятой реплики — следующая сценка.
+  // Начало показа — сразу, как в жизни (владелец 24.11: «анимация должна начаться сразу… всплывать
+  // надпись „Похоже, идёт созвон“»): звонок идёт → карточка → «Записать созвон» → значок «● Запись»
+  // → «Открыть» → окно с текстом. В программе так и есть: при записи сначала значок (config.py,
+  // okno_poverh_samo=False), окно — по «Открыть».
+  let introAt = -1;
+  async function intro() {
+    if (!auto || !card || introAt === scene) return;
+    introAt = scene;
+    showCard();
+    await wait(1500); if (!auto) return;
+    await act(cardRec, startRecording); if (!auto) return;
+    await wait(1700); if (!auto) return;
+    await act(open, restore);
+  }
+  // Сценарий одной сценки (по номеру реплики): MAX — карточка и запись, Telegram — «Мини» и обратно,
+  // WhatsApp — крестик и «Открыть»; потом следующая сценка.
   function story(t) {
     if (!auto) return;
     const app = scenes[scene].dataset.app;
@@ -472,7 +510,13 @@ function setupCallDemo(demo) {
     if (app === 'Telegram' && t === 4) act(normal, () => setSize(false));
     if (app === 'WhatsApp' && t === 1) act(close, collapse);
     if (app === 'WhatsApp' && t === 3) act(open, restore);
-    if (t === 5) setTimeout(() => { if (auto) setScene((scene + 1) % scenes.length); }, 2200);
+    if (t === (app === 'MAX' ? 7 : 5)) {
+      setTimeout(() => {
+        if (!auto) return;
+        setScene((scene + 1) % scenes.length); introAt = -1;
+        if (scene === 0) intro();
+      }, 2200);
+    }
   }
   // Встреча (без сценок): один раз крестик → значок → «Открыть».
   async function showCursor() {
@@ -489,6 +533,7 @@ function setupCallDemo(demo) {
     if (!reducedMotion.matches && !lineTimer) {
       vc.classList.add('live'); lineTimer = setInterval(tickLine, 2600);
     }
+    if (scenes.length && scene === 0 && introAt === -1) intro();
   }
   function stop() {
     clearInterval(clockTimer); clockTimer = null;
