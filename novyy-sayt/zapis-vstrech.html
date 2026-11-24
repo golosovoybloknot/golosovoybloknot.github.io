@@ -12,7 +12,7 @@
   <meta name="description" content="Запись созвона в MAX, Telegram, WhatsApp или Zoom без лишних участников в звонке: ваш голос и собеседник, текст по ходу разговора, отметки задач и протокол в Word."><meta property="og:title" content="Запись созвонов Zoom и встреч с расшифровкой — Голосовой блокнот"><meta property="og:description" content="Запись созвона в MAX, Telegram, WhatsApp или Zoom без лишних участников в звонке: ваш голос и собеседник, текст по ходу разговора, отметки задач и протокол в Word.">
   <link rel="canonical" href="https://golosovoybloknot.ru/zapis-vstrech.html"><meta property="og:url" content="https://golosovoybloknot.ru/zapis-vstrech.html"><meta property="og:type" content="website"><meta property="og:locale" content="ru_RU"><meta property="og:site_name" content="Голосовой блокнот"><meta property="og:image" content="https://golosovoybloknot.ru/images/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" href="images/favicon-120.png" sizes="120x120"><link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css"><script defer src="site.js"></script>
+  <link rel="stylesheet" href="style.css?v=23e69fea65"><script defer src="site.js?v=23e69fea65"></script>
 </head>
 <body>
 <a class="skip" href="#main">К содержимому</a>
@@ -73,7 +73,7 @@
       <a class="detail-link" href="zapis-vstrech.html">Подробнее о записи созвонов</a></div>
   </div>
   <div class="record-panel" role="tabpanel" id="rec-meet" aria-labelledby="rec-tab-meet" hidden>
-    <div class="panel-art live-demo demo-call demo-meet" data-start="760" data-lines='[["Дизайнер", "", "Мобильную корзину сдам в среду.", "m-task"], ["Разработчик", "Ключи запрошу ещё раз сегодня. ", "Успеем ли проверить оплату до запуска?", "m-q"], ["Руководитель", "Успеем, если ключи придут до пятницы.", ""], ["Дизайнер", "Тогда в пятницу и сверимся.", ""]]'>
+    <div class="panel-art live-demo demo-call demo-meet" data-start="760" data-lines='[["Дизайнер", "", "Мобильную корзину сдам в среду.", "m-task"], ["Разработчик", "Ключи запрошу ещё раз сегодня. ", "Успеем ли проверить оплату до запуска?", "m-q"], ["Руководитель", "Успеем, если ключи придут до пятницы.", ""], ["Дизайнер", "Тогда в пятницу и сверимся.", ""]]' data-slides='[{"n": 4, "t": "Запуск сайта", "li": [["ok", "Макеты страниц — готовы"], ["wip", "Корзина для телефона — в работе"], ["wait", "Оплата — ждём тестовые ключи"]], "c": [38, 58, 47, 80, 66]}, {"n": 5, "t": "Корзина для телефона", "li": [["ok", "Дизайн — готов"], ["wip", "Вёрстка — до среды"], ["wait", "Проверка на телефонах — пятница"]], "c": [30, 45, 62, 70, 84]}, {"n": 6, "t": "Оплата", "li": [["ok", "Договор с банком — подписан"], ["wip", "Тестовые ключи — запрошены ещё раз"], ["wait", "Проверка оплаты — после ключей"]], "c": [52, 40, 35, 48, 44]}, {"n": 7, "t": "Сроки", "li": [["wip", "Корзина — среда"], ["wait", "Проверка оплаты — пятница"], ["ok", "Запуск — тридцатого"]], "c": [20, 40, 60, 80, 100]}]'>
   <div class="vc vc-meet">
     <div class="vc-bar"><span class="vc-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="vc-title">Презентация · <b>План запуска</b></span></div>
     <div class="vc-stage">
@@ -98,11 +98,18 @@
       </div>
       <div class="ovl-pill" hidden><span class="pill-dot" aria-hidden="true">●</span><span>Запись <span class="pill-time">12:40</span></span><button type="button" class="pill-name">Назвать</button><button type="button" class="pill-open">Открыть</button></div>
       <div class="ovl-tip" role="status" hidden></div>
+      <div class="app-mock call-card meet-card" role="group" aria-label="Главный экран программы" hidden>
+        <div class="cc-head"><img src="images/znachok-64.png" width="16" height="16" alt=""><b>Голосовой блокнот</b></div>
+        <div class="mc-list">
+          <button type="button" class="mc-item cc-rec"><span class="mc-dot meet" aria-hidden="true"></span><b>Записать встречу</b><small>Разговор рядом: собрание, лекция, телефон на громкой</small></button>
+          <span class="mc-item"><span class="mc-dot call" aria-hidden="true"></span><b>Записать созвон</b><small>Zoom, Telegram, WhatsApp, MAX — через компьютер</small></span>
+        </div>
+      </div>
       <span class="demo-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 2l14 9-6.5 1.5L15 20l-3 1.5-3.5-7.5L4 18z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
     </div>
     <div class="vc-tools slide-tools" aria-hidden="true"><span class="vc-btn"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span><span class="slide-num">4 / 9</span><span class="vc-btn"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></div>
   </div>
-  <p class="demo-cap">Встреча в комнате, на экране — презентация. Окно «Поверх окон» показывает текст по ходу разговора; цветом — «Решение», «Задача», «Вопрос». Нажмите ✕ — окно станет маленьким значком со временем записи.</p>
+  <p class="demo-cap">Встреча в комнате, на экране — презентация. В программе — «Записать встречу», и на экране маленький значок «● Запись»; «Открыть» — окно «Поверх окон» с текстом по ходу разговора, цветом — решения, задачи и вопросы. Окно бывает обычным, полоской «Мини» или значком.</p>
 </div>
 
     <div class="record-copy"><h3>Встреча в комнате — текст по ходу</h3><ul>

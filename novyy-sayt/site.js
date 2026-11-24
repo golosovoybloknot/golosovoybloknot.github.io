@@ -360,7 +360,8 @@ function setupCallDemo(demo) {
   const cardRec = card && card.querySelector('.cc-rec');
   function showCard() {
     ovl.classList.add('closed'); ovl.inert = true; pill.hidden = true; tip.hidden = true;
-    card.querySelector('.cc-app').textContent = scenes[scene].dataset.app;
+    const appBox = card.querySelector('.cc-app');
+    if (appBox && scenes.length) appBox.textContent = scenes[scene].dataset.app;
     card.hidden = false; card.classList.remove('in'); void card.offsetWidth; card.classList.add('in');
   }
   function startRecording() {
@@ -370,7 +371,7 @@ function setupCallDemo(demo) {
   }
   if (card) {
     cardRec.addEventListener('click', () => { byUser(); startRecording(); open.focus({ preventScroll: true }); });
-    card.querySelector('.cc-x').addEventListener('click', () => {
+    card.querySelector('.cc-x')?.addEventListener('click', () => {
       byUser(); card.hidden = true;
       showTip('Этот созвон пропущен. Начнётся новый — карточка появится снова.', 2600);
       setTimeout(restore, 2600);
@@ -465,7 +466,34 @@ function setupCallDemo(demo) {
     speak(line[0]);
     setTimeout(() => { if (at === scene) addLine(line); }, 1300);
     if (scenes.length) story(++sceneTick);
-    else if (next === script.length) setTimeout(showCursor, 1800);
+    else meetStory(++sceneTick);
+  }
+
+  // Встреча: слайды листаются по ходу разговора (владелец 24.11: «внизу стоит 4 / 9» — стояло на месте).
+  const slideBox = demo.querySelector('.slide'), slides = JSON.parse(demo.dataset.slides || 'null');
+  let slideN = 0;
+  function showSlide(n) {
+    const s = slides[n]; slideN = n;
+    slideBox.querySelector('.slide-kicker').textContent = 'Планёрка · слайд ' + s.n + ' из 9';
+    slideBox.querySelector('.slide-title').textContent = s.t;
+    slideBox.querySelector('ul').replaceChildren(...s.li.map(([state, text]) => {
+      const li = document.createElement('li'), dot = document.createElement('i');
+      dot.className = state; li.append(dot, text); return li;
+    }));
+    slideBox.querySelectorAll('.slide-chart i').forEach((bar, k) => { bar.style.height = s.c[k] + '%'; });
+    demo.querySelector('.slide-num').textContent = s.n + ' / 9';
+    slideBox.classList.remove('turn'); void slideBox.offsetWidth; slideBox.classList.add('turn');
+  }
+  // Встреча по кругу: слайд — каждые три реплики; курсор — «Мини» и обратно, крестик и «Открыть».
+  function meetStory(t) {
+    if (slides && slideBox && t % 3 === 0) showSlide((slideN + 1) % slides.length);
+    if (!auto) return;
+    const k = t % 16;
+    const mini = sizes.find(b => b.dataset.size === 'mini'), normal = sizes.find(b => b.dataset.size === 'normal');
+    if (k === 4) act(mini, () => setSize(true));
+    if (k === 7) act(normal, () => setSize(false));
+    if (k === 10) act(close, collapse);
+    if (k === 12) act(open, restore);
   }
 
   // Курсор: показывает, что можно сделать с окном.
@@ -495,7 +523,7 @@ function setupCallDemo(demo) {
     if (!auto || !card || introAt === scene) return;
     introAt = scene;
     showCard();
-    await wait(1500); if (!auto) return;
+    await wait(800); if (!auto) return;
     await act(cardRec, startRecording); if (!auto) return;
     await wait(1700); if (!auto) return;
     await act(open, restore);
@@ -518,32 +546,27 @@ function setupCallDemo(demo) {
       }, 2200);
     }
   }
-  // Встреча (без сценок): один раз крестик → значок → «Открыть».
-  async function showCursor() {
-    if (!auto || shown) return;
-    shown = true;
-    await act(close, collapse); if (!auto) return;
-    await wait(2400); if (!auto) return;
-    await act(open, restore);
-  }
-
   function start() {
     fit();
     if (!clockTimer) clockTimer = setInterval(tickClock, 1000);
     if (!reducedMotion.matches && !lineTimer) {
       vc.classList.add('live'); lineTimer = setInterval(tickLine, 2600);
     }
-    if (scenes.length && scene === 0 && introAt === -1) intro();
   }
+  // Начало (карточка и курсор) — когда пример виден больше чем наполовину, чтобы не пролетело при прокрутке.
+  function maybeIntro() { if (card && scene === 0 && introAt === -1) intro(); }
   function stop() {
     clearInterval(clockTimer); clockTimer = null;
     clearInterval(lineTimer); lineTimer = null; vc.classList.remove('live'); speak('');
   }
-  demo.addEventListener('vn:show', () => start());
+  demo.addEventListener('vn:show', () => { start(); maybeIntro(); });
   demo.addEventListener('vn:hide', () => stop());
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => (entries.some(e => e.isIntersecting) ? start() : stop()),
-                             { threshold: 0.3 }).observe(demo);
+    new IntersectionObserver(entries => {
+      const e = entries[entries.length - 1];
+      if (e.isIntersecting && e.intersectionRatio >= 0.3) { start(); if (e.intersectionRatio >= 0.55) maybeIntro(); }
+      else stop();
+    }, { threshold: [0, 0.3, 0.55, 0.8] }).observe(demo);
   }
 }
 document.querySelectorAll('.demo-call').forEach(setupCallDemo);

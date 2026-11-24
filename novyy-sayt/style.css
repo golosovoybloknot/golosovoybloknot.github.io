@@ -800,3 +800,21 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .cc-rec:hover, .cc-rec:focus-visible { background:#214cb8 }
 @media(max-width:560px) { .call-card { left:8px; right:8px; bottom:8px; width:auto } }
 @media(prefers-reduced-motion:reduce) { .call-card.in { animation:none } }
+
+/* Встреча: окошко программы «Записать встречу», цвет встречи, слайды листаются (владелец 24.11). */
+.vc-meet { --vc-accent:#3b82f6 }
+.meet-card { width:min(360px, calc(100% - 32px)) }
+.mc-list { display:grid; gap:8px; padding:4px 12px 12px }
+.mc-item { display:grid; grid-template-columns:auto 1fr; gap:2px 8px; align-items:center; padding:9px 11px; border:1px solid var(--am-line); border-radius:10px; background:var(--am-bg); color:var(--am-fg); text-align:left; font:13px/1.3 "Segoe UI", Inter, Arial, sans-serif }
+button.mc-item { cursor:pointer }
+button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-shadow:0 0 0 2px #3b82f633 }
+.mc-item b { font-weight:650 }
+.mc-item small { grid-column:2; color:var(--am-sub); font-size:11.5px }
+.mc-dot { width:9px; height:9px; border-radius:50% }
+.mc-dot.meet { background:#3b82f6 } .mc-dot.call { background:#22a06b }
+.slide.turn > * { animation:slide-in .5s ease }
+@keyframes slide-in { from { opacity:0; transform:translateX(14px) } }
+.slide-chart i { transition:height .6s ease }
+@media(prefers-reduced-motion:reduce) { .slide.turn > * { animation:none } .slide-chart i { transition:none } }
+/* Значок в заголовках карточки и окна — слева (общее правило картинок панели ставило его по центру). */
+.cc-head img, .ovl-title img { margin:0; flex:none }
