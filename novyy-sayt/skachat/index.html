@@ -23,7 +23,7 @@
   .ne-win .na-win { display: none } .ne-win .phone { display: block }
   a.back { color: var(--sub); font-size: .92rem }
 </style>
-<noscript><meta http-equiv="refresh" content="0; url=https://github.com/golosovoybloknot/voicenotes-models/releases/download/beta-1.26.7-c6743a8/GolosovoyBloknot_Setup_1.26.7_c6743a8.exe"></noscript>
+<noscript><meta http-equiv="refresh" content="0; url=https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe"></noscript>
 </head>
 <body>
 <main>
@@ -31,19 +31,19 @@
   <h1>Голосовой блокнот</h1>
   <p class="na-win">Скачивание началось (около 250 МБ). Пока файл качается — что дальше:</p>
   <ol class="steps na-win">
-    <li>Откройте скачанный файл <b>GolosovoyBloknot_Setup_1.26.7_c6743a8.exe</b>.</li>
+    <li>Откройте скачанный файл <b>GolosovoyBloknot_Setup.exe</b>.</li>
     <li>Если появится синее окно «Windows защитил ваш компьютер», нажмите <b>«Подробнее»</b> → <b>«Выполнить в любом случае»</b>. Так Windows встречает программы без платной подписи.</li>
     <li>При первом запуске программа один раз скачает файл для распознавания речи — около 220 МБ. Дальше интернет не нужен.</li>
     <li>Откройте Блокнот или Word, зажмите <b>Ctrl + Alt</b> и скажите фразу.</li>
   </ol>
   <div class="phone" role="note">Программа — для компьютера с Windows. Откройте эту ссылку на компьютере, и скачивание начнётся само:<br><b id="link"></b><br><button type="button" class="copy" id="copy">Скопировать ссылку</button></div>
   <p class="na-win">Если скачивание не началось само:</p>
-  <a class="btn" href="https://github.com/golosovoybloknot/voicenotes-models/releases/download/beta-1.26.7-c6743a8/GolosovoyBloknot_Setup_1.26.7_c6743a8.exe">Скачать установщик</a>
+  <a class="btn" href="https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe">Скачать установщик</a>
   <p>Для Windows 10 и 11 · 14 дней бесплатно · <a class="back" href="../">о программе</a></p>
 </main>
 <script>
   (function () {
-    var file = "https://github.com/golosovoybloknot/voicenotes-models/releases/download/beta-1.26.7-c6743a8/GolosovoyBloknot_Setup_1.26.7_c6743a8.exe";
+    var file = "https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe";
     if (/Windows NT/.test(navigator.userAgent || "")) { location.replace(file); return; }
     document.documentElement.className += " ne-win";
     var here = location.href.replace(/index\.html$/, "");
