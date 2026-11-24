@@ -6,17 +6,39 @@
 <title>Скачать — Голосовой блокнот</title>
 <link rel="icon" href="../favicon.ico" sizes="any">
 <style>
-  :root { color-scheme: light; --ink: #142033; --sub: #46566b; --line: #d3ddeb; --paper: #fff; --card: #f3f7ff; --blue: #2859c7; --soft: #fff4d6; --soft-ink: #6b4a00 }
-  @media (prefers-color-scheme: dark) { :root { color-scheme: dark; --ink: #e5edf8; --sub: #b4c2d6; --line: #38475c; --paper: #131d2b; --card: #1e2c40; --soft: #3b2e14; --soft-ink: #ffd99a } }
+  :root { color-scheme: light; --ink: #142033; --sub: #46566b; --line: #d3ddeb; --paper: #fff; --card: #f3f7ff; --blue: #2859c7; --soft: #fff4d6; --soft-ink: #6b4a00; --warn: #fff8e6; --warn-line: #f0d48a }
+  @media (prefers-color-scheme: dark) { :root { color-scheme: dark; --ink: #e5edf8; --sub: #b4c2d6; --line: #38475c; --paper: #131d2b; --card: #1e2c40; --soft: #3b2e14; --soft-ink: #ffd99a; --warn: #2e2715; --warn-line: #6b5422 } }
   * { box-sizing: border-box }
   body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 Inter, "Segoe UI", system-ui, Arial, sans-serif }
-  main { max-width: 620px; margin: 0 auto; padding: 8vh 20px 48px; display: grid; gap: 16px; justify-items: center; text-align: center }
+  main { max-width: 660px; margin: 0 auto; padding: 6vh 20px 48px; display: grid; gap: 16px; justify-items: center; text-align: center }
   img { width: 64px; height: 64px }
   h1 { margin: 0; font-size: clamp(1.8rem, 6vw, 2.4rem); letter-spacing: -.04em; line-height: 1.1 }
   p { margin: 0; color: var(--sub) }
   .btn { display: inline-flex; align-items: center; gap: 9px; padding: 12px 20px; border-radius: 10px; background: var(--blue); color: #fff; font-weight: 650; text-decoration: none }
-  .steps { text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px 16px 38px; margin: 0; display: grid; gap: 8px; color: var(--ink) }
-  .steps b { font-weight: 650 }
+  .steps { text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px 16px 38px; margin: 0; display: grid; gap: 8px; color: var(--ink); width: 100% }
+  .steps b, .warn b { font-weight: 650 }
+  /* Предупреждение браузера о «редком» файле — первым делом, с подсказкой для своего браузера (владелец 24.11:
+     «люди не будут разбираться… даже мне надо найти, как её скачать»). */
+  .warn { width: 100%; text-align: left; background: var(--warn); border: 1px solid var(--warn-line); border-radius: 14px; padding: 16px 18px; display: grid; gap: 10px; color: var(--ink) }
+  .warn-h { font-size: 1.05rem }
+  .warn p { color: var(--ink) }
+  .warn .why { color: var(--sub); font-size: .93rem }
+  .hint { display: none; gap: 10px }
+  .b-edge .hint.edge, .b-chrome .hint.chrome, .b-all .hint { display: grid }
+  .other { justify-self: start; border: 0; background: transparent; color: var(--blue); font: inherit; font-size: .92rem; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: .2em }
+  .b-all .other { display: none }
+  /* Рисунок панели загрузок Edge: что нажать. */
+  .mock { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 13px; line-height: 1.35 }
+  .mk-panel, .mk-dialog { position: relative; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; box-shadow: 0 6px 18px #0002 }
+  .mk-panel { width: 250px; padding-right: 38px }
+  .mk-panel .mk-shield { color: #b7791f; margin-right: 6px }
+  .mk-dots { position: absolute; right: 8px; top: 8px; width: 24px; height: 22px; border-radius: 5px; display: grid; place-items: center; font-weight: 700; outline: 2px solid #e5483b; outline-offset: 1px }
+  .mk-menu { margin-top: 8px; display: grid; gap: 2px; border-top: 1px solid var(--line); padding-top: 6px }
+  .mk-menu span, .mk-dialog span { padding: 4px 8px; border-radius: 6px }
+  .mk .on, .mock .on { outline: 2px solid #e5483b; outline-offset: 1px; font-weight: 650 }
+  .mk-num { display: inline-grid; place-items: center; width: 20px; height: 20px; margin-right: 4px; border-radius: 50%; background: #e5483b; color: #fff; font-size: 12px; font-weight: 700 }
+  .mk-dialog { width: 230px; display: grid; gap: 6px }
+  .mk-arrow { font-size: 20px; color: var(--sub) }
   .phone { display: none; background: var(--soft); color: var(--soft-ink); border-radius: 12px; padding: 12px 16px; text-align: left }
   .phone b { word-break: break-all }
   .copy { margin-top: 8px; border: 1px solid currentColor; background: transparent; color: inherit; border-radius: 8px; padding: 7px 12px; font: inherit; font-size: .9rem; cursor: pointer }
@@ -29,10 +51,27 @@
 <main>
   <img src="../images/znachok-64.png" alt="">
   <h1>Голосовой блокнот</h1>
-  <p class="na-win">Скачивание началось (около 250 МБ). Пока файл качается — что дальше:</p>
+  <p class="na-win">Скачивание началось — около 250 МБ.</p>
+  <section class="warn na-win" aria-label="Если браузер предупредит о файле">
+    <b class="warn-h">Браузер может написать, что файл «скачивается редко», — это нормально</b>
+    <div class="hint edge">
+      <p><b>В Microsoft Edge:</b> в списке загрузок наведите на файл → <b>«…»</b> → <b>«Сохранить»</b> → <b>«Показать больше»</b> → <b>«Сохранить в любом случае»</b>.</p>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-panel"><span class="mk-shield">⚠</span>GolosovoyBloknot_Setup.exe скачивается редко…<span class="mk-dots">…</span>
+          <div class="mk-menu"><span class="on"><span class="mk-num">1</span>Сохранить</span><span>Сообщить, что файл безопасен</span></div></div>
+        <span class="mk-arrow">→</span>
+        <div class="mk-dialog"><span>Показать больше ▾</span><span class="on"><span class="mk-num">2</span>Сохранить в любом случае</span></div>
+      </div>
+    </div>
+    <div class="hint chrome">
+      <p><b>В Chrome и Яндекс Браузере:</b> откройте загрузки — значок со стрелкой вверху справа — и выберите <b>«Сохранить»</b>. Кнопка может называться «Всё равно скачать».</p>
+    </div>
+    <p class="why">Почему так: программа новая и пока без платной подписи Microsoft — так браузеры и Windows встречают любые новые программы.</p>
+    <button type="button" class="other" id="other">У меня другой браузер</button>
+  </section>
   <ol class="steps na-win">
     <li>Откройте скачанный файл <b>GolosovoyBloknot_Setup.exe</b>.</li>
-    <li>Если появится синее окно «Windows защитил ваш компьютер», нажмите <b>«Подробнее»</b> → <b>«Выполнить в любом случае»</b>. Так Windows встречает программы без платной подписи.</li>
+    <li>Если появится синее окно «Windows защитил ваш компьютер», нажмите <b>«Подробнее»</b> → <b>«Выполнить в любом случае»</b>.</li>
     <li>При первом запуске программа один раз скачает файл для распознавания речи — около 220 МБ. Дальше интернет не нужен.</li>
     <li>Откройте Блокнот или Word, зажмите <b>Ctrl + Alt</b> и скажите фразу.</li>
   </ol>
@@ -43,9 +82,12 @@
 </main>
 <script>
   (function () {
-    var file = "https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe";
-    if (/Windows NT/.test(navigator.userAgent || "")) { location.replace(file); return; }
-    document.documentElement.className += " ne-win";
+    var file = "https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe", ua = navigator.userAgent || "", root = document.documentElement;
+    // Подсказка — для своего браузера: Edge, Chrome или Яндекс; остальным — все сразу.
+    root.className += /Edg\//.test(ua) ? " b-edge" : (/YaBrowser|Chrome\//.test(ua) ? " b-chrome" : " b-all");
+    document.getElementById("other").addEventListener("click", function () { root.className += " b-all"; });
+    if (/Windows NT/.test(ua)) { location.replace(file); return; }
+    root.className += " ne-win";
     var here = location.href.replace(/index\.html$/, "");
     document.getElementById("link").textContent = here;
     document.getElementById("copy").addEventListener("click", function () {
