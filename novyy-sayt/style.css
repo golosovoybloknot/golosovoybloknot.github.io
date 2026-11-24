@@ -773,3 +773,14 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
   .vc-grid .vc-name { font-size:10px }
 }
 @media(prefers-reduced-motion:reduce) { .vc-scene, .vc-scene.on { transition:none } }
+
+/* Надпись справа меняется вместе со сценкой; «Как записать созвон» — два способа прямо в блоке (владелец 24.11). */
+.record-copy.swap h3, .record-copy.swap ul { animation:copy-in .45s ease }
+@keyframes copy-in { from { opacity:0; transform:translateY(6px) } }
+.how-rec { margin:0 0 16px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:color-mix(in srgb, var(--blue) 5%, var(--paper)) }
+.how-rec b { display:block; margin-bottom:6px }
+.how-rec ol { display:grid; gap:6px; margin:0; padding-left:20px; color:#33435a; font-size:.94rem }
+[data-vn-theme=dark] .how-rec ol { color:#cbd6e6 }
+@media(prefers-reduced-motion:reduce) { .record-copy.swap h3, .record-copy.swap ul { animation:none } }
+.how-rec li { padding-left:2px }
+.how-rec li::before { content:none }

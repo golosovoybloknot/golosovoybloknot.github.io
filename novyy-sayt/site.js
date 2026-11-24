@@ -402,6 +402,16 @@ function setupCallDemo(demo) {
     apps.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.app === s.dataset.app)));
     seconds = Number(s.dataset.start) || seconds; showClock();
     script = JSON.parse(s.dataset.lines);
+    // Надпись справа — своя у каждой сценки (владелец 24.11: «почему разные надписи не сделать?»).
+    const copy = demo.closest('.record-panel')?.querySelector('.record-copy');
+    if (copy && s.dataset.copy) {
+      const c = JSON.parse(s.dataset.copy), h = copy.querySelector('h3'), ul = copy.querySelector('ul');
+      if (h.textContent !== c.h) {
+        h.textContent = c.h;
+        ul.replaceChildren(...c.li.map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
+        copy.classList.remove('swap'); void copy.offsetWidth; copy.classList.add('swap');
+      }
+    }
     box.textContent = '';
     script.slice(0, 3).forEach(line => addLine(line, true));
     next = 3; speak('');
