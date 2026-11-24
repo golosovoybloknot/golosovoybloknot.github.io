@@ -719,3 +719,32 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 /* Показ курсором в примере редактора (владелец 24.11): курсор поверх окна, поле имени «печатается». */
 .ed-mock { position:relative }
 .ed-side input.typing { border-color:var(--blue); box-shadow:0 0 0 3px color-mix(in srgb, var(--blue) 28%, transparent) }
+
+/* ── По кругу и «бесплатно» на виду (владелец 24.11: «картинки тоже по кругу… убрать кнопку, чтобы постоянно
+   ходил»; «люди первым бросается в глаза, что надо платить… как маркетологи: сначала бесплатно»). ── */
+/* Схема «без облака» повторяется: облако зачёркивается, текст пишется на компьютере, и снова. */
+.no-cloud.in-view .nc-path { animation:nc-flow 1s linear infinite }
+.no-cloud.in-view .nc-cross { animation:nc-cross-loop 6s ease-in-out infinite }
+.no-cloud.in-view .nc-cloud path { animation:nc-cloud-loop 6s ease-in-out infinite }
+.no-cloud.in-view .nc-text { animation:nc-text-loop 6s ease-out infinite }
+@keyframes nc-cross-loop { 0%, 8% { stroke-dashoffset:110 } 20%, 88% { stroke-dashoffset:0 } 100% { stroke-dashoffset:110 } }
+@keyframes nc-cloud-loop { 0%, 8% { opacity:1 } 20%, 88% { opacity:.45 } 100% { opacity:1 } }
+@keyframes nc-text-loop { 0%, 25% { stroke-dashoffset:44 } 40%, 88% { stroke-dashoffset:0 } 100% { stroke-dashoffset:44 } }
+
+/* Пример диктовки: подсвечено, куда сейчас встаёт текст. */
+.where-apps li { transition:border-color .25s, background .25s, box-shadow .25s, color .25s }
+.where-apps li.on { border-color:var(--blue); background:color-mix(in srgb, var(--blue) 16%, var(--paper)); box-shadow:0 0 0 2px color-mix(in srgb, var(--blue) 22%, transparent) }
+
+/* «14 дней бесплатно» — зелёной плашкой впереди цены. */
+.free-tag { display:inline-flex; align-items:center; gap:7px; padding:3px 12px 3px 10px; border:1px solid #b5e2c6; border-radius:999px; background:#dff5e7; color:#17603e; font-weight:750; white-space:nowrap }
+.free-tag::before { content:""; flex:none; width:8px; height:8px; border-radius:50%; background:#2f9e68; box-shadow:0 0 0 3px #2f9e6833 }
+[data-vn-theme=dark] .free-tag { background:#173b2b; border-color:#2c6248; color:#9fe6bf }
+[data-vn-theme=dark] .free-tag::before { background:#5fd39a }
+.free-note { display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px }
+.hero .free-note .free-tag { font-size:1rem }
+.free-tag.big { padding:6px 16px 6px 13px; font-size:1.12rem }
+.final-inner .free-note { margin-top:8px }
+.final-inner .free-after { margin:6px 0 0; color:var(--sub); font-size:.92rem }
+@media(prefers-reduced-motion:reduce) {
+  .no-cloud.in-view .nc-path, .no-cloud.in-view .nc-cross, .no-cloud.in-view .nc-cloud path, .no-cloud.in-view .nc-text { animation:none }
+}

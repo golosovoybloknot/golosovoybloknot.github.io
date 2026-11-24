@@ -110,24 +110,40 @@ if (marksArt && 'IntersectionObserver' in window) {
 
 function setupDictationDemo(demo) {
   const typed = demo.querySelector('.typed');
-  const letters = Array.from(demo.querySelector('.phrase').textContent);
+  const phrase = demo.querySelector('.phrase');
   const state = demo.querySelector('.dictation-state');
   const wave = demo.querySelector('.dictation-wave');
   const replay = demo.querySelector('.replay');
+  const chips = Array.from(demo.querySelectorAll('.where-apps li'));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  // Пример идёт по кругу, пока он на экране, без кнопки «Повторить» (владелец 24.11: «убрать кнопку,
+  // чтобы постоянно ходил»), и меняет место вставки — оно подсвечено в строке «Текст встанет туда…».
+  // Первая фраза — из настроек сайта.
+  const examples = [[phrase.textContent, 'MAX'],
+    ['Пришлите, пожалуйста, договор до конца дня.', 'Почта'],
+    ['Спасибо, всё получил. Отвечу завтра утром.', 'Telegram'],
+    ['Итоги встречи: запуск переносим на тридцатое.', 'Word']];
+  let n = 0, letters = Array.from(examples[0][0]), visible = false, pause = 0;
+  function show() {
+    const [text, app] = examples[n];
+    letters = Array.from(text); phrase.textContent = text;
+    chips.forEach(chip => chip.classList.toggle('on', chip.textContent.trim() === app));
+  }
   // The sprite holds 60 recording frames, 10 processing frames, and the done frame,
   // rendered by the Windows app's SilkWaveOverlay at its native 20 fps.
   let timer;
   function finish() {
-    clearTimeout(timer);
+    clearTimeout(timer); clearTimeout(pause);
     demo.classList.remove('playing');
     typed.textContent = letters.join('');
     state.textContent = 'Готово';
     wave.style.backgroundPositionY = '100%';
-    replay.hidden = reduced.matches;
+    if (replay) replay.hidden = reduced.matches;
+    if (visible && !reduced.matches) pause = setTimeout(() => { n = (n + 1) % examples.length; play(); }, 2600);
   }
   function play() {
-    clearTimeout(timer);
+    clearTimeout(timer); clearTimeout(pause);
+    show();
     if (reduced.matches) { finish(); return; }
     const start = performance.now();
     demo.classList.add('playing');
@@ -141,7 +157,19 @@ function setupDictationDemo(demo) {
     }
     draw();
   }
+  show();
   finish();
+  if (!replay) {
+    reduced.addEventListener('change', finish);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        const now = entries.some(entry => entry.isIntersecting);
+        if (now && !visible) { visible = true; if (!demo.classList.contains('playing')) play(); }
+        else if (!now && visible) { visible = false; clearTimeout(pause); }
+      }, { threshold: 0.5 }).observe(demo);
+    }
+    return;
+  }
   // A tap plays to the end. A long press ends the example on release.
   let pressedAt = 0;
   replay.addEventListener('click', event => { if (event.detail === 0) play(); });
@@ -267,11 +295,20 @@ function setupTranscribeDemo(demo) {
       });
       status.textContent = '✓ Готово: 3 участника · «Открыть в редакторе»';
       go.disabled = false;
+      // По кругу, пока пример на экране (владелец 24.11: «картинки тоже стоит по кругу пропустить»).
+      if (visible) later(4500, play);
     });
   }
+  let visible = false;
   go.addEventListener('click', play);
   finish();
-  onFirstView(demo, play);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      const now = entries.some(entry => entry.isIntersecting);
+      if (now && !visible) { visible = true; if (!go.disabled) play(); }
+      else if (!now && visible) { visible = false; finish(); }
+    }, { threshold: 0.45 }).observe(demo);
+  }
 }
 document.querySelectorAll('.demo-tr').forEach(setupTranscribeDemo);
 
@@ -431,7 +468,7 @@ function setupNoteDemo(demo) {
   const words = demo.querySelector('.note-full').textContent.trim().split(/\s+/);
   const rec = demo.querySelector('.note-rec'), time = demo.querySelector('.note-time');
   const foot = demo.querySelector('.note-foot'), footText = foot.textContent;
-  let i = 0, timer = null, done = false;
+  let i = 0, timer = null, done = false, visible = false, again = 0;
   function show() {
     const s = Math.round(i / 2.3);
     time.textContent = '00:' + String(s).padStart(2, '0');
@@ -442,6 +479,9 @@ function setupNoteDemo(demo) {
     vc.classList.remove('live'); vc.classList.add('saved');
     rec.textContent = '✓ Заметка сохранена';
     foot.textContent = 'Сохранена в «Записях» вместе со звуком — можно переслушать и поправить.';
+    // По кругу, пока пример на экране, — без кнопки «Повторить» (владелец 24.11).
+    clearTimeout(again);
+    if (visible && !reducedMotion.matches) again = setTimeout(() => { reset(); start(); }, 3500);
   }
   function step() {
     if (i >= words.length) { finish(); return; }
@@ -457,13 +497,18 @@ function setupNoteDemo(demo) {
     pause(); i = 0; done = false; out.textContent = ''; show();
     vc.classList.remove('saved'); rec.textContent = '● Идёт заметка'; foot.textContent = footText;
   }
-  demo.addEventListener('vn:show', start);
-  demo.addEventListener('vn:hide', pause);
+  function seen(now) {
+    visible = now;
+    if (!now) { clearTimeout(again); pause(); return; }
+    if (done) { clearTimeout(again); again = setTimeout(() => { reset(); start(); }, 1200); }
+    else start();
+  }
+  demo.addEventListener('vn:show', () => seen(true));
+  demo.addEventListener('vn:hide', () => seen(false));
   demo.querySelector('.note-stop').addEventListener('click', finish);
-  demo.querySelector('.note-replay').addEventListener('click', () => { reset(); start(); });
+  demo.querySelector('.note-replay')?.addEventListener('click', () => { reset(); start(); });
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => (entries.some(e => e.isIntersecting) ? start() : pause()),
-                             { threshold: 0.3 }).observe(demo);
+    new IntersectionObserver(entries => seen(entries.some(e => e.isIntersecting)), { threshold: 0.3 }).observe(demo);
   } else finish();
 }
 document.querySelectorAll('.demo-note').forEach(setupNoteDemo);
