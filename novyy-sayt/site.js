@@ -350,12 +350,11 @@ function setupCallDemo(demo) {
   }
   function restore() {
     ovl.classList.remove('closed'); ovl.inert = false;
-    pill.hidden = true; tip.hidden = true;
+    pill.hidden = true; tip.hidden = true; fit();
   }
   function setSize(mini) {
     sizes.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.size === 'mini') === mini)));
     ovl.classList.toggle('mini', mini);
-    for (const p of box.children) p.classList.remove('cut');
     setTimeout(fit, 400);
   }
   // Нажал человек — показ ждёт 15 секунд без нажатий и продолжается сам (владелец 24.11: «анимация уже
@@ -421,9 +420,11 @@ function setupCallDemo(demo) {
   }
   // Реплика, которая не влезла целиком, прячется: обрезанная сверху строка читалась как
   // отметка без говорящего (замечание владельца 24.11 по снимку окна встречи).
+  // Строки идут сверху, новая — внизу; старая уходит, когда новой не хватает места (владелец 24.11 по снимку:
+  // пустота над строками — от спрятанной реплики, место за ней оставалось).
   function fit() {
-    const top = box.getBoundingClientRect().top;
-    for (const p of box.children) p.classList.toggle('cut', p.getBoundingClientRect().top < top - 1);
+    if (!box.clientHeight) return;
+    while (box.children.length > 1 && box.scrollHeight > box.clientHeight + 1) box.firstElementChild.remove();
   }
   box.addEventListener('transitionend', fit);
 
@@ -488,14 +489,12 @@ function setupCallDemo(demo) {
   let slideN = 0;
   function showSlide(n) {
     const s = slides[n]; slideN = n;
-    slideBox.querySelector('.slide-kicker').textContent = 'Планёрка · слайд ' + s.n + ' из 9';
     slideBox.querySelector('.slide-title').textContent = s.t;
     slideBox.querySelector('ul').replaceChildren(...s.li.map(([state, text]) => {
       const li = document.createElement('li'), dot = document.createElement('i');
       dot.className = state; li.append(dot, text); return li;
     }));
     slideBox.querySelectorAll('.slide-chart i').forEach((bar, k) => { bar.style.height = s.c[k] + '%'; });
-    demo.querySelector('.slide-num').textContent = s.n + ' / 9';
     slideBox.classList.remove('turn'); void slideBox.offsetWidth; slideBox.classList.add('turn');
   }
   // Встреча по кругу: слайд — каждые три реплики; курсор — «Мини» и обратно, крестик и «Открыть».
