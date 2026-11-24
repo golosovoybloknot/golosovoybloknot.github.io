@@ -90,6 +90,12 @@
   details[open] summary::after { content: "–" }
   details p { margin-top: 8px; color: #3b4a60; max-width: 52em }
   details a { color: var(--blue) }
+  /* «Почему так» — в самом шаге, раскрывается на месте. */
+  details.why { border: 0; padding: 0 }
+  details.why summary { display: inline-flex; gap: 6px; font-weight: 600; font-size: .93rem; color: var(--blue) }
+  details.why summary::after { content: "▾"; font-size: .9rem; color: var(--blue) }
+  details.why[open] summary::after { content: "▴" }
+  details.why p { font-size: .93rem; color: #3b4a60 }
   .help { text-align: center; color: var(--sub); padding: 26px 0 8px }
   .help a { color: var(--blue); font-weight: 600 }
   .foot { text-align: center; color: #7a879b; font-size: .85rem; padding: 6px 0 40px }
@@ -194,7 +200,12 @@
           <li><span>Нажмите <b>«Подробнее»</b>.</span></li>
           <li><span>Нажмите <b>«Выполнить в любом случае»</b>.</span></li>
         </ol>
-        <p class="note">Окно одно и то же во всех браузерах, в Windows 10 и 11 может отличаться только оттенок. Так Windows встречает любую новую программу без платной подписи Microsoft. <a href="#pochemu">Почему так</a></p>
+        <p class="note">Окно одно и то же во всех браузерах, в Windows 10 и 11 может отличаться только оттенок.</p>
+        <!-- «Почему так» раскрывается на месте (владелец 24.11: «открывается, а там надо ещё раз найти»). -->
+        <details class="why"><summary>Почему Windows так спрашивает?</summary>
+          <p>Так Windows встречает каждую новую программу, у которой нет платной подписи Microsoft, — это не значит, что с файлом что-то не так. Окно может появиться и после обновления: для Windows каждая версия — снова новая. Голосовой блокнот работает на вашем компьютере и не отправляет ваши записи в интернет.</p>
+          <p>Если в окне нет кнопки «Выполнить в любом случае», на компьютере включено «Интеллектуальное управление приложениями» (бывает на новых компьютерах с Windows 11). <a href="https://t.me/golosovoybloknot">Напишите нам</a> — подскажем.</p>
+        </details>
       </div>
       <div class="pics">
         <figure><span class="shot"><img src="../images/ustanovka-windows-1.webp" width="798" height="466" alt="Окно «Система Windows защитила ваш компьютер», ссылка «Подробнее»"><span class="mark" style="left:11.2%;top:59.7%;width:19%;height:10%"></span><span class="badge" style="left:26%;top:59.7%">1</span></span><figcaption>Сначала</figcaption></figure>
@@ -250,6 +261,17 @@
     }
     for (var k = 0; k < btns.length; k++) btns[k].addEventListener("click", function () { pick(this.getAttribute("data-br")); });
     pick(mine);
+    // Ссылка на свёрнутый блок раскрывает его сразу, а не только прокручивает к заголовку (владелец 24.11).
+    function openTo(id) {
+      var el = id && document.getElementById(id), d = el && el.closest("details");
+      if (!d) return false;
+      d.open = true; el.scrollIntoView({ behavior: "smooth", block: "start" }); return true;
+    }
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (a && openTo(a.getAttribute("href").slice(1))) { e.preventDefault(); history.replaceState(null, "", a.getAttribute("href")); }
+    });
+    if (location.hash) openTo(decodeURIComponent(location.hash.slice(1)));
     if (/Windows NT/.test(ua)) {
       // Скачивание — после того, как страница догрузилась: Firefox обрывает загрузку картинок, если скачивание
       // начать сразу (снимок владельца 24.11 — вместо снимков окна Windows одни подписи).

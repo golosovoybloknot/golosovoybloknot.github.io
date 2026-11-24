@@ -1116,3 +1116,24 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
   document.querySelectorAll('.no-cloud').forEach(f => onFirstView(f, () => f.classList.add('in-view'), 0.5));
   document.querySelectorAll('.prices').forEach(p => onFirstView(p, () => p.classList.add('in-view'), 0.5));
 })();
+
+/* Ссылка на свёрнутый блок (вопрос в «Частых вопросах» и т. п.) раскрывает его сразу, а не только прокручивает
+   к заголовку — владелец 24.11: «открывается, а там надо ещё раз найти». */
+(function openLinkedDetails() {
+  function openTo(id) {
+    const el = id && document.getElementById(id);
+    const d = el && el.closest('details');
+    if (!d) return false;
+    d.open = true;
+    el.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    return true;
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href*="#"]');
+    if (!a || a.pathname !== location.pathname) return;
+    const id = decodeURIComponent(a.hash.slice(1));
+    if (openTo(id)) { e.preventDefault(); history.replaceState(null, '', '#' + id); }
+  });
+  if (location.hash) openTo(decodeURIComponent(location.hash.slice(1)));
+  addEventListener('hashchange', () => openTo(decodeURIComponent(location.hash.slice(1))));
+})();
