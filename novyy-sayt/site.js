@@ -6,7 +6,7 @@ function configureGallery(selector) {
       const selected = link === active;
       const panel = document.getElementById(link.hash.slice(1));
       panel.hidden = !selected;
-      panel.querySelectorAll('.ed-mock, .demo-tr, .demo-call, .demo-note, .demo-wave, .demo-link')
+      panel.querySelectorAll('.ed-mock, .demo-tr, .demo-call, .demo-note, .demo-wave, .demo-link, .show')
         .forEach(d => d.dispatchEvent(new Event(selected ? 'vn:show' : 'vn:hide')));
       link.classList.toggle('current', selected);
       if (selected) link.setAttribute('aria-current','true');
@@ -839,7 +839,7 @@ function setupEditorDemo(demo) {
     if (typeof from === 'number') pos = from;
     if (pos >= TOTAL) pos = 0;
     playing = true; listen.textContent = '❚❚ Пауза'; listen.setAttribute('aria-pressed', 'true');
-    toast.textContent = '▶ Слушаем — подсветка идёт по словам. Пробел ставит на паузу.';
+    toast.textContent = '▶ В примере без звука: подсветка идёт по словам, как в программе со звуком. Пробел — пауза.';
     if (reducedMotion.matches) { render(); return; }
     last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
   }
@@ -851,7 +851,7 @@ function setupEditorDemo(demo) {
   demo.querySelector('.ed-back').addEventListener('click', () => { pos = Math.max(0, pos - 10); render(); });
   demo.querySelector('.ed-fwd').addEventListener('click', () => { pos = Math.min(TOTAL - 0.1, pos + 10); render(); });
   demo.addEventListener('keydown', event => {
-    if (event.key === ' ' && !event.target.matches('input, button')) { event.preventDefault(); playing ? pause() : play(); }
+    if (event.key === ' ' && !event.target.matches('input, button, [contenteditable="true"]')) { event.preventDefault(); playing ? pause() : play(); }
   });
 
   for (const input of demo.querySelectorAll('.ed-side input')) {
@@ -879,6 +879,27 @@ function setupEditorDemo(demo) {
         toast.textContent = 'Реплика выбрана — нажмите цвет справа, чтобы отметить её.';
       }
     });
+  }
+  function startEdit(text, word) {
+    if (text.isContentEditable) return;
+    text.contentEditable = 'true'; text.classList.add('editing'); text.focus();
+    const range = document.createRange();
+    if (word) range.selectNodeContents(word); else { range.selectNodeContents(text); range.collapse(false); }
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    toast.textContent = 'Впишите своё слово и нажмите Enter.';
+  }
+  function endEdit(text) {
+    if (!text.isContentEditable) return;
+    text.contentEditable = 'false'; text.classList.remove('editing');
+    toast.textContent = '✓ Исправлено. В программе правка сохраняется сразу и попадает в документ.';
+  }
+  for (const text of demo.querySelectorAll('.ed-x')) {
+    text.addEventListener('dblclick', event => startEdit(text, event.target.closest('.ed-word')));
+    text.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === 'Escape') { event.preventDefault(); endEdit(text); text.blur(); }
+      event.stopPropagation();
+    });
+    text.addEventListener('blur', () => endEdit(text));
   }
   let saved = null;
   document.addEventListener('selectionchange', () => {
@@ -981,7 +1002,11 @@ function setupEditorDemo(demo) {
     if (!b) return;
     stopTour();
     const pulse = el => { el.classList.remove('ed-pulse'); void el.offsetWidth; el.classList.add('ed-pulse'); };
-    if (b.dataset.try === 'name') {
+    if (b.dataset.try === 'fix') {
+      const text = rows[0].querySelector('.ed-x');
+      const word = Array.from(text.querySelectorAll('.ed-word')).find(w => w.textContent.startsWith('утро')) || text.querySelector('.ed-word');
+      startEdit(text, word); pulse(text);
+    } else if (b.dataset.try === 'name') {
       const input = demo.querySelector('.ed-side input');
       input.focus(); input.select(); pulse(input);
       toast.textContent = 'Впишите имя — оно заменится во всей записи.';
@@ -1138,3 +1163,95 @@ for (const holder of document.querySelectorAll('[data-notebook-motion]')) {
 }
 
 })();
+
+const SHOW_STEPS = {
+  listen: [
+    { f: 0, to: [3.5, 37.7], cap: 'Возле каждой реплики — время и кнопка ▶', wait: 1300 },
+    { click: 1, band: [33.5, 41.8], sweep: [21.9, 73.1, 37.7], cap: 'Нажали ▶ — слышна именно эта фраза, подсветка идёт по словам', wait: 3600 },
+    { to: [61.9, 6.6], cap: '«Участники…» — подписать, кто говорит', wait: 1300 },
+    { click: 1, wait: 350 },
+    { f: 1, to: [35.5, 15], cap: 'Впишите имена — они заменятся во всей записи. «▶ Голос» — послушать, кто это', wait: 3400 }
+  ],
+  mark: [
+    { f: 0, to: [51.7, 45.7], cap: 'Выделите мышью слова в реплике', wait: 1200 },
+    { drag: [74.1, 45.7], wait: 1000 },
+    { f: 1, cap: 'Сразу появляется: Важно, Вопрос, Цитата, Задача, Решение, Заметка', wait: 1700 },
+    { to: [58.3, 54.5], wait: 1000 },
+    { click: 1, wait: 350 },
+    { f: 2, hide: 1, cap: 'Отметка — справа, в «Отметках и заметках»: со временем и говорящим', wait: 2800 },
+    { to: [87, 57], cap: 'Отсюда — послушать это место, добавить заметку или снять отметку', wait: 2800 }
+  ],
+  doc: [
+    { f: 0, to: [91.7, 6.6], cap: 'Из отметок — документ: нажмите «Собрать документ»', wait: 1500 },
+    { click: 1, wait: 350 },
+    { f: 1, to: [46.9, 3.9], cap: 'Что взять: всё отмеченное, итог по цветам, только «Важно» — или весь текст', wait: 2900 },
+    { click: 1, wait: 350 },
+    { f: 2, to: [87.7, 3.9], cap: 'Весь текст записи — со временем или без', wait: 2500 },
+    { click: 1, wait: 300 },
+    { f: 3, to: [27.5, 37.8], cap: 'Документ — в редакторе: заголовки, жирный, списки', wait: 2600 },
+    { f: 4, to: [21, 95], cap: 'Пишите прямо в документе: дописать, исправить — как в Word', wait: 3000 },
+    { to: [65, 45], cap: '«Картинка…» — вставить снимок экрана или схему', wait: 1600 },
+    { click: 1, wait: 350 },
+    { f: 5, to: [27, 75], cap: 'Схема — прямо в документе, рядом с текстом', wait: 3000 },
+    { f: 6, hide: 1, cap: '«Причесать»: программа уберёт «э-э», «ну» и повторы', wait: 2300 },
+    { f: 7, cap: 'Готово одним нажатием — дальше «Сохранить в Word»', wait: 3200 }
+  ]
+};
+function setupShow(show) {
+  const steps = SHOW_STEPS[show.dataset.show];
+  if (!steps) return;
+  const stage = show.querySelector('.show-stage'), frames = Array.from(show.querySelectorAll('.sf'));
+  const cursor = show.querySelector('.demo-cursor'), cap = show.querySelector('.show-cap');
+  const band = show.querySelector('.show-band'), sweep = show.querySelector('.show-sweep');
+  let cur = 0, run = 0, visible = false, tabOn = !show.closest('[hidden]'), hold = 0;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function frame(i) { cur = i; frames.forEach((f, k) => f.classList.toggle('on', k === i)); }
+  function box() {
+    const s = stage.getBoundingClientRect(), r = frames[cur].getBoundingClientRect();
+    return { x: r.left - s.left, y: r.top - s.top, w: r.width, h: r.height };
+  }
+  function place(xy) { const b = box(); cursor.style.transform = 'translate(' + Math.round(b.x + b.w * xy[0] / 100) + 'px,' + Math.round(b.y + b.h * xy[1] / 100) + 'px)'; }
+  function tap() { cursor.classList.remove('click'); void cursor.offsetWidth; cursor.classList.add('click'); }
+  function overlays(st) {
+    band.hidden = !st.band; sweep.hidden = !st.sweep;
+    if (st.band) { const b = box(); Object.assign(band.style, { left: b.x + 'px', top: (b.y + b.h * st.band[0] / 100) + 'px', width: b.w + 'px', height: (b.h * (st.band[1] - st.band[0]) / 100) + 'px' }); }
+    if (st.sweep) {
+      const b = box(), [x1, x2, y] = st.sweep, w = b.w * 0.06, h = b.h * 0.05;
+      Object.assign(sweep.style, { transition: 'none', width: w + 'px', height: h + 'px', top: (b.y + b.h * y / 100 - h / 2) + 'px', left: (b.x + b.w * x1 / 100) + 'px' });
+      void sweep.offsetWidth;
+      sweep.style.transition = 'left ' + (st.wait / 1000 - 0.3) + 's linear';
+      sweep.style.left = (b.x + b.w * x2 / 100 - w) + 'px';
+    }
+  }
+  async function loop(id) {
+    frame(0); cursor.classList.remove('on'); band.hidden = sweep.hidden = true;
+    await wait(400);
+    while (run === id) {
+      for (const st of steps) {
+        if (run !== id) return;
+        if (st.f !== undefined) frame(st.f);
+        if (st.cap && cap.textContent !== st.cap) { cap.textContent = st.cap; cap.classList.remove('new'); void cap.offsetWidth; cap.classList.add('new'); }
+        if (st.hide) cursor.classList.remove('on');
+        if (st.to) { cursor.classList.add('on'); place(st.to); }
+        if (st.drag) { cursor.style.transition = 'transform .9s linear, opacity .3s'; place(st.drag); setTimeout(() => { cursor.style.transition = ''; }, 950); }
+        if (st.click) tap();
+        overlays(st);
+        await wait(st.wait);
+      }
+      band.hidden = sweep.hidden = true; cursor.classList.remove('on');
+      await wait(1500);
+      if (run === id) frame(0);
+    }
+  }
+  function update() {
+    const go = visible && tabOn && !hold && !reducedMotion.matches;
+    if (go && !run) loop(run = Date.now());
+    if (!go && run) { run = 0; cursor.classList.remove('on'); band.hidden = sweep.hidden = true; }
+  }
+  if (reducedMotion.matches) { frame(steps.reduce((m, s) => s.f !== undefined ? s.f : m, 0)); cap.textContent = steps[steps.length - 1].cap; }
+  show.addEventListener('vn:show', () => { tabOn = true; update(); });
+  show.addEventListener('vn:hide', () => { tabOn = false; update(); });
+  show.addEventListener('pointerdown', () => { clearTimeout(hold); hold = setTimeout(() => { hold = 0; update(); }, 15000); update(); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[es.length - 1].intersectionRatio >= 0.35; update(); }, { threshold: [0, 0.35] }).observe(show);
+}
+document.querySelectorAll('.show').forEach(setupShow);

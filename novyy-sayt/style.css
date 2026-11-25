@@ -951,3 +951,31 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 .final-copy .primary { margin-top: 14px }
 .final-art { position: relative; width: clamp(220px, 27vw, 360px); filter: drop-shadow(10px 18px 24px #31499933); transform: rotate(4deg) }
 @media (max-width: 720px) { .final-inner { grid-template-columns: 1fr } .final-art { justify-self: center; width: min(70vw, 280px); grid-row: 1 } }
+
+
+.foot-brand span { display: grid; gap: 2px }
+.foot-brand small { font-size: .74rem; font-weight: 500; color: var(--sub); line-height: 1.25 }
+
+
+.ed-x.editing { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; background: var(--paper); cursor: text }
+
+
+.show { position: relative; display: grid; gap: 10px }
+.show-stage { position: relative; aspect-ratio: var(--ar, 16/9); overflow: hidden }
+.show .sf { position: absolute; inset: 0; margin: auto; width: auto; height: auto; max-width: 100%; max-height: 100%; opacity: 0;
+  transition: opacity .45s ease; border-radius: 10px; box-shadow: 0 12px 34px #1a2b4d24 }
+.show .sf.on { opacity: 1; transition: opacity .35s ease .2s }
+.show .sf { transition: opacity .2s ease }
+.show-band { position: absolute; background: #2859c71c; border-block: 1px solid #2859c740; pointer-events: none }
+.show-sweep { position: absolute; border-radius: 5px; background: #2859c733; box-shadow: 0 0 0 1px #2859c766; pointer-events: none }
+
+.show-cap { justify-self: center; margin: 2px 0 0; max-width: 100%; padding: 11px 20px; border-radius: 14px; background: #142033; color: #fff;
+  font-size: clamp(.98rem, 1.35vw, 1.12rem); font-weight: 650; line-height: 1.35; text-align: center; box-shadow: 0 10px 28px #14203338 }
+.show-cap:empty { visibility: hidden }
+.show-cap.new { animation: show-cap-in .45s ease }
+@keyframes show-cap-in { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+[data-vn-theme=dark] .show-cap { background: #e8efff; color: #142033 }
+@media (prefers-reduced-motion: reduce) { .show-cap.new { animation: none } }
+.show-badge { position: absolute; top: -6px; right: -4px; padding: 3px 10px; border-radius: 999px; background: #142033; color: #fff; font-size: .74rem; font-weight: 700; letter-spacing: .02em }
+.show .demo-cursor { z-index: 6 }
+@media (prefers-reduced-motion: reduce) { .show .sf { transition: none } }
