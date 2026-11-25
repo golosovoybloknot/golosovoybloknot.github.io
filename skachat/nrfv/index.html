@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Голосовой блокнот — скачивание</title>
+<noscript><meta http-equiv="refresh" content="0; url=https://github.com/golosovoybloknot/voicenotes-models/releases/download/skachat-nrfv/GolosovoyBloknot_Setup.exe"></noscript>
+<style>
+  :root { color-scheme: light; --ink: #142033; --sub: #46566b; --paper: #fff; --blue: #2859c7; --soft: #fff4d6; --soft-ink: #6b4a00 }
+  @media (prefers-color-scheme: dark) { :root { color-scheme: dark; --ink: #e5edf8; --sub: #b4c2d6; --paper: #131d2b; --soft: #3b2e14; --soft-ink: #ffd99a } }
+  * { box-sizing: border-box }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 Inter, "Segoe UI", Arial, sans-serif }
+  main { max-width: 560px; margin: 0 auto; padding: 12vh 20px 48px; text-align: center; display: grid; gap: 14px; justify-items: center }
+  h1 { margin: 0; font-size: clamp(1.8rem, 6vw, 2.4rem); letter-spacing: -.04em; line-height: 1.1 }
+  p { margin: 0; color: var(--sub) }
+  .btn { display: inline-flex; padding: 12px 20px; border-radius: 10px; background: var(--blue); color: #fff; font-weight: 650; text-decoration: none }
+  .ne-win { display: none; background: var(--soft); color: var(--soft-ink); border-radius: 12px; padding: 12px 16px; text-align: left }
+  .ne-win b { word-break: break-all }
+  .ne-windows .na-win { display: none } .ne-windows .ne-win { display: block }
+  a.back { color: var(--sub) }
+</style>
+</head>
+<body>
+<main>
+  <h1>Голосовой блокнот</h1>
+  <p class="na-win">Скачивание началось. Когда файл скачается, откройте его&nbsp;— установка займёт пару минут.<br>Если скачивание не началось само:</p>
+  <p class="ne-win">Программа&nbsp;— для компьютера с Windows. Откройте эту ссылку на компьютере,
+    и скачивание начнётся само: <b data-ssylka></b></p>
+  <a class="btn" href="https://github.com/golosovoybloknot/voicenotes-models/releases/download/skachat-nrfv/GolosovoyBloknot_Setup.exe">Скачать установщик</a>
+  <p>Для Windows 10 и 11 · <a class="back" href="../../">о программе</a></p>
+</main>
+<script>
+  if (/Windows NT/.test(navigator.userAgent || "")) {
+    location.replace("https://github.com/golosovoybloknot/voicenotes-models/releases/download/skachat-nrfv/GolosovoyBloknot_Setup.exe");
+  } else {
+    document.documentElement.className += " ne-windows";
+    document.querySelector("[data-ssylka]").textContent = location.href;
+  }
+</script>
+</body>
+</html>
