@@ -8,8 +8,7 @@
 * { box-sizing: border-box }
 html { scroll-behavior: smooth; scroll-padding-top: 28px }
 body, h1, h2, h3, p, figure { margin: 0 }
-/* Цвет текста — у самой страницы: чужая обёртка (окно предпросмотра) задавала body свой и в тёмной теме
-   красила заголовки чёрным (владелец 24.11: «на тёмном фоне не весь читается»). */
+
 html body { color: var(--ink); background: var(--paper) }
 button, input, select, textarea { font: inherit }
 button, summary { cursor: pointer }
@@ -99,8 +98,10 @@ h3 { font-weight: 640; line-height: 1.24; letter-spacing: -.025em }
 .panel-art a,.article-body figure a { display: block; padding: 15px; text-align: center; background: #eef1f6; border: 1px solid #dae0e7; border-radius: 8px }
 .panel-art img,.article-body figure img { display: block; max-width: 100%; max-height: 345px; object-fit: contain; margin: auto }
 .panel-art figcaption,.article-body figcaption { margin-top: 6px; color: var(--sub); font-size: .83rem }
-.secure { background: linear-gradient(110deg,#142a44,#20375a 75%,#263c63); color: white }
-.secure-grid { display: grid; grid-template-columns: 1fr .9fr; gap: 10%; align-items: center; padding-block: clamp(42px,5.5vw,88px) }
+
+.secure { padding-block: clamp(18px,3vw,40px) }
+.secure-grid { display: grid; grid-template-columns: 1fr .9fr; gap: 10%; align-items: center; padding: clamp(30px,4.5vw,64px) clamp(22px,4.5vw,64px);
+  background: linear-gradient(110deg,#142a44,#20375a 75%,#263c63); color: white; border-radius: 28px; box-shadow: 0 24px 60px #14284a33 }
 .secure .kicker { color: #b4cef7 }
 .secure h2 { max-width: 17em }
 .secure p:not(.kicker) { color: #d7e4f6; margin-top: 12px }
@@ -155,7 +156,9 @@ dialog::backdrop { background: #0c1428cc }
  .wrap { width: calc(100% - 36px) } .mast { min-height: 61px; gap: 9px } .brand { font-size: 1rem; gap: 6px } .brand img { width: 32px; height: 32px }
  .mast nav { display: none } .head-download { padding: 7px 12px; font-size: .88rem }
  .mobile-nav { margin-left: auto; display: block; position: relative; border: 0 }
- .mobile-nav summary { font-size: .85rem; padding: 8px 4px } .mobile-nav summary:after { display: none }
+ .mobile-nav summary { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border-radius: 10px; list-style: none } .mobile-nav summary:after { display: none }
+ .mobile-nav summary::-webkit-details-marker { display: none }
+ .mobile-nav summary:hover { background: #eef3fb }
  .mobile-nav div { position: absolute; right: 0; top: 100%; z-index: 10; border: 1px solid var(--line); background: white; border-radius: 8px; min-width: 150px; padding: 5px }
  .mobile-nav a { display: block; padding: 7px 10px }
  .hero-grid { grid-template-columns: 1fr; padding-block: 30px 20px; gap: 14px }
@@ -265,7 +268,7 @@ dialog::backdrop { background: #0c1428cc }
   .marks-art .marks-card { padding:8px; }
 }
 
-/* ── Этап 1 (Claude, 24.11): значки на первом экране, цены с выгодой, подвал продавца, оферта ── */
+
 .badges { display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 0; padding:0; list-style:none }
 .badges li { font-size:.82rem; padding:4px 10px; border:1px solid var(--line); border-radius:20px; background:#ffffffb0; color:var(--sub) }
 .free-band { display:grid; grid-template-columns:auto 1fr; gap:6px 22px; align-items:center; margin-bottom:12px; padding:16px 20px; border-radius:12px; background:#e8f5ef; border:1px solid #bfe2d2 }
@@ -309,7 +312,7 @@ footer .legal a { color:inherit }
 .hero h1 .product-continuation { max-width:26ch }
 @media(max-width:720px) { .tariff .save { border-radius:8px; font-size:.76rem } }
 
-/* ── Живые примеры, «Кому подходит», подпись темы (Claude, 24.11) ── */
+
 .app-mock { --am-bg:#fff; --am-fg:#1d2633; --am-sub:#5a6676; --am-line:#dfe4ec; --am-chrome:#f5f7fa;
   background:var(--am-bg); color:var(--am-fg); border:1px solid var(--am-line); border-radius:12px; overflow:hidden;
   font:14px/1.45 "Segoe UI", Inter, Arial, sans-serif; box-shadow:0 18px 44px #2a3f7a24, 0 3px 10px #22305c14; text-align:left }
@@ -415,13 +418,12 @@ mark.m-task, .m-task { background:#c9efd2; color:#1d2633; border-radius:3px; pad
 .ed-x mark.ed-mark { border-radius:3px; padding:0 1px; color:#1d2633 }
 .ed-x::selection, .ed-x *::selection { background:#2859c755 }
 
-/* ── Правки команды (Claude, 24.11): шапка, текст, бегунок, схема «без облака», появление, подвал ── */
-/* Шапка: переключатель темы — значки с подсказками; меню прячется раньше, чтобы ничего не наезжало. */
+
+
 .brand { flex:none }
 .site-theme button { padding:7px 9px; font-size:1rem }
 .site-theme button span[aria-hidden] { font-size:1.05rem }
-/* Меню видно и на ноутбуке 1366 (владелец 24.11: на самом частом экране было одно слово «Меню»):
-   подпись «Тема программы:» убрана, значки с подсказками остались; меню прячется только на узких. */
+
 @media(max-width:1150px) {
   .mast { flex-wrap:wrap; gap:8px 14px; padding-block:9px }
   .mast nav { display:none }
@@ -433,11 +435,11 @@ mark.m-task, .m-task { background:#c9efd2; color:#1d2633; border-radius:3px; pad
 }
 .hero h1 { letter-spacing:-.05em }
 
-/* Текст темнее (владелец 24.11: «текст слишком светлый»). */
+
 details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 [data-vn-theme=dark] :is(details > p, .use p, .how-buy p, .price-notes) { color:#cbd6e6 }
 
-/* «Когда запись нельзя отдавать в облако» — светлым: два тёмных блока подряд были тяжелы. */
+
 .sensitive { background:#eef3ff; color:var(--ink); border:1px solid #cddbf7 }
 .sensitive p { color:#33435a }
 .sensitive-icon { color:#2859c7 }
@@ -446,7 +448,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 [data-vn-theme=dark] .sensitive-icon { color:#a3bfff }
 .uses { align-items:stretch }
 
-/* Цены: «помесячно» спокойнее, рамка выгодной без сдвига, блик при появлении. */
+
 .tariff .save.none { font-weight:500 }
 .tariff.top { border-color:transparent; box-shadow:0 0 0 2px #2859c7 }
 [data-vn-theme=dark] .tariff.top { box-shadow:0 0 0 2px #a3bfff }
@@ -459,7 +461,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .ovl-head .rec { animation:rec-blink 1.6s steps(1) infinite }
 @keyframes rec-blink { 50% { opacity:.45 } }
 
-/* Пример редактора: цветные имена, плеер, бегунок по словам. */
+
 .ed-main { display:grid; grid-template-rows:1fr auto; min-width:0 }
 .ed-w.s1, .ed-side input.s1 { color:#2e6fdb } .ed-w.s2, .ed-side input.s2 { color:#b5532c }
 [data-vn-theme=dark] .ed-w.s1, [data-vn-theme=dark] .ed-side input.s1 { color:#8db2ff }
@@ -477,7 +479,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .ed-time { font-size:12px; color:var(--am-sub); font-variant-numeric:tabular-nums }
 @media(max-width:720px) { .ed-side { order:-1; border-top:0; border-bottom:1px solid var(--am-line) } }
 
-/* Схема «без облака»: звук идёт с микрофона прямо в компьютер, облако зачёркнуто. */
+
 .no-cloud { margin:24px 0 0; max-width:440px; color:#dfe8ff }
 .no-cloud svg { display:block; width:100%; height:auto }
 .no-cloud figcaption { margin-top:6px; font-size:.86rem; color:#b9c8ea }
@@ -491,7 +493,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 @keyframes nc-draw { to { stroke-dashoffset:0 } }
 @keyframes nc-fade { to { opacity:.45 } }
 
-/* Мягкое появление при прокрутке и глубина при наведении. */
+
 .reveal-on .reveal { opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s cubic-bezier(.2,.8,.2,1) }
 .reveal-on .reveal.shown { opacity:1; transform:none }
 @media(hover:hover) {
@@ -500,7 +502,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
   .marks-art { transition:transform .3s ease }
 }
 
-/* Последний призыв и подвал с разделами. */
+
 .final-cta { background:linear-gradient(108deg,#f3f7ff,#e3e9ff); border-top:1px solid var(--line) }
 [data-vn-theme=dark] .final-cta { background:linear-gradient(110deg,#172238,#25324c); border-color:var(--line) }
 .final-inner { display:flex; flex-wrap:wrap; align-items:center; gap:18px 26px; padding-block:46px }
@@ -514,7 +516,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .foot-contact { display:grid; gap:6px; justify-items:end }
 @media(max-width:720px) { .foot-cols { grid-template-columns:1fr } .foot-contact { justify-items:start } }
 
-/* Подстраницы: «Что ещё умеет программа». */
+
 .related h2 { margin-bottom:14px }
 .related-links { display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
 .related-links a { display:grid; gap:4px; padding:16px; border:1px solid var(--line); border-radius:12px; text-decoration:none; background:var(--paper) }
@@ -530,8 +532,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
   .nc-cloud path { opacity:.45 }
 }
 
-/* ── Пример созвона как видеозвонок (владелец 24.11: «изображение собеседника как в Zoom… MAX, Telegram»;
-   «закрываешь крестиком — остаётся маленькое окошко»). Звонок — тёмный в обеих темах, как в звонилках. ── */
+
 .vc { position:relative; border-radius:12px; overflow:hidden; background:#1c222c; color:#e8edf5; border:1px solid #2c3442; box-shadow:0 18px 44px #0f1a3326 }
 .vc-bar { display:flex; align-items:center; gap:10px; padding:8px 12px; background:#252c38; font-size:12.5px; color:#c3cddb }
 .vc-dots { display:flex; gap:6px }
@@ -564,7 +565,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .vc-btn.vc-end { width:50px; border-radius:18px; background:#e5483b }
 .vc-btn.vc-end svg { fill:#fff; stroke:none }
 
-/* Наше окно поверх звонка — как в программе: заголовок «Заметки к записи» с крестиком. */
+
 .vc .call-ovl { position:absolute; right:16px; bottom:16px; z-index:2; width:min(340px, calc(100% - 32px)); box-shadow:0 16px 40px #000000b3; transform-origin:top right; transition:transform .35s cubic-bezier(.3,.7,.2,1), opacity .3s }
 .vc .call-ovl.closed { transform:scale(.18); opacity:0; pointer-events:none }
 .ovl-title { display:flex; align-items:center; gap:7px; padding:3px 3px 3px 10px; background:var(--am-chrome); border-bottom:1px solid var(--am-line); font-size:12px; color:var(--am-sub) }
@@ -582,12 +583,12 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .ovl-level i { display:block; width:24%; height:100%; border-radius:4px; background:#3ccf7a }
 .vc.live .ovl-level i { animation:vc-level 1.1s ease-in-out infinite alternate }
 @keyframes vc-level { 0% { width:18% } 40% { width:62% } 70% { width:34% } 100% { width:78% } }
-/* Видны последние слова, как в программе: старое уходит вверх, новое не прячется под край. */
+
 .vc .ovl-lines { display:flex; flex-direction:column; justify-content:flex-start; height:96px; max-height:none; font-size:12.5px; transition:height .35s }
 .vc .call-ovl.mini .ovl-size .am-muted, .vc .call-ovl.mini .ovl-full { display:none }
 .vc .call-ovl.mini .ovl-lines { height:58px }
 
-/* Свернули крестиком — маленький значок со временем у правого верхнего угла окна, как в программе. */
+
 .ovl-pill { position:absolute; right:16px; z-index:3; display:flex; align-items:center; gap:7px; padding:4px 4px 4px 11px; border-radius:999px; background:#22262e; border:1.5px solid #ffffffe6; color:#fff; font-size:12.5px; box-shadow:0 8px 22px #0009; animation:pill-in .3s cubic-bezier(.3,1.5,.6,1) }
 .ovl-pill[hidden], .ovl-tip[hidden] { display:none }
 .pill-dot { color:#e5483b; animation:rec-blink 1.6s steps(1) infinite }
@@ -597,7 +598,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 @keyframes pill-in { from { transform:scale(.6); opacity:0 } }
 .ovl-tip { position:absolute; right:16px; z-index:3; max-width:260px; padding:7px 10px; border-radius:6px; background:#fffbe6; color:#2a2a2a; border:1px solid #d9cf9c; font-size:12px; line-height:1.35; box-shadow:0 6px 16px #0006 }
 
-/* Показ курсором: один раз сам нажимает крестик и «Открыть». */
+
 .demo-cursor { position:absolute; left:0; top:0; z-index:5; width:22px; height:22px; pointer-events:none; opacity:0; transition:transform 1s cubic-bezier(.4,.1,.2,1), opacity .3s }
 .demo-cursor.on { opacity:1 }
 .demo-cursor svg { display:block; width:22px; height:22px; filter:drop-shadow(0 2px 3px #0009) }
@@ -618,8 +619,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
   .vc .call-ovl, .demo-cursor { transition:none }
 }
 
-/* Куда диктовать — MAX первым (владелец 24.11: «пользователи из РФ должны понимать, что MAX тоже будет
-   работать»). Значки нейтральные, без чужих логотипов: названия — словами. */
+
 .where-apps { display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; margin:10px 0 2px; font-size:.8rem; color:var(--sub) }
 .where-apps ul { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none }
 .where-apps li { display:inline-flex; align-items:center; gap:5px; padding:3px 10px 3px 7px; border:1px solid var(--line); border-radius:999px; background:color-mix(in srgb, var(--blue) 7%, var(--paper)); color:var(--ink); font-weight:600 }
@@ -633,8 +633,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 @keyframes chip-in { from { opacity:0; transform:translateY(6px) scale(.92) } }
 @media(prefers-reduced-motion:reduce) { .reveal-on .where-apps li { animation:none } }
 
-/* ── «Встречи, созвоны и заметки» — отдельный блок на виду (владелец 24.11: «созвонов не вижу… заметки упустили»).
-   Вкладки — как карточки на главном экране программы. ── */
+
 .record { display:grid; gap:18px }
 .record-modes { display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
 .record-modes [role=tab] { display:flex; align-items:center; gap:12px; padding:14px 16px; border:1px solid var(--line); border-radius:14px; background:var(--paper); color:var(--ink); text-align:left; transition:border-color .2s, box-shadow .2s, background .2s }
@@ -664,7 +663,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
   .rm-ico { width:36px; height:36px }
 }
 
-/* Встреча: презентация на экране, окно поверх неё. */
+
 .vc-meet .vc-stage { background:#3b4250 }
 .slide { position:absolute; inset:14px; padding:22px 26px; border-radius:6px; background:#fff; color:#1d2633; box-shadow:0 8px 24px #0006 }
 .slide-kicker { color:#6a7686; font-size:11.5px; letter-spacing:.02em }
@@ -688,7 +687,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .slide-tools { align-items:center }
 .slide-tools .slide-num { color:#c3cddb; font-size:13px; font-variant-numeric:tabular-nums }
 
-/* Заметка: окно заметки на рабочем столе, текст идёт по ходу речи. */
+
 .note-stage { display:grid; place-items:center; min-height:340px; height:auto; padding:24px 16px; background:linear-gradient(135deg,#dfe7fb,#eef0fb 45%,#e7defa) }
 [data-vn-theme=dark] .note-stage { background:linear-gradient(135deg,#1c2740,#232a44 45%,#2a2442) }
 .note-win { width:min(470px, 100%); box-shadow:0 18px 40px #1b2a5533 }
@@ -707,23 +706,22 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .vc.live .note-text::after { content:""; display:inline-block; width:2px; height:1.1em; margin-left:2px; vertical-align:-.2em; background:#2859c7; animation:rec-blink 1s steps(1) infinite }
 .note-foot { margin:0; padding:8px 14px 10px; border-top:1px solid var(--am-line); color:var(--am-sub); font-size:12px }
 .demo-note .demo-controls kbd, .demo-note .demo-controls .am-muted { font-size:12.5px }
-/* Тёмная тема: красный «● идёт запись» и зелёное «сохранено» светлее — на тёмном окне читаются. */
+
 [data-vn-theme=dark] :is(.ovl-head .rec, .note-rec) { color:#ff8f86 }
 [data-vn-theme=dark] .vc.saved .note-rec { color:#7fd6a4 }
 @media(prefers-reduced-motion:reduce) {
   .vc.live .room-chip .vc-eq i, .vc.live .note-rec, .vc.live .note-text::after { animation:none }
 }
 
-/* Страница «Голосовые заметки»: живой показ заметки под кнопками (владелец 24.11). */
+
 .article-top .demo-note { margin-top:26px; max-width:760px }
 
-/* Показ курсором в примере редактора (владелец 24.11): курсор поверх окна, поле имени «печатается». */
+
 .ed-mock { position:relative }
 .ed-side input.typing { border-color:var(--blue); box-shadow:0 0 0 3px color-mix(in srgb, var(--blue) 28%, transparent) }
 
-/* ── По кругу и «бесплатно» на виду (владелец 24.11: «картинки тоже по кругу… убрать кнопку, чтобы постоянно
-   ходил»; «люди первым бросается в глаза, что надо платить… как маркетологи: сначала бесплатно»). ── */
-/* Схема «без облака» повторяется: облако зачёркивается, текст пишется на компьютере, и снова. */
+
+
 .no-cloud.in-view .nc-path { animation:nc-flow 1s linear infinite }
 .no-cloud.in-view .nc-cross { animation:nc-cross-loop 6s ease-in-out infinite }
 .no-cloud.in-view .nc-cloud path { animation:nc-cloud-loop 6s ease-in-out infinite }
@@ -732,11 +730,11 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 @keyframes nc-cloud-loop { 0%, 8% { opacity:1 } 20%, 88% { opacity:.45 } 100% { opacity:1 } }
 @keyframes nc-text-loop { 0%, 25% { stroke-dashoffset:44 } 40%, 88% { stroke-dashoffset:0 } 100% { stroke-dashoffset:44 } }
 
-/* Пример диктовки: подсвечено, куда сейчас встаёт текст. */
+
 .where-apps li { transition:border-color .25s, background .25s, box-shadow .25s, color .25s }
 .where-apps li.on { border-color:var(--blue); background:color-mix(in srgb, var(--blue) 16%, var(--paper)); box-shadow:0 0 0 2px color-mix(in srgb, var(--blue) 22%, transparent) }
 
-/* «14 дней бесплатно» — зелёной плашкой впереди цены. */
+
 .free-tag { display:inline-flex; align-items:center; gap:7px; padding:3px 12px 3px 10px; border:1px solid #b5e2c6; border-radius:999px; background:#dff5e7; color:#17603e; font-weight:750; white-space:nowrap }
 .free-tag::before { content:""; flex:none; width:8px; height:8px; border-radius:50%; background:#2f9e68; box-shadow:0 0 0 3px #2f9e6833 }
 [data-vn-theme=dark] .free-tag { background:#173b2b; border-color:#2c6248; color:#9fe6bf }
@@ -750,7 +748,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
   .no-cloud.in-view .nc-path, .no-cloud.in-view .nc-cross, .no-cloud.in-view .nc-cloud path, .no-cloud.in-view .nc-text { animation:none }
 }
 
-/* ── Сценки звонка: MAX, Telegram, WhatsApp, Zoom (владелец 24.11: «разных героев, разные сценки»). ── */
+
 .vc-scenes { position:absolute; inset:8px }
 .vc-scene { position:absolute; inset:0; opacity:0; visibility:hidden; transition:opacity .6s ease, visibility 0s .6s }
 .vc-scene.on { opacity:1; visibility:visible; transition:opacity .6s ease }
@@ -759,7 +757,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .vc-grid { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:6px }
 .vc-grid .vc-tile { position:relative; inset:auto; width:auto; height:auto; min-height:0 }
 .vc-grid .vc-name { left:6px; top:6px; bottom:auto; font-size:11px; padding:2px 7px }
-/* Свой цвет у каждой программы — только цвет и название, без чужих логотипов. */
+
 .vc { --vc-accent:#7b61ff }
 .vc[data-app=Telegram] { --vc-accent:#2aa3df }
 .vc[data-app=WhatsApp] { --vc-accent:#25a35a }
@@ -775,7 +773,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 }
 @media(prefers-reduced-motion:reduce) { .vc-scene, .vc-scene.on { transition:none } }
 
-/* Надпись справа меняется вместе со сценкой; «Как записать созвон» — два способа прямо в блоке (владелец 24.11). */
+
 .record-copy.swap h3, .record-copy.swap ul { animation:copy-in .45s ease }
 @keyframes copy-in { from { opacity:0; transform:translateY(6px) } }
 .how-rec { margin:0 0 16px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:color-mix(in srgb, var(--blue) 5%, var(--paper)) }
@@ -786,7 +784,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 .how-rec li { padding-left:2px }
 .how-rec li::before { content:none }
 
-/* Карточка «Похоже, идёт созвон» — всплывает в начале показа, как в программе (владелец 24.11). */
+
 .call-card { position:absolute; right:16px; bottom:16px; z-index:4; width:min(330px, calc(100% - 32px)); box-shadow:0 18px 44px #000000b3 }
 .call-card[hidden] { display:none }
 .call-card.in { animation:card-in .45s cubic-bezier(.2,.9,.3,1.15) }
@@ -802,7 +800,7 @@ details > p, .use p, .how-buy p, .price-notes { color:#33435a }
 @media(max-width:560px) { .call-card { left:8px; right:8px; bottom:8px; width:auto } }
 @media(prefers-reduced-motion:reduce) { .call-card.in { animation:none } }
 
-/* Встреча: окошко программы «Записать встречу», цвет встречи, слайды листаются (владелец 24.11). */
+
 .vc-meet { --vc-accent:#3b82f6 }
 .meet-card { width:min(360px, calc(100% - 32px)) }
 .mc-list { display:grid; gap:8px; padding:4px 12px 12px }
@@ -817,12 +815,12 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 @keyframes slide-in { from { opacity:0; transform:translateX(14px) } }
 .slide-chart i { transition:height .6s ease }
 @media(prefers-reduced-motion:reduce) { .slide.turn > * { animation:none } .slide-chart i { transition:none } }
-/* Значок в заголовках карточки и окна — слева (общее правило картинок панели ставило его по центру). */
+
 .cc-head img, .ovl-title img { margin:0; flex:none }
 
-/* ── Заметка с клавишами и курсором, живая волна, расшифровка по ссылке; пауза украшений вне экрана (24.11). ── */
+
 .vc.idle *, .vc.idle *::before, .vc.idle *::after, .no-cloud.paused * { animation-play-state:paused !important }
-/* Заметка: клавиши Ctrl + F9 на экране, кнопки — как в программе. */
+
 .note-keys { position:absolute; top:14px; left:50%; z-index:3; display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:#16202ee6; color:#fff; font-size:12.5px; white-space:nowrap; opacity:0; pointer-events:none; transform:translateX(-50%) }
 .note-keys kbd { padding:3px 8px; border-radius:6px; background:#fff; color:#1d2633; box-shadow:0 3px 0 #9aa6b8; font:600 12px "Segoe UI", Inter, Arial, sans-serif }
 .note-keys span { color:#c9d4e6 }
@@ -839,7 +837,7 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 [data-vn-theme=dark] .vc-note.live .note-rec { color:#ff8f86 }
 .vc-note.saved .note-rec { color:#2f8f62 }
 
-/* Живая волна на вкладке «Диктовка». */
+
 .demo-wave { margin:0 }
 .wave-stage { display:grid; place-items:center; gap:16px; padding:36px 20px 26px; border:1px solid #dae0e7; border-radius:12px; background:radial-gradient(ellipse at 50% 45%, #ffffff 0%, #eef1f6 72%) }
 [data-vn-theme=dark] .wave-stage { border-color:var(--line); background:radial-gradient(ellipse at 50% 45%, #22304a 0%, #131d2b 72%) }
@@ -850,7 +848,7 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 .demo-wave figcaption { margin-top:8px; font-size:.92rem; color:var(--sub) }
 .wave-state { color:var(--ink) }
 
-/* Расшифровка по ссылке — крупное живое окно, как раздел «Расшифровка» в программе. */
+
 .link-mock { position:relative; padding:14px 16px 12px; font-size:13px }
 .link-top { display:flex; align-items:center; gap:12px; margin-bottom:8px }
 .link-top b { font-size:1.15rem; margin-right:auto }
@@ -875,8 +873,7 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 @media(prefers-reduced-motion:reduce) { .note-keys.press, .note-keys.press kbd { animation:none } }
 .link-opt { display:inline-flex; align-items:center; gap:6px; white-space:nowrap }
 
-/* ── Порядок после разбора 24.11: крупная диктовка на первом экране, переключатель темы в меню на телефоне,
-   «Почему можно доверять» в ценах. ── */
+
 .hero-big .dictation-demo { padding:20px 22px 14px; border-radius:16px; box-shadow:0 22px 50px #23397a1f }
 .hero-big .dictation-demo figcaption { font-size:.85rem }
 .hero-big .dictation-line { margin:14px 0 12px; min-height:2.8em; font-size:1.4rem; line-height:1.4 }
@@ -900,3 +897,57 @@ button.mc-item:hover, button.mc-item:focus-visible { border-color:#3b82f6; box-s
 @media(max-width:560px) { .trust-grid { grid-template-columns:1fr } }
 .trust-item { align-content:start }
 @media(max-width:560px) { .trust-grid { grid-template-columns:1fr 1fr; gap:8px } .trust-item { padding:12px 10px 12px 36px } .trust-item::before { left:10px; top:13px; width:18px; height:18px } .trust-item b { font-size:.9rem } .trust-item span { font-size:.8rem } }
+
+
+.burger { display: grid; gap: 5px; width: 22px }
+.burger i { display: block; height: 2px; border-radius: 2px; background: currentColor; transition: transform .2s ease, opacity .2s ease }
+.mobile-nav[open] .burger i:nth-child(1) { transform: translateY(7px) rotate(45deg) }
+.mobile-nav[open] .burger i:nth-child(2) { opacity: 0 }
+.mobile-nav[open] .burger i:nth-child(3) { transform: translateY(-7px) rotate(-45deg) }
+[data-vn-theme=dark] .mobile-nav summary:hover { background: #ffffff14 }
+
+
+.sec-pill { margin-bottom: 14px; font-size: .84rem }
+
+
+.no-cloud .nc-cloud { opacity: .55 }
+.no-cloud.in-view .nc-cloud path { animation: none }
+.nc-check { transform-box: fill-box; transform-origin: center; opacity: 0 }
+.no-cloud.in-view .nc-check { animation: nc-check-loop 6s ease-out infinite }
+@keyframes nc-check-loop { 0%, 38% { opacity: 0; transform: scale(.4) } 46%, 88% { opacity: 1; transform: scale(1) } 100% { opacity: 0; transform: scale(.4) } }
+@media (prefers-reduced-motion: reduce) { .no-cloud .nc-check { opacity: 1; animation: none } }
+
+
+.ed-try { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 12px; font-size: .9rem; color: var(--sub) }
+.ed-try span { font-weight: 650; color: var(--ink) }
+.ed-try button { border: 1px solid #b9cbee; background: #eef3ff; color: #1d3f9a; border-radius: 999px; padding: 6px 13px; font: inherit; font-weight: 600; cursor: pointer; transition: background .2s, border-color .2s }
+.ed-try button:hover { background: #dfe8ff; border-color: #8fa9e6 }
+[data-vn-theme=dark] .ed-try button { background: #1d2b4a; border-color: #3a5288; color: #c9d8ff }
+.cur-tip { position: absolute; left: 20px; top: 20px; white-space: nowrap; padding: 4px 9px; border-radius: 8px; background: #142033; color: #fff; font: 600 12px/1.3 Inter, "Segoe UI", sans-serif; box-shadow: 0 4px 14px #0004 }
+.cur-tip:empty { display: none }
+.ed-pulse { animation: ed-pulse 1.2s ease-out 2 }
+@keyframes ed-pulse { 0% { box-shadow: 0 0 0 0 #2859c766 } 100% { box-shadow: 0 0 0 12px #2859c700 } }
+
+
+.section-heading { display: block; margin-bottom: 27px }
+.section-heading > p { margin-top: 12px; max-width: 62ch; font-size: 1.05rem }
+
+
+.marks-notebook.vn-motion {
+  display: block;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+.vn-motion > img, .vn-motion > video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.vn-motion > video { position: absolute; inset: 0; }
+.vn-motion > video[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .vn-motion > video { display: none; } }
+.final-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 20px clamp(24px, 4vw, 64px); padding-block: clamp(36px, 4vw, 56px) }
+.final-copy { display: grid; gap: 6px; justify-items: start; min-width: 0 }
+.final-copy .primary { margin-top: 14px }
+.final-art { position: relative; width: clamp(220px, 27vw, 360px); filter: drop-shadow(10px 18px 24px #31499933); transform: rotate(4deg) }
+@media (max-width: 720px) { .final-inner { grid-template-columns: 1fr } .final-art { justify-self: center; width: min(70vw, 280px); grid-row: 1 } }

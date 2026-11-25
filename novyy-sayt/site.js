@@ -6,7 +6,6 @@ function configureGallery(selector) {
       const selected = link === active;
       const panel = document.getElementById(link.hash.slice(1));
       panel.hidden = !selected;
-      // Живые примеры во вкладке оживают сразу при её выборе (владелец 24.11: «перещёлкиваешь — анимация не работает»).
       panel.querySelectorAll('.ed-mock, .demo-tr, .demo-call, .demo-note, .demo-wave, .demo-link')
         .forEach(d => d.dispatchEvent(new Event(selected ? 'vn:show' : 'vn:hide')));
       link.classList.toggle('current', selected);
@@ -28,7 +27,6 @@ function configureGallery(selector) {
     if (active) { select(active); document.getElementById(active.hash.slice(1)).scrollIntoView({block:'nearest'}); }
   }
   window.addEventListener('hashchange', followHash);
-  // The hero may link to a currently hidden slide, including the already active URL.
   document.querySelector('.hero-snippet')?.addEventListener('click', () => {
     const active = links.find(link => link.hash === document.querySelector('.hero-snippet').hash);
     if (active) select(active);
@@ -119,9 +117,6 @@ function setupDictationDemo(demo) {
   const replay = demo.querySelector('.replay');
   const chips = Array.from(demo.querySelectorAll('.where-apps li'));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  // Пример идёт по кругу, пока он на экране, без кнопки «Повторить» (владелец 24.11: «убрать кнопку,
-  // чтобы постоянно ходил»), и меняет место вставки — оно подсвечено в строке «Текст встанет туда…».
-  // Первая фраза — из настроек сайта.
   const examples = [[phrase.textContent, 'MAX'],
     ['Пришлите, пожалуйста, договор до конца дня.', 'Почта'],
     ['Спасибо, всё получил. Отвечу завтра утром.', 'Telegram'],
@@ -132,8 +127,6 @@ function setupDictationDemo(demo) {
     letters = Array.from(text); phrase.textContent = text;
     chips.forEach(chip => chip.classList.toggle('on', chip.textContent.trim() === app));
   }
-  // The sprite holds 60 recording frames, 10 processing frames, and the done frame,
-  // rendered by the Windows app's SilkWaveOverlay at its native 20 fps.
   let timer;
   function finish() {
     clearTimeout(timer); clearTimeout(pause);
@@ -154,7 +147,7 @@ function setupDictationDemo(demo) {
       const frame = Math.floor((performance.now() - start) / 50);
       if (frame >= 70) { finish(); return; }
       wave.style.backgroundPositionY = (frame / 70 * 100) + '%';
-      typed.textContent = letters.slice(0, Math.ceil(letters.length * Math.min(1, frame / 59))).join('');
+      typed.textContent = '';
       state.textContent = frame < 60 ? 'Диктовка' : 'Распознавание';
       timer = setTimeout(draw, 50);
     }
@@ -173,7 +166,6 @@ function setupDictationDemo(demo) {
     }
     return;
   }
-  // A tap plays to the end. A long press ends the example on release.
   let pressedAt = 0;
   replay.addEventListener('click', event => { if (event.detail === 0) play(); });
   replay.addEventListener('keydown', event => {
@@ -245,7 +237,6 @@ document.querySelectorAll('.mobile-nav a').forEach(link => {
   link.addEventListener('click', () => { link.closest('details').open = false; });
 });
 
-/* ── Живые примеры (Claude, 24.11): расшифровка, окно созвона, редактор; тема; появление блоков ── */
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 function onFirstView(element, fn, threshold = 0.45) {
@@ -298,7 +289,6 @@ function setupTranscribeDemo(demo) {
       });
       status.textContent = '✓ Готово: 3 участника · «Открыть в редакторе»';
       go.disabled = false;
-      // По кругу, пока пример на экране (владелец 24.11: «картинки тоже стоит по кругу пропустить»).
       if (visible) later(4500, play);
     });
   }
@@ -318,12 +308,6 @@ function setupTranscribeDemo(demo) {
 document.querySelectorAll('.demo-tr').forEach(setupTranscribeDemo);
 
 function setupCallDemo(demo) {
-  // Видеозвонок с нашим окном поверх (владелец 24.11: «изображение собеседника как в Zoom… MAX,
-  // Telegram»; «закрываешь крестиком — остаётся маленькое окошко»). Крестик сворачивает окно
-  // в значок «● Запись 07:12 · Назвать · Открыть», как ZnachokZapisi в программе.
-  // Сценки (владелец 24.11: «нажимаешь — ничего не меняется… разных героев, разные сценки… и разные
-  // варианты окошек»): у MAX, Telegram, WhatsApp и Zoom свои герои, фон и разговор; сами сменяют друг
-  // друга, курсор по ходу показывает «Мини», крестик и «Открыть». Любое нажатие человека — показ стоп.
   const vc = demo.querySelector('.vc'), stage = demo.querySelector('.vc-stage');
   const ovl = demo.querySelector('.call-ovl'), box = demo.querySelector('.ovl-lines');
   const close = demo.querySelector('.ovl-x'), pill = demo.querySelector('.ovl-pill');
@@ -357,8 +341,6 @@ function setupCallDemo(demo) {
     ovl.classList.toggle('mini', mini);
     setTimeout(fit, 400);
   }
-  // Нажал человек — показ ждёт 15 секунд без нажатий и продолжается сам (владелец 24.11: «анимация уже
-  // не работает» — прежде одно нажатие выключало её навсегда).
   let userAt = 0;
   function byUser() { auto = false; userAt = Date.now(); cursor.classList.remove('on'); }
   function resumeAuto() {
@@ -366,8 +348,6 @@ function setupCallDemo(demo) {
     if (card) card.hidden = true;
     tip.hidden = true; restore(); setSize(false);
   }
-  // Карточка «Похоже, идёт созвон», как в программе (app.py: «Записать созвон», закрыть — пропустить
-  // этот созвон). Владелец 24.11: «сначала та, которая всплывает, — записать, либо крестиком закрыть».
   const card = demo.querySelector('.call-card');
   const cardRec = card && card.querySelector('.cc-rec');
   function showCard() {
@@ -396,8 +376,6 @@ function setupCallDemo(demo) {
   });
   for (const button of sizes) button.addEventListener('click', () => { byUser(); setSize(button.dataset.size === 'mini'); });
 
-  // Часы записи идут, пока пример на экране.
-  // Двое часов: сколько идёт звонок (заголовок звонилки) и сколько идёт наша запись (окно и значок).
   let seconds = Number(demo.dataset.start) || 7 * 60 + 3, recSeconds = seconds, clockTimer = null;
   const mmss = n => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
   function showClock() {
@@ -418,18 +396,12 @@ function setupCallDemo(demo) {
     while (box.children.length > 4) box.firstElementChild.remove();
     fit();
   }
-  // Реплика, которая не влезла целиком, прячется: обрезанная сверху строка читалась как
-  // отметка без говорящего (замечание владельца 24.11 по снимку окна встречи).
-  // Строки идут сверху, новая — внизу; старая уходит, когда новой не хватает места (владелец 24.11 по снимку:
-  // пустота над строками — от спрятанной реплики, место за ней оставалось).
   function fit() {
     if (!box.clientHeight) return;
     while (box.children.length > 1 && box.scrollHeight > box.clientHeight + 1) box.firstElementChild.remove();
   }
   box.addEventListener('transitionend', fit);
 
-  // Разговор идёт по кругу, пока пример на экране (владелец 24.11: «лучше бы всегда болтали»).
-  // Без сценок (встреча) — первые реплики из окна + продолжение из data-lines.
   let script = [], next = 0, lineTimer = null;
   function setScene(i) {
     scene = i; sceneTick = 0;
@@ -441,7 +413,6 @@ function setupCallDemo(demo) {
     seconds = Number(s.dataset.start) || seconds; recSeconds = Math.max(0, seconds - 25); showClock();
     card && (card.hidden = true);
     script = JSON.parse(s.dataset.lines);
-    // Надпись справа — своя у каждой сценки (владелец 24.11: «почему разные надписи не сделать?»).
     const copy = demo.closest('.record-panel')?.querySelector('.record-copy');
     if (copy && s.dataset.copy) {
       const c = JSON.parse(s.dataset.copy), h = copy.querySelector('h3'), ul = copy.querySelector('ul');
@@ -484,7 +455,6 @@ function setupCallDemo(demo) {
     else meetStory(++sceneTick);
   }
 
-  // Встреча: слайды листаются по ходу разговора (владелец 24.11: «внизу стоит 4 / 9» — стояло на месте).
   const slideBox = demo.querySelector('.slide'), slides = JSON.parse(demo.dataset.slides || 'null');
   let slideN = 0;
   function showSlide(n) {
@@ -497,7 +467,6 @@ function setupCallDemo(demo) {
     slideBox.querySelectorAll('.slide-chart i').forEach((bar, k) => { bar.style.height = s.c[k] + '%'; });
     slideBox.classList.remove('turn'); void slideBox.offsetWidth; slideBox.classList.add('turn');
   }
-  // Встреча по кругу: слайд — каждые три реплики; курсор — «Мини» и обратно, крестик и «Открыть».
   function meetStory(t) {
     if (slides && slideBox && t % 3 === 0) showSlide((slideN + 1) % slides.length);
     if (!auto) return;
@@ -509,7 +478,6 @@ function setupCallDemo(demo) {
     if (k === 12) act(open, restore);
   }
 
-  // Курсор: показывает, что можно сделать с окном.
   const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
   function point(el, dx, dy) {
     const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect();
@@ -527,10 +495,6 @@ function setupCallDemo(demo) {
     click(); fn(); await wait(900);
     if (auto) cursor.classList.remove('on');
   }
-  // Начало показа — сразу, как в жизни (владелец 24.11: «анимация должна начаться сразу… всплывать
-  // надпись „Похоже, идёт созвон“»): звонок идёт → карточка → «Записать созвон» → значок «● Запись»
-  // → «Открыть» → окно с текстом. В программе так и есть: при записи сначала значок (config.py,
-  // okno_poverh_samo=False), окно — по «Открыть».
   let introAt = -1;
   async function intro() {
     if (!auto || !card || introAt === scene) return;
@@ -541,8 +505,6 @@ function setupCallDemo(demo) {
     await wait(1700); if (!auto) return;
     await act(open, restore);
   }
-  // Сценарий одной сценки (по номеру реплики): MAX — карточка и запись, Telegram — «Мини» и обратно,
-  // WhatsApp — крестик и «Открыть»; потом следующая сценка.
   function story(t) {
     if (!auto) return;
     const app = scenes[scene].dataset.app;
@@ -566,9 +528,7 @@ function setupCallDemo(demo) {
       vc.classList.add('live'); lineTimer = setInterval(tickLine, 2600);
     }
   }
-  // Начало (карточка и курсор) — когда пример виден больше чем наполовину, чтобы не пролетело при прокрутке.
   function maybeIntro() { if (card && scene === 0 && introAt === -1) intro(); }
-  // Не на экране — стоят и часы, и мелкие украшения (моргание, полоски звука): сайт не тратит силы впустую.
   function stop() {
     clearInterval(clockTimer); clockTimer = null; vc.classList.add('idle');
     clearInterval(lineTimer); lineTimer = null; vc.classList.remove('live'); speak('');
@@ -586,10 +546,8 @@ function setupCallDemo(demo) {
 document.querySelectorAll('.demo-call').forEach(setupCallDemo);
 
 function setupNoteDemo(demo) {
-  // Голосовая заметка (владелец 24.11: «заметки — мы это упустили»; «сделай также курсор в заметке»):
-  // по кругу — то клавиши Ctrl + F9 на экране, то курсор «● Начать голосовую заметку»; текст идёт по ходу
-  // речи; в конце курсор — «■ Остановить и сохранить». Тексты кнопок — как в программе (note_editor.py).
-  // Нажал человек сам — показ ждёт 15 секунд и продолжается.
+  const nm = demo.querySelector('.note-name');
+  if (nm) nm.textContent = 'Заметка, ' + new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
   const vc = demo.querySelector('.vc'), stage = demo.querySelector('.note-stage');
   const out = demo.querySelector('.note-text'), hint = demo.querySelector('.note-hint');
   const words = demo.querySelector('.note-full').textContent.trim().split(/\s+/);
@@ -668,7 +626,6 @@ function setupNoteDemo(demo) {
     if (!now) { halt(); return; }
     if (!busy && auto()) cycleOnce();
   }
-  // Через 15 секунд после нажатия человека показ продолжается сам.
   setInterval(() => { if (visible && !busy && auto()) cycleOnce(); }, 2000);
   demo.addEventListener('vn:show', () => seen(true));
   demo.addEventListener('vn:hide', () => seen(false));
@@ -683,8 +640,6 @@ function setupNoteDemo(demo) {
 document.querySelectorAll('.demo-note').forEach(setupNoteDemo);
 
 function setupWaveDemo(demo) {
-  // Живая волна на вкладке «Диктовка» (владелец 24.11: «чтобы красиво эта волна сияла и бежала…
-  // с объяснениями, что это»). Кадры — те же, что рисует программа (SilkWaveOverlay, 20 кадров в секунду).
   const wave = demo.querySelector('.wave-big'), state = demo.querySelector('.wave-state');
   const note = demo.querySelector('.wave-note'), keys = demo.querySelector('.wave-keys');
   const TEXT = {
@@ -695,7 +650,6 @@ function setupWaveDemo(demo) {
   let timer = 0, frame = 0;
   function say(k) { state.textContent = TEXT[k][0]; note.textContent = '— ' + TEXT[k][1]; keys.classList.toggle('down', k === 'rec'); }
   function draw(f) { wave.style.backgroundPositionY = (f / 70 * 100) + '%'; }
-  // 0–59 — запись, 60–69 — распознавание, 70 — готово (держим две секунды).
   function step() {
     let f;
     if (frame < 60) { f = frame; if (frame === 0) say('rec'); }
@@ -717,8 +671,6 @@ function setupWaveDemo(demo) {
 document.querySelectorAll('.demo-wave').forEach(setupWaveDemo);
 
 function setupLinkDemo(demo) {
-  // Расшифровка по ссылке (владелец 24.11: «окно расшифровки покрупнее и тоже анимацию»): курсор вставляет
-  // ссылку, жмёт «Расшифровать» — звук, распознавание, голоса — текст лекции. По кругу; нажал сам — 15 с пауза.
   const URL_TEXT = 'https://www.youtube.com/watch?v=lekciya-szhatie';
   const mock = demo.querySelector('.link-mock'), url = demo.querySelector('.link-url');
   const ph = demo.querySelector('.link-ph'), go = demo.querySelector('.link-go'), field = demo.querySelector('.link-input');
@@ -819,14 +771,12 @@ function setupLinkDemo(demo) {
 }
 document.querySelectorAll('.demo-link').forEach(setupLinkDemo);
 
-// Схема «без облака» крутится, только пока её видно (владелец 24.11: «чтобы сайт был лёгкий»).
 if ('IntersectionObserver' in window) {
   document.querySelectorAll('.no-cloud').forEach(el => new IntersectionObserver(entries => {
     el.classList.toggle('paused', !entries[entries.length - 1].isIntersecting);
   }).observe(el));
 }
 
-// «Созвон · Встреча · Заметка» — вкладки, как карточки на главном экране программы.
 for (const block of document.querySelectorAll('.record')) {
   const tabs = Array.from(block.querySelectorAll('[role=tab]'));
   const select = (tab, focus) => {
@@ -835,8 +785,6 @@ for (const block of document.querySelectorAll('.record')) {
       t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
       const panel = document.getElementById(t.getAttribute('aria-controls'));
       panel.hidden = !on;
-      // Показ в открытой вкладке начинается сразу, в закрытой — останавливается: наблюдатель
-      // видимости замечает смену вкладки не во всех браузерах.
       panel.querySelectorAll('.demo-call, .demo-note').forEach(d => d.dispatchEvent(new Event(on ? 'vn:show' : 'vn:hide')));
     }
     if (focus) tab.focus();
@@ -858,7 +806,6 @@ function setupEditorDemo(demo) {
   const TOTAL = 38;
   let picked = null;
 
-  // Слова — отдельными кусками: по ним бежит подсветка при прослушивании, как в программе.
   for (const text of demo.querySelectorAll('.ed-x')) {
     const words = text.textContent.split(/(\s+)/);
     text.textContent = '';
@@ -933,8 +880,6 @@ function setupEditorDemo(demo) {
       }
     });
   }
-  // Как в программе: цветом отмечаются выделенные слова, а не вся реплика (владелец 24.11).
-  // Выделение запоминаем заранее: нажатие на кнопку цвета в некоторых браузерах его снимает.
   let saved = null;
   document.addEventListener('selectionchange', () => {
     const selection = getSelection();
@@ -965,14 +910,12 @@ function setupEditorDemo(demo) {
   }
   render();
 
-  // Показ курсором, один раз при первом появлении (владелец 24.11: «в редакторе тоже стоит сделать…
-  // мышкой указание, что можно сделать»): выделить слова → «Задача», вписать имена участников,
-  // «▶ Слушать» с бегунком. Любое нажатие человека в примере останавливает показ.
   const cursor = demo.querySelector('.demo-cursor');
-  // Показ повторяется при каждом возвращении к примеру (владелец 24.11: «прокручиваешь — анимация уже не
-  // работает»), пока человек сам ничего в нём не трогал: его правки показ не стирает.
   let tour = false, touched = false;
   const stopTour = () => { touched = true; if (tour) { tour = false; cursor.classList.remove('on'); } };
+  const tip = document.createElement('span'); tip.className = 'cur-tip';
+  if (cursor) cursor.append(tip);
+  const say = (text, short) => { toast.textContent = text; tip.textContent = short || ''; };
   demo.addEventListener('pointerdown', stopTour, true);
   demo.addEventListener('keydown', stopTour, true);
   function resetEditor() {
@@ -1005,10 +948,9 @@ function setupEditorDemo(demo) {
     cursor.style.transition = 'none'; cursor.style.transform = point(rows[0], 60, 12);
     void cursor.offsetWidth; cursor.style.transition = '';
     cursor.classList.add('on');
-    toast.textContent = 'Смотрите: выделяем слова и отмечаем цветом.';
+    say('Смотрите: выделяем слова и отмечаем цветом.', 'Выделяем слова');
     await wait(500); if (!tour) return;
     cursor.style.transform = point(target[0], 1, 6); await wait(1100); if (!tour) return;
-    // Выделение «тянется» по словам, как мышью.
     const selection = getSelection(), range = document.createRange();
     range.setStartBefore(target[0]);
     cursor.style.transition = 'transform .22s linear, opacity .3s';
@@ -1021,18 +963,41 @@ function setupEditorDemo(demo) {
     await wait(500); if (!tour) return;
     const task = demo.querySelector('.ed-marks [data-m="m-task"]');
     cursor.style.transform = point(task); await wait(1100); if (!tour) return;
-    tap(); task.click(); await wait(1800); if (!tour) return;
+    tip.textContent = 'Отмечаем «Задача»'; tap(); task.click(); await wait(1800); if (!tour) return;
     const [first, second] = demo.querySelectorAll('.ed-side input');
-    cursor.style.transform = point(first, 40); await wait(1100); if (!tour) return;
+    tip.textContent = 'Переименуем спикеров'; cursor.style.transform = point(first, 40); await wait(1100); if (!tour) return;
     tap(); await type(first, 'Руководитель'); await wait(1300); if (!tour) return;
     cursor.style.transform = point(second, 40); await wait(1000); if (!tour) return;
     tap(); await type(second, 'Дизайнер'); await wait(1500); if (!tour) return;
-    cursor.style.transform = point(listen); await wait(1100); if (!tour) return;
+    tip.textContent = 'Слушаем — слова подсвечиваются'; cursor.style.transform = point(listen); await wait(1100); if (!tour) return;
     tap(); play(0); await wait(9000); if (!tour) return;
     if (playing) pause();
-    tour = false; cursor.classList.remove('on');
+    tour = false; cursor.classList.remove('on'); tip.textContent = '';
     toast.textContent = 'Теперь сами: «▶ Слушать», впишите имя участника или выделите слова и нажмите цвет.';
   }
+  const tryBox = demo.closest('.tour-slide')?.querySelector('.ed-try');
+  if (tryBox) tryBox.addEventListener('click', event => {
+    const b = event.target.closest('button[data-try]');
+    if (!b) return;
+    stopTour();
+    const pulse = el => { el.classList.remove('ed-pulse'); void el.offsetWidth; el.classList.add('ed-pulse'); };
+    if (b.dataset.try === 'name') {
+      const input = demo.querySelector('.ed-side input');
+      input.focus(); input.select(); pulse(input);
+      toast.textContent = 'Впишите имя — оно заменится во всей записи.';
+    } else if (b.dataset.try === 'mark') {
+      const words = Array.from(rows[1].querySelectorAll('.ed-word'));
+      const from = Math.max(0, words.findIndex(w => w.textContent === 'сдам'));
+      const range = document.createRange();
+      range.setStartBefore(words[from]); range.setEndAfter(words[words.length - 1]);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      pulse(demo.querySelector('.ed-marks'));
+      toast.textContent = 'Слова выделены — нажмите цвет справа: «Задача», «Важно»…';
+    } else {
+      if (playing) pause();
+      play(Number(rows[0].dataset.start));
+    }
+  });
   function seenEditor(now) {
     if (now) { showTour(); return; }
     if (tour) { tour = false; cursor.classList.remove('on'); if (playing) pause(); }
@@ -1042,13 +1007,12 @@ function setupEditorDemo(demo) {
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
       const e = entries[entries.length - 1];
-      seenEditor(e.isIntersecting && e.intersectionRatio >= 0.6);
-    }, { threshold: [0, 0.6] }).observe(demo);
+      seenEditor(e.isIntersecting && e.intersectionRatio >= 0.35);
+    }, { threshold: [0, 0.35] }).observe(demo);
   }
 }
 document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
 
-/* Переключатель темы: компактно (значки с подсказками) и с подписью — видно, что это про программу. */
 (function themeHint() {
   const group = document.querySelector('.site-theme');
   if (!group) return;
@@ -1061,9 +1025,6 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
       text.replaceWith(sr);
     }
   }
-  // Подпись «Тема программы:» убрана, чтобы в шапке на ноутбуке поместилось меню (владелец 24.11);
-  // что это про программу — в подсказке у каждого значка и во всплывающем пояснении.
-  // На телефоне переключатель — в «Меню»: целой строкой под шапкой он отнимал место.
   const menu = document.querySelector('.mobile-nav div'), home = group.parentElement, after = group.nextElementSibling;
   const narrow = matchMedia('(max-width: 630px)');
   const place = () => {
@@ -1089,8 +1050,6 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
   });
 })();
 
-/* Мягкое появление блоков при прокрутке и схема «без облака». Без скрипта всё видно сразу:
-   прячем только когда скрипт работает; первый экран не трогаем. */
 (function reveal() {
   if (reducedMotion.matches || !('IntersectionObserver' in window)) {
     document.querySelectorAll('.no-cloud').forEach(f => f.classList.add('in-view'));
@@ -1117,8 +1076,6 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
   document.querySelectorAll('.prices').forEach(p => onFirstView(p, () => p.classList.add('in-view'), 0.5));
 })();
 
-/* Ссылка на свёрнутый блок (вопрос в «Частых вопросах» и т. п.) раскрывает его сразу, а не только прокручивает
-   к заголовку — владелец 24.11: «открывается, а там надо ещё раз найти». */
 (function openLinkedDetails() {
   function openTo(id) {
     const el = id && document.getElementById(id);
@@ -1136,4 +1093,48 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
   });
   if (location.hash) openTo(decodeURIComponent(location.hash.slice(1)));
   addEventListener('hashchange', () => openTo(decodeURIComponent(location.hash.slice(1))));
+})();
+
+(function notebookMotion() {
+for (const holder of document.querySelectorAll('[data-notebook-motion]')) {
+  const film = holder.querySelector('video');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  if (!window.IntersectionObserver || !film.canPlayType('video/webm; codecs="vp9"')) continue;
+  let nearby = false, visible = false, alphaReady = false, failed = false;
+
+  function update() {
+    if (failed || reduce.matches) {
+      film.pause();
+      film.hidden = true;
+      if (film.readyState) film.currentTime = 0;
+      return;
+    }
+    if (nearby && !document.hidden && !film.hasAttribute('src')) film.src = holder.dataset.notebookMotion;
+    if (!visible || document.hidden) { film.pause(); return; }
+    if (film.hasAttribute('src')) {
+      film.hidden = !alphaReady;
+      film.play().catch(() => {});
+    }
+  }
+  film.addEventListener('loadeddata', () => {
+    try {
+      const probe = document.createElement('canvas');
+      probe.width = probe.height = 1;
+      const ctx = probe.getContext('2d', {willReadFrequently:true});
+      ctx.drawImage(film, 0, 0, 1, 1, 0, 0, 1, 1);
+      alphaReady = ctx.getImageData(0,0,1,1).data[3] === 0;
+    } catch {
+      alphaReady = location.protocol === 'file:';
+    }
+    failed = !alphaReady;
+    update();
+  });
+  film.addEventListener('error', () => { failed = true; film.hidden = true; });
+  new IntersectionObserver(([entry]) => { nearby = entry.isIntersecting; update(); },
+    {rootMargin:'180px 0px'}).observe(holder);
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; update(); }).observe(holder);
+  document.addEventListener('visibilitychange', update);
+  reduce.addEventListener('change', update);
+}
+
 })();

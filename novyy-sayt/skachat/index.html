@@ -6,10 +6,7 @@
 <title>Скачать — Голосовой блокнот</title>
 <link rel="icon" href="../favicon.ico" sizes="any">
 <style>
-  /* Страница после «Скачать». Образец — google.com/chrome/next-steps: три шага, у каждого настоящий снимок, браузер
-     определяется сам. Оформление — как у остального сайта (цвета, шрифт, карточки, шапка). Все снимки — настоящие,
-     из прохода владельца по пяти браузерам 24.11 (Яндекс, Edge, Chrome, Firefox, Opera); синее окно Windows снято на
-     его ноутбуке. Владелец: «чтоб всё выглядело солидно, как и весь остальной сайт». */
+  
   :root { color-scheme: light; --ink: #142033; --sub: #46566b; --line: #d3ddeb; --paper: #fff; --soft: #f5f8fd;
     --blue: #2859c7; --blue-ink: #224bb5; font: 100%/1.55 Inter, "Segoe UI", Arial, sans-serif; color: var(--ink); background: var(--paper) }
   * { box-sizing: border-box }
@@ -19,14 +16,14 @@
   a { color: inherit; text-underline-offset: .23em }
   b { font-weight: 650 }
   .wrap { width: min(1080px, calc(100% - clamp(32px, 7vw, 120px))); margin-inline: auto }
-  /* Шапка — как на сайте. */
+  
   .head { background: #fff; border-bottom: 1px solid #dfe6ef }
   .mast { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 68px }
   .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 690; letter-spacing: -.045em; font-size: 1.12rem; white-space: nowrap }
   .brand img { width: 32px; height: 32px }
   .back { font-size: .93rem; font-weight: 550; text-decoration: none; color: var(--sub) }
   .back:hover { color: var(--blue) }
-  /* Верх — мягкий фон, как первый экран сайта. */
+  
   .band { border-bottom: 1px solid #ced9e8; background: radial-gradient(ellipse at 90% 80%, #c5d4ff 0, transparent 40%),
     radial-gradient(ellipse at 76% 6%, #d8e9ff 0, transparent 46%), linear-gradient(108deg, #fcfdff 13%, #f3f7ff 56%, #e3e6ff 100%) }
   .band .wrap { padding-block: clamp(30px, 4.5vw, 56px); display: grid; gap: 14px; justify-items: start }
@@ -38,7 +35,7 @@
   .file { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 4px; font-size: .93rem; color: var(--sub) }
   .file code { font: 600 .92rem/1 Inter, "Segoe UI", sans-serif; color: var(--ink); background: #ffffffc0; border: 1px solid #d5def0; border-radius: 8px; padding: 7px 10px }
   .file a { color: var(--blue); font-weight: 600 }
-  /* Шаги — карточки: слева что сделать, справа как это выглядит. */
+  
   .steps { list-style: none; padding: clamp(26px, 4vw, 44px) 0 0; display: grid; gap: 20px }
   .step { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: clamp(22px, 3.5vw, 44px); align-items: start;
     padding: clamp(20px, 2.6vw, 30px); border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 1px 2px #14203308, 0 10px 30px #1a2b4d0d }
@@ -53,14 +50,14 @@
   .todo li::before { content: counter(t); display: grid; place-items: center; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: #e8eefb; color: var(--blue-ink); font-size: .8rem; font-weight: 750 }
   .key { display: inline-block; min-width: 1.7em; padding: 1px 7px; border: 1px solid #c9d4e6; border-bottom-width: 2px; border-radius: 7px; background: #fff; font-size: .88em; font-weight: 600; text-align: center; white-space: nowrap }
   .dl { display: inline-block; width: 1.2em; height: 1.2em; vertical-align: -.22em; color: var(--blue) }
-  /* Браузер — сам; другой — мелкими кнопками внизу шага. */
+  
   .br { display: none }
   .br.on { display: grid; gap: 12px }
   .pick { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; font-size: .84rem; color: var(--sub) }
   .pick button { border: 1px solid #d3ddeb; background: #fff; color: #33435a; border-radius: 999px; padding: 3px 11px; font: inherit; cursor: pointer }
   .pick button:hover { border-color: #9fb3d9 }
   .pick button[aria-pressed=true] { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 600 }
-  /* Снимки — в одинаковых рамках; место нажатия — синее кольцо с мягким свечением и номер. */
+  
   .pics { display: grid; gap: 16px; min-width: 0; width: 100%; max-width: 480px; justify-self: end }
   @media (min-width: 821px) { .txt { position: sticky; top: 24px } }
   .pics .br.on { gap: 16px }
@@ -90,7 +87,7 @@
   details[open] summary::after { content: "–" }
   details p { margin-top: 8px; color: #3b4a60; max-width: 52em }
   details a { color: var(--blue) }
-  /* «Почему так» — в самом шаге, раскрывается на месте. */
+  
   details.why { border: 0; padding: 0 }
   details.why summary { display: inline-flex; gap: 6px; font-weight: 600; font-size: .93rem; color: var(--blue) }
   details.why summary::after { content: "▾"; font-size: .9rem; color: var(--blue) }
@@ -102,7 +99,7 @@
   .foot a { color: inherit }
   main.wrap { display: grid; gap: 20px }
   @media (max-width: 820px) { .step { grid-template-columns: 1fr } .pics { justify-self: start } }
-  /* Телефон: программа для Windows — вместо шагов просьба открыть ссылку на компьютере. */
+  
   .phone { display: none; padding: 18px 20px; border-radius: 16px; background: #fff4d6; color: #6b4a00 }
   .phone b { word-break: break-all }
   .copy { margin-top: 10px; border: 1px solid currentColor; background: transparent; color: inherit; border-radius: 9px; padding: 8px 14px; font: inherit; font-size: .92rem; cursor: pointer }
@@ -172,7 +169,7 @@
           <figure><span class="shot strip"><img src="../images/ustanovka-yandex.webp" width="705" height="62" alt="Правый верхний угол Яндекс Браузера, значок загрузок"><span class="mark" style="left:96.5%;top:48%;width:38px;height:38px"></span></span><figcaption>Яндекс Браузер, вверху справа</figcaption></figure>
         </div>
         <div class="br" data-br="edge">
-          <figure><span class="shot"><img src="../images/ustanovka-edge.webp" width="539" height="298" alt="Загрузки Edge: GolosovoyBloknot_Setup.exe скачивается редко"><span class="mark" style="left:95.2%;top:10%;width:36px;height:36px"></span><span class="badge" style="left:88%;top:56%">1</span></span><figcaption>Загрузки Edge</figcaption></figure>
+          <figure><span class="shot"><img src="../images/ustanovka-edge.webp" width="539" height="298" alt="Загрузки Edge: GolosovoyBloknot_Setup.exe скачивается редко"><span class="mark" style="left:95.2%;top:10%;width:36px;height:36px"></span></span><figcaption>Загрузки Edge</figcaption></figure>
           <figure><span class="shot"><img src="../images/ustanovka-edge-2.webp" width="542" height="446" alt="Окно Edge: стрелка у кнопки «Удалить», пункт «Все равно сохранить»"><span class="mark" style="left:88%;top:74%;width:11%;height:11%"></span><span class="badge" style="left:50%;top:85.9%">2</span><span class="mark" style="left:77.3%;top:85.9%;width:46%;height:11.5%"></span></span><figcaption>Окно после «Сохранить»</figcaption></figure>
         </div>
         <div class="br" data-br="chrome">
@@ -201,14 +198,14 @@
           <li><span>Нажмите <b>«Выполнить в любом случае»</b>.</span></li>
         </ol>
         <p class="note">Окно одно и то же во всех браузерах, в Windows 10 и 11 может отличаться только оттенок.</p>
-        <!-- «Почему так» раскрывается на месте (владелец 24.11: «открывается, а там надо ещё раз найти»). -->
-        <details class="why"><summary>Почему Windows так спрашивает?</summary>
+        
+        <details class="why" id="pochemu"><summary>Почему Windows так спрашивает?</summary>
           <p>Так Windows встречает каждую новую программу, у которой нет платной подписи Microsoft, — это не значит, что с файлом что-то не так. Окно может появиться и после обновления: для Windows каждая версия — снова новая. Голосовой блокнот работает на вашем компьютере и не отправляет ваши записи в интернет.</p>
           <p>Если в окне нет кнопки «Выполнить в любом случае», на компьютере включено «Интеллектуальное управление приложениями» (бывает на новых компьютерах с Windows 11). <a href="https://t.me/golosovoybloknot">Напишите нам</a> — подскажем.</p>
         </details>
       </div>
       <div class="pics">
-        <figure><span class="shot"><img src="../images/ustanovka-windows-1.webp" width="798" height="466" alt="Окно «Система Windows защитила ваш компьютер», ссылка «Подробнее»"><span class="mark" style="left:11.2%;top:59.7%;width:19%;height:10%"></span><span class="badge" style="left:26%;top:59.7%">1</span></span><figcaption>Сначала</figcaption></figure>
+        <figure><span class="shot"><img src="../images/ustanovka-windows-1.webp" width="798" height="466" alt="Окно «Система Windows защитила ваш компьютер», ссылка «Подробнее»"><span class="mark" style="left:11.2%;top:60.3%;width:18%;height:8%"></span><span class="badge" style="left:25.5%;top:60.3%">1</span></span><figcaption>Сначала</figcaption></figure>
         <figure><span class="shot"><img src="../images/ustanovka-windows-2.webp" width="798" height="466" alt="То же окно, кнопка «Выполнить в любом случае»"><span class="mark" style="left:46.7%;top:86.4%;width:44%;height:14%"></span><span class="badge" style="left:21%;top:86.4%">2</span></span><figcaption>После «Подробнее»</figcaption></figure>
       </div>
     </li>
@@ -231,14 +228,9 @@
     <details><summary>Не нашли файл?</summary>
       <p>Нажмите <span class="key">Ctrl</span> + <span class="key">J</span> — откроется список загрузок браузера. Или откройте папку «Загрузки» в Проводнике. Или <a href="https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe">скачайте ещё раз</a>.</p>
     </details>
-    <details id="pochemu"><summary>Почему Windows спрашивает?</summary>
-      <p>Windows переспрашивает про каждую новую программу, у которой нет платной подписи Microsoft, — это не значит, что с файлом что-то не так. Окно может появиться и после обновления: для Windows каждая версия — снова новая. Голосовой блокнот работает на вашем компьютере и не отправляет ваши записи в интернет.</p>
-      <p>Если в окне нет кнопки «Выполнить в любом случае», на компьютере включено «Интеллектуальное управление приложениями» (бывает на новых компьютерах с Windows 11). Напишите нам — подскажем.</p>
-    </details>
   </div>
 
   <div class="phone" role="note">Программа — для компьютера с Windows. Откройте эту ссылку на компьютере, и скачивание начнётся само:<br><b id="link"></b><br><button type="button" class="copy" id="copy">Скопировать ссылку</button></div>
-  <a class="btn phone-only" href="https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe" hidden>Скачать установщик</a>
 
   <p class="help na-win">Что-то не получилось? Напишите — поможем: <a href="https://t.me/golosovoybloknot">Telegram</a> · <a href="mailto:golosovoybloknot@yandex.ru">golosovoybloknot@yandex.ru</a></p>
 </main>
@@ -246,8 +238,6 @@
 <script>
   (function () {
     var file = "https://github.com/golosovoybloknot/voicenotes-models/releases/latest/download/GolosovoyBloknot_Setup.exe", ua = navigator.userAgent || "", root = document.documentElement;
-    // Браузер — сам: сначала по «маркам» (userAgentData), потом по строке браузера. Яндекс, Edge и Opera — раньше
-    // Chrome: слово «Chrome» есть у всех браузеров на его основе. Проверено 24.11 в пяти настоящих браузерах.
     var brands = (navigator.userAgentData && navigator.userAgentData.brands || []).map(function (b) { return b.brand; }).join(" ");
     var mine = /Yandex|YaBrowser/i.test(brands) || /YaBrowser/.test(ua) ? "yandex"
       : /Edge/.test(brands) || /Edg\//.test(ua) ? "edge"
@@ -261,7 +251,6 @@
     }
     for (var k = 0; k < btns.length; k++) btns[k].addEventListener("click", function () { pick(this.getAttribute("data-br")); });
     pick(mine);
-    // Ссылка на свёрнутый блок раскрывает его сразу, а не только прокручивает к заголовку (владелец 24.11).
     function openTo(id) {
       var el = id && document.getElementById(id), d = el && el.closest("details");
       if (!d) return false;
@@ -273,15 +262,15 @@
     });
     if (location.hash) openTo(decodeURIComponent(location.hash.slice(1)));
     if (/Windows NT/.test(ua)) {
-      // Скачивание — после того, как страница догрузилась: Firefox обрывает загрузку картинок, если скачивание
-      // начать сразу (снимок владельца 24.11 — вместо снимков окна Windows одни подписи).
+      var uzhe = false;
+      try { uzhe = sessionStorage.getItem("vn-skachano") === "1"; sessionStorage.setItem("vn-skachano", "1"); } catch (e) {}
+      if (uzhe) return;
       var go = function () { setTimeout(function () { location.replace(file); }, 300); };
       if (document.readyState === "complete") go(); else window.addEventListener("load", go);
       return;
     }
     root.className += " ne-win";
     document.querySelector(".phone-h").hidden = false;
-    document.querySelector(".phone-only").hidden = false;
     var here = location.href.replace(/index\.html$/, "").replace(/[?#].*$/, "");
     document.getElementById("link").textContent = here;
     document.getElementById("copy").addEventListener("click", function () {
