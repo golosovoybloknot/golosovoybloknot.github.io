@@ -1053,7 +1053,8 @@ document.querySelectorAll('.ed-mock').forEach(setupEditorDemo);
   const menu = document.querySelector('.mobile-nav div'), home = group.parentElement, after = group.nextElementSibling;
   const narrow = matchMedia('(max-width: 630px)');
   const place = () => {
-    if (narrow.matches && menu && group.parentElement !== menu) { menu.append(group); group.classList.add('in-menu'); }
+    if (narrow.matches && menu && group.parentElement !== menu) {
+      menu.insertBefore(group, menu.querySelector('.menu-sub')); group.classList.add('in-menu'); }
     else if (!narrow.matches && group.parentElement !== home) { home.insertBefore(group, after); group.classList.remove('in-menu'); }
   };
   place(); narrow.addEventListener('change', place);
